@@ -1,6 +1,7 @@
 
 import { Qualifications } from 'src/qualification/entities/qualifications.entity';
 import { Column, Entity, JoinColumn, JoinTable, ManyToMany, ManyToOne, OneToMany, PrimaryGeneratedColumn } from 'typeorm';
+import { CreateDateColumn, UpdateDateColumn } from "typeorm";
 
 @Entity()
 export class Job {
@@ -40,7 +41,7 @@ export class Job {
     @Column({ nullable: true })
     salary: string;
 
-    @Column({ default:false})
+    @Column({ default: false })
     workFromHome: boolean;
 
     @Column("text", { array: true })
@@ -49,7 +50,11 @@ export class Job {
     @Column("text", { array: true })
     qualifications: string[];
 
+    @CreateDateColumn({ type: "timestamp", default: () => "CURRENT_TIMESTAMP(6)" })
+     created_at: Date;
 
+    @UpdateDateColumn({ type: "timestamp", default: () => "CURRENT_TIMESTAMP(6)", onUpdate: "CURRENT_TIMESTAMP(6)" })
+     updated_at: Date;
     // @OneToMany(() => Qualifications, (post) => post.id,{cascade:true})
     // qualifications: Qualifications[]
 
