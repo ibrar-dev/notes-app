@@ -19,16 +19,15 @@ import {
 } from '@nestjs/common';
 import { FileInterceptor } from '@nestjs/platform-express';
 import { Express } from 'express';
-
+import { ApiExcludeEndpoint } from '@nestjs/swagger';
 import { FilesInterceptor } from '@nestjs/platform-express';
 import { diskStorage } from 'multer';
 import { extname } from 'path'
 
-
 @Controller('users')
 export class UsersController {
   constructor(private readonly usersService: UsersService) { }
-
+  @ApiExcludeEndpoint()
   @Post()
   async create(@Body() createUserDto: CreateUserDto): Promise<User> {
     try {
@@ -42,17 +41,17 @@ export class UsersController {
       }, HttpStatus.FORBIDDEN);
     }
   }
-
+  @ApiExcludeEndpoint()
   @Get()
   findAll(): Promise<User[]> {
     return this.usersService.findAll();
   }
-
+  @ApiExcludeEndpoint()
   @Get(':id')
   findOne(@Param('id') id: string): Promise<User> {
     return this.usersService.findOne(id);
   }
-
+  @ApiExcludeEndpoint()
   @Delete(':id')
   remove(@Param('id') id: string): Promise<void> {
     return this.usersService.remove(id);
@@ -60,7 +59,7 @@ export class UsersController {
 
 
 
-
+  @ApiExcludeEndpoint()
   @Post('file')
   @UseInterceptors(FileInterceptor('file', {
     storage: diskStorage({
@@ -72,6 +71,7 @@ export class UsersController {
     })
   }))
   
+@ApiExcludeEndpoint()
   uploadFile(
     @Body() body: SampleDto,
     @UploadedFile() file: Express.Multer.File,
