@@ -5,11 +5,12 @@ import { JobsResponse } from './dto/response-job.dto';
 import { Response } from 'express';
 import { ApiExtraModels, ApiResponse, ApiTags, getSchemaPath } from '@nestjs/swagger';
 
+@ApiTags('Job')
 @Controller('job')
 export class JobController {
   constructor(private readonly jobService: JobService) { }
 
-  @ApiExtraModels(JobsResponse) // for CatDto to be found by getSchemaPath()
+  @ApiExtraModels(JobsResponse)
   @ApiResponse({
     schema: {
       '$ref': getSchemaPath(JobsResponse)
@@ -32,8 +33,20 @@ export class JobController {
       res.status(HttpStatus.BAD_REQUEST).json({ message: 'Something went wrong' });
     }
   }
-
-
+  @Get('count')
+  async count(@Res() res: Response,
+  ): Promise<any> {
+    try {
+      let resp = await this.jobService.count();
+      if (resp) {
+        res.status(HttpStatus.OK).json(resp);
+      } else {
+        res.status(HttpStatus.BAD_REQUEST).json({ message: 'Something went wrong' });
+      }
+    } catch (error) {
+      res.status(HttpStatus.BAD_REQUEST).json({ message: 'Something went wrong' });
+    }
+  }
   @Get(':id')
   async findOne(@Res() res: Response, @Param('id') id: string) {
 

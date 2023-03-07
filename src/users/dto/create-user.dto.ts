@@ -1,13 +1,18 @@
-export class CreateUserDto {
-  fullName: string;
-  username: string;
-  email: string;
-  profilePicture: string|null;
-  kycVerified: boolean;
-  dob: Date;
-  status: "pending" | "active" | "blocked";
-  password: string;
+import { ApiProperty } from "@nestjs/swagger";
 
+export class CreateUserDto {
+  @ApiProperty({ type: 'string', example: 'string' })
+  fullName: string;
+  @ApiProperty({ type: 'string', example: 'string' })
+  username: string;
+  @ApiProperty({ type: 'string', example: 'string' })
+  email: string;
+  @ApiProperty({ type: 'string', example: 'string' })
+  profilePicture: string|null;
+  @ApiProperty({ type: 'string', example: 'string' })
+  status: "pending" | "active" | "blocked";
+  @ApiProperty({ type: 'string', example: 'string' })
+  password: string;
 }
 
 

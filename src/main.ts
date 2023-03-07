@@ -10,13 +10,18 @@ async function bootstrap() {
     .setDescription('Jobs API ')
     .setVersion('1.0')
     .addTag('Jobs')
+    .addBearerAuth()
     .build();
 
 
   const app = await NestFactory.create<NestExpressApplication>(AppModule);
   const document = SwaggerModule.createDocument(app, config);
   SwaggerModule.setup('api', app, document);
-  app.useStaticAssets(join(__dirname, '..', ''));
+  app.enableCors({
+    allowedHeaders:"*",
+    origin: "*"
+});
+app.useStaticAssets(join(__dirname, '..', ''));
   await app.listen(3000);
 }
 bootstrap();

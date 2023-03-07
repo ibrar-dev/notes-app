@@ -50,6 +50,14 @@ export class JobService {
       return error;
     }
   }
+  async count(): Promise<any> {
+    try {
+      const totalJObs = await this.jobsRepository.count();
+      return totalJObs;
+    } catch (error) {
+      return false;
+    }
+  }
 
 
   async findOne(id: string) {
@@ -63,7 +71,7 @@ export class JobService {
       );
       return { success: true, result: result };
     } catch (error) {
-      return { success: false, error:error.message };
+      return { success: false, error: error.message };
     }
   }
 
