@@ -165,5 +165,7 @@ export class CreateJobDto {
     salary: string | any;
     @ApiProperty({type:'string'})
     applyLinkTitle: string | any;
+    @ApiProperty({type:'string'})
+    category:string;
 
 }

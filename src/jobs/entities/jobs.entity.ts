@@ -58,6 +58,9 @@ export class Job {
     // @OneToMany(() => Qualifications, (post) => post.id,{cascade:true})
     // qualifications: Qualifications[]
 
+    @Column({ nullable: true })
+    category: string;
+
 
 
 }

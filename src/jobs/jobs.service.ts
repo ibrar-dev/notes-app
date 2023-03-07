@@ -1,7 +1,7 @@
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 // import { Facility } from 'src/facility/entities/facility.entity';
-import { Repository } from 'typeorm';
+import { Like, Repository, Raw } from 'typeorm';
 import { CreateJobDto } from './dto/create-job.dto';
 import { Job } from './entities/jobs.entity';
 
@@ -37,11 +37,27 @@ export class JobService {
       const take = query.limit || 10
       const page = query.page || 1;
       const skip = (page - 1) * take;
+      const category = query.category;
+      const company = query.company;
+      let filter = {
+        take: take,
+        skip: skip
+      };
+      let whereClause = {};
+      if (category) {
+
+        whereClause['category'] = Raw(alias => `${alias} ILIKE '%${category}%'`);
+      }
+      if (company) {
+        whereClause['companyName'] = Raw(alias => `${alias} ILIKE '%${company}%'`);
+      }
+      if (Object.keys(whereClause).length > 0) {
+        filter['where'] = { ...whereClause }
+      }
       const [result, total] = await this.jobsRepository.findAndCount(
         {
-          order: { id: "DESC" },
-          take: take,
-          skip: skip
+          ...filter,
+          order: { created_at: "DESC" },
         }
       );
       return { page: page, limit: take, total: total, result: result };
@@ -75,4 +91,16 @@ export class JobService {
     }
   }
 
+  async getCategories() {
+    try {
+      const res = await this.jobsRepository
+        .createQueryBuilder('job')
+        .select('DISTINCT job.category')
+        .getRawMany();
+      return { result: res };
+    } catch (error) {
+      console.log("here")
+      return error;
+    }
+  }
 }
