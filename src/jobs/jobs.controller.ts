@@ -3,7 +3,7 @@ import { JobService } from './jobs.service';
 import { CreateJobDto } from './dto/create-job.dto';
 import { JobsResponse } from './dto/response-job.dto';
 import { Response } from 'express';
-import { ApiExtraModels, ApiResponse, ApiTags, getSchemaPath } from '@nestjs/swagger';
+import { ApiExtraModels, ApiQuery, ApiResponse, ApiTags, getSchemaPath } from '@nestjs/swagger';
 
 @ApiTags('Job')
 @Controller('job')
@@ -17,13 +17,32 @@ export class JobController {
     }
   })
 
+  @ApiQuery({ name: 'category', required: false, type: String })
+  @ApiQuery({ name: 'company', required: false, type: String })
   @Get()
   async findAll(@Res() res: Response,
     @Query('page', ParseIntPipe) page: number,
     @Query('limit', ParseIntPipe) limit: number,
+    @Query('category') category?: string,
+    @Query('company') company?: string,
+    
   ): Promise<any> {
     try {
-      let resp = await this.jobService.findAll({ page, limit });
+      let resp = await this.jobService.findAll({ page, limit,category,company });
+      if (resp) {
+        res.status(HttpStatus.OK).json(resp);
+      } else {
+        res.status(HttpStatus.NO_CONTENT).json({ message: 'Please check your Limits, No record Found' });
+      }
+    } catch (error) {
+      res.status(HttpStatus.BAD_REQUEST).json({ message: 'Something went wrong' });
+    }
+  }
+  @Get('job-categories')
+  async getJobTitles(@Res() res: Response
+  ): Promise<any> {
+    try {
+      let resp = await this.jobService.getCategories();
       if (resp) {
         res.status(HttpStatus.OK).json(resp);
       } else {
