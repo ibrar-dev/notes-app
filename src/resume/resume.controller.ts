@@ -17,7 +17,7 @@ import { extname } from 'path'
 @ApiTags('Resume')
 @Controller('resume')
 export class ResumeController {
-  constructor(private readonly resumeService: ResumeService) {}
+  constructor(private readonly resumeService: ResumeService) { }
 
   @Post()
   @ApiExtraModels(CreateResumeDto)
@@ -30,7 +30,10 @@ export class ResumeController {
   create(@Body() createResumeDto: CreateResumeDto) {
     return this.resumeService.create(createResumeDto);
   }
-
+  @Get('/from-json')
+  addFromJson() {
+    return this.resumeService.reStructureData();
+  }
   @Get()
   findAll() {
     return this.resumeService.findAll();
@@ -50,8 +53,10 @@ export class ResumeController {
   remove(@Param('id') id: string) {
     return this.resumeService.remove(+id);
   }
+  
 
-    // @ApiExcludeEndpoint()
+
+  // @ApiExcludeEndpoint()
   @Post('upload')
   @UseInterceptors(FileInterceptor('file', {
     storage: diskStorage({
@@ -67,7 +72,7 @@ export class ResumeController {
     @Body() body: any,
     @UploadedFile() file: Express.Multer.File,
   ): Promise<any> {
-    console.log("here",body,file)
+    console.log("here", body, file)
     return this.resumeService.uploadResume({ id: body.id, file: file.filename });
 
   }

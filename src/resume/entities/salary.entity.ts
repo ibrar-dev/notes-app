@@ -2,7 +2,7 @@ import { Column, Entity, JoinColumn, JoinTable, ManyToMany, ManyToOne, OneToMany
 
 @Entity('salary')
 export class Salary {
-    @PrimaryGeneratedColumn('increment')
+    @PrimaryGeneratedColumn('uuid')
     id: string;
     @Column()
     amount: string;

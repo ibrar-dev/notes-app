@@ -1,4 +1,4 @@
-import { Controller, Res, Get, Post, Body, HttpStatus, Param, Query, ParseIntPipe } from '@nestjs/common';
+import { Controller, Res, Get, Delete, Post, Body, HttpStatus, Param, Query, ParseIntPipe } from '@nestjs/common';
 import { JobService } from './jobs.service';
 import { CreateJobDto } from './dto/create-job.dto';
 import { JobsResponse } from './dto/response-job.dto';
@@ -25,10 +25,10 @@ export class JobController {
     @Query('limit', ParseIntPipe) limit: number,
     @Query('category') category?: string,
     @Query('company') company?: string,
-    
+
   ): Promise<any> {
     try {
-      let resp = await this.jobService.findAll({ page, limit,category,company });
+      let resp = await this.jobService.findAll({ page, limit, category, company });
       if (resp) {
         res.status(HttpStatus.OK).json(resp);
       } else {
@@ -86,5 +86,18 @@ export class JobController {
     }
 
   }
+  
+  //delete "Doctors"
+  // @Delete()
+  // async deleteByCategory(@Res() res: Response) {
 
+  //   try {
+
+  //     let resp = await this.jobService.deleteByCategory();
+  //     return resp;
+  //   } catch (error) {
+  //     res.status(HttpStatus.BAD_REQUEST).json({ message: 'Something went wrong' });
+  //   }
+
+  // }
 }

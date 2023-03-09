@@ -17,5 +17,14 @@ export declare class JobService {
         error: any;
         result?: undefined;
     }>;
+    deleteByCategory(): Promise<{
+        success: boolean;
+        result: import("typeorm").DeleteResult;
+        error?: undefined;
+    } | {
+        success: boolean;
+        error: any;
+        result?: undefined;
+    }>;
     getCategories(): Promise<any>;
 }

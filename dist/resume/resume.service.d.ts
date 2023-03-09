@@ -11,4 +11,5 @@ export declare class ResumeService {
     update(id: number, updateResumeDto: UpdateResumeDto): string;
     remove(id: number): string;
     uploadResume(res: any): Promise<any>;
+    reStructureData(): Promise<any>;
 }

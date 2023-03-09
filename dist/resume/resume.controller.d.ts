@@ -6,6 +6,7 @@ export declare class ResumeController {
     private readonly resumeService;
     constructor(resumeService: ResumeService);
     create(createResumeDto: CreateResumeDto): Promise<import("./entities/resume.entity").Resume>;
+    addFromJson(): Promise<any>;
     findAll(): Promise<any>;
     findOne(id: string): Promise<any>;
     update(id: string, updateResumeDto: UpdateResumeDto): string;

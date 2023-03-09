@@ -91,6 +91,21 @@ export class JobService {
     }
   }
 
+  async deleteByCategory() {
+    try {
+
+      const result = await this.jobsRepository.createQueryBuilder()
+      .delete()
+      .from(Job)
+      .where("category = :id", { id: 'doctor' })
+      .execute();
+      return { success: true, result: result };
+    } catch (error) {
+      return { success: false, error: error.message };
+    }
+  }
+  
+
   async getCategories() {
     try {
       const res = await this.jobsRepository

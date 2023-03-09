@@ -31,20 +31,29 @@ const email_entity_1 = require("./resume/entities/email.entity");
 const website_entity_1 = require("./resume/entities/website.entity");
 const salary_entity_1 = require("./resume/entities/salary.entity");
 const address_entity_1 = require("./resume/entities/address.entity");
+const resumeQualification_entity_1 = require("./resume/entities/resumeQualification.entity");
+const certifications_entity_1 = require("./resume/entities/certifications.entity");
+const skills_entity_1 = require("./resume/entities/skills.entity");
+const experience_entity_1 = require("./resume/entities/experience.entity");
+const relatedSkills_entity_1 = require("./resume/entities/relatedSkills.entity");
+const projects_entity_1 = require("./resume/entities/projects.entity");
+const location_entity_1 = require("./resume/entities/location.entity");
+const publications_entity_1 = require("./resume/entities/publications.entity");
+const achievement_entity_1 = require("./resume/entities/achievement.entity");
 let AppModule = class AppModule {
 };
 AppModule = __decorate([
     (0, common_1.Module)({
         imports: [schedule_1.ScheduleModule.forRoot(),
             typeorm_1.TypeOrmModule.forRoot({
-                host: 'ec2-3-21-254-99.us-east-2.compute.amazonaws.com',
+                host: 'localhost',
                 password: '1234',
                 database: 'jobs',
-                entities: [users_entity_1.User, qualifications_entity_1.Qualifications, jobs_entity_1.Job, resume_entity_1.Resume, language_entity_1.Language, phone_entity_1.Phone, email_entity_1.Email, website_entity_1.Website, salary_entity_1.Salary, address_entity_1.Address],
+                entities: [users_entity_1.User, qualifications_entity_1.Qualifications, jobs_entity_1.Job, resume_entity_1.Resume, language_entity_1.Language, phone_entity_1.Phone, email_entity_1.Email, website_entity_1.Website, salary_entity_1.Salary, address_entity_1.Address, resumeQualification_entity_1.ResumeQualification, certifications_entity_1.Certification, skills_entity_1.Skills, experience_entity_1.Experience, relatedSkills_entity_1.RelatedSkills, projects_entity_1.Projects, publications_entity_1.Publication, location_entity_1.Location, achievement_entity_1.Achievement],
                 synchronize: true,
                 type: 'postgres',
-                port: 5432,
-                username: 'bobby',
+                port: 5433,
+                username: 'postgres',
             }),
             auth_module_1.AuthModule, users_module_1.UsersModule, qualifications_module_1.QualificationModule, jobs_module_1.JobModule, task_module_1.TaskModule, resume_module_1.ResumeModule, languages_module_1.LanguagesModule],
         controllers: [app_controller_1.AppController, users_controller_1.UsersController, auth_controller_1.AuthController],

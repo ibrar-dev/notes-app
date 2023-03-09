@@ -10,8 +10,8 @@ export class Resume {
     @Column()
     resumeFileName: string;
 
-    @OneToMany(() => Language, (lang) => lang.id, { cascade: true})
-    @JoinColumn({ name: 'languages',referencedColumnName:'id' })
+    @OneToMany(() => Language, (lang) => lang.id, { cascade: true })
+    @JoinColumn({ name: 'languages', referencedColumnName: 'id' })
     languages: Language[];
 
     // @OneToMany(() => Language, (post) => post.id, { cascade: true })
@@ -69,440 +69,75 @@ export class Resume {
     // @Column()
     // subCategory:string;
     // @Column()
-    // qualification:string;
+    // "certificationText": string;
+    // @Column()
+    // skillBlock: string;
+    // @Column()
+    // skillKeywords: string;
+    // @Column()
+    // experienceText:string;
+    // @Column()
+    // currentEmployer:string;
+    // @Column()
+    //  jobProfile:string;
+    // @Column()
+    //  workedPeriodTotalExperienceInMonths:string;
+    // @Column()
+    //  workedPeriodTotalExperienceInYear:string;
+    // @Column()
+    //  workedPeriodTotalExperienceRange:string;
+    // @Column()
+    //  gapPeriod:string;
+    // @Column()
+    //  averageStay:string;
+    // @Column()
+    //  longestStay:string;
+    // @Column()
+    //  summary:string;
+    // @Column()
+    //  executiveSummary:string;
+    // @Column()
+    //  managementSummary:string;
+    // @Column()
+    //  coverLetter:string;
+    // @Column()
+    //  publication:string;
+    // @Column()
+    // availability: string;
+    // @Column()
+    // hobbies: string;
+    // @Column()
+    // objectives: string;
+    // @Column()
+    // achievements: string;
+    // @Column()
+    // references: string;
 
 
 }
 
 
+// "currentEmployer": "Henry Ford Hospital",
+// "jobProfile": "Cardiologist",
+// "workedPeriodTotalExperienceInMonths": "138",
+// "workedPeriodTotalExperienceInYear": "11.6",
+// "workedPeriodTotalExperienceRange": "GREATER THAN 10 YEAR"
+// "gapPeriod": "1/2006 To 12/2012",
+// "averageStay": "27",
+// "longestStay": "48",
+// "summary": "",
+// "executiveSummary": "John has an experience in the domain of Health Care and Social Assistance, particularly in Cardiovascular Technologists and Technicians. and is currently working as Cardiologist at Henry Ford Hospital since 1.6 Years. ",
+// "managementSummary": "",
+// "coverLetter": "",
+// "publication": "",
+// "availability": "1 Month",
+// "hobbies": "Travel, Soccer / Tennis / Basketball, Opera, Cooking, Winemaking",
+// "objectives": "Motivated Board-Certified Hospitalist seeking gainful employment \r within an outpatient adult medical practice. Experienced in working in diverse \r healthcare settings. Able to work on own initiative and as part of a team. Dedicated to \r maintaining quality medical practice standards.",
+// "achievements": "Associated with Medical- Resident of the Year Award - NYU Department of Medicine 2013 \r Volunteer Service Award - NYU Department of Medicine 2012 \r Intern of the Year Award - NYU Department of Medicine 2011",
+// references
 
 
 
-//         "Address": [
-//             {
-//                 "Street": "17946232 2915 John R St. Apt 306",
-//                 "City": "Detroit",
-//                 "State": "MI",
-//                 "StateIsoCode": "US-MI",
-//                 "Country": "USA",
-//                 "CountryCode": {
-//                     "IsoAlpha2": "US",
-//                     "IsoAlpha3": "USA",
-//                     "UNCode": "840"
-//                 },
-//                 "ZipCode": "48201",
-//                 "FormattedAddress": "17946232 2915 John R St. Apt 306, Detroit, MI, 48201, USA",
-//                 "Type": "Present",
-//                 "ConfidenceScore": 10
-//             },
-//             {
-//                 "Street": "180 N Jefferson St. Apt 2703",
-//                 "City": "Chicago",
-//                 "State": "IL",
-//                 "StateIsoCode": "US-IL",
-//                 "Country": "USA",
-//                 "CountryCode": {
-//                     "IsoAlpha2": "US",
-//                     "IsoAlpha3": "USA",
-//                     "UNCode": "840"
-//                 },
-//                 "ZipCode": "60661",
-//                 "FormattedAddress": "180 N Jefferson St. Apt 2703, Chicago, IL, 60661, USA",
-//                 "Type": "Permanent",
-//                 "ConfidenceScore": 10
-//             }
-//         ],
-
-
-
-//         "SegregatedQualification": [
-//             {
-//                 "Institution": {
-//                     "Name": "St. George's University School of Medicine",
-//                     "Type": "University",
-//                     "ConfidenceScore": 10,
-//                     "Location": {
-//                         "City": "New Haven",
-//                         "State": "CT",
-//                         "StateIsoCode": "US-CT",
-//                         "Country": "USA",
-//                         "CountryCode": {
-//                             "IsoAlpha2": "US",
-//                             "IsoAlpha3": "USA",
-//                             "UNCode": "840"
-//                         }
-//                     }
-//                 },
-//                 "SubInstitution": {
-//                     "Name": "St. George's School of Medicine",
-//                     "ConfidenceScore": 10,
-//                     "Type": "School",
-//                     "Location": {
-//                         "City": "New Haven",
-//                         "State": "CT",
-//                         "StateIsoCode": "US-CT",
-//                         "Country": "USA",
-//                         "CountryCode": {
-//                             "IsoAlpha2": "US",
-//                             "IsoAlpha3": "USA",
-//                             "UNCode": "840"
-//                         }
-//                     }
-//                 },
-//                 "Degree": {
-//                     "DegreeName": "Doctor of Medicine",
-//                     "NormalizeDegree": "Doctor of Medicine",
-//                     "Specialization": [],
-//                     "ConfidenceScore": 10
-//                 },
-//                 "FormattedDegreePeriod": "2005 to 2009",
-//                 "StartDate": "01/01/2005",
-//                 "EndDate": "12/31/2009",
-//                 "Aggregate": {
-//                     "Value": "3.5",
-//                     "MeasureType": "CGPA"
-//                 }
-//             },
-//             {
-//                 "Institution": {
-//                     "Name": "Yale University",
-//                     "Type": "University",
-//                     "ConfidenceScore": 10,
-//                     "Location": {
-//                         "City": "New Haven",
-//                         "State": "CT",
-//                         "StateIsoCode": "US-CT",
-//                         "Country": "USA",
-//                         "CountryCode": {
-//                             "IsoAlpha2": "US",
-//                             "IsoAlpha3": "USA",
-//                             "UNCode": "840"
-//                         }
-//                     }
-//                 },
-//                 "Degree": {
-//                     "DegreeName": "Bachelor of Science",
-//                     "NormalizeDegree": "Bachelor of Science",
-//                     "Specialization": [],
-//                     "ConfidenceScore": 10
-//                 },
-//                 "FormattedDegreePeriod": "1998 to 2002",
-//                 "StartDate": "01/01/1998",
-//                 "EndDate": "12/31/2002",
-//                 "Aggregate": {
-//                     "Value": "3.97",
-//                     "MeasureType": "CGPA"
-//                 }
-//             },
-//             {
-//                 "Institution": {
-//                     "Name": "Carnegie Vanguard High School",
-//                     "Type": "School",
-//                     "Location": {
-//                         "City": "Houston",
-//                         "State": "Texas",
-//                         "StateIsoCode": "US-TX",
-//                         "Country": "USA",
-//                         "CountryCode": {
-//                             "IsoAlpha2": "US",
-//                             "IsoAlpha3": "USA",
-//                             "UNCode": "840"
-//                         }
-//                     },
-//                     "ConfidenceScore": 10
-//                 },
-//                 "Degree": {
-//                     "DegreeName": "Secondary Education",
-//                     "NormalizeDegree": "",
-//                     "Specialization": [],
-//                     "ConfidenceScore": 10
-//                 },
-//                 "FormattedDegreePeriod": "1997 to 1998",
-//                 "StartDate": "01/01/1997",
-//                 "EndDate": "12/31/1998",
-//                 "Aggregate": {
-//                     "Value": "",
-//                     "MeasureType": ""
-//                 }
-//             }
-//         ],
-//         "Certification": "\r\rOct 2016\t  - National Board Certification. Expire 2020\r",
-//         "SegregatedCertification": [
-//             {
-//                 "CertificationTitle": "National Board Certification",
-//                 "Authority": "",
-//                 "CertificationCode": "",
-//                 "IsExpiry": "",
-//                 "StartDate": "01/10/2016",
-//                 "EndDate": "31/10/2016",
-//                 "CertificationUrl": ""
-//             }
-//         ],
-//         "SkillBlock": "Good communication skills are essential for interventional cardiologists. As their work is physically intricate, so must be their communication with other medical personnel as they perform complex cardiac procedures. These cardiologists must also explain the procedures to their patients in language they can understand. Pre- and post-catheterization care of patients involves communication skills being used by cardiologists for evaluations and explanations. \r Medicine and Dentistry - Knowledge of the information and techniques needed to diagnose and treat human injuries, diseases, and deformities. This includes symptoms, treatment alternatives, drug properties and interactions, and preventive health-care measures. \r Scheduling patient appointments \r Maintaining medical records, and billing and coding information for insurance \r Preparing patients for examination \r Helping physicians with patient examinations \r Taking and recording vital signs, such as blood pressure \r Drawing blood \r Preparing blood samples for laboratory tests \r Giving patients injections or medications as directed by a physician (in some states) \r\r\r\r\rItalian (fluent) \r Spanish (proficient) \r French (proficient) ",
-//         "SkillKeywords": "Good Communication Skills,Examinations,Methodology,Knowledge Of The Information and Techniques,Preparing Patients For Examination,Taking and Recording Vital Signs,Scheduling Patient Appointments,Interpreting Medical Research,Market Research and Analysis,Maintaining Medical Records,Giving Patients Injections,PowerPoint Presentations,Preparing Blood Samples,Helping Physicians,Clinical Research,Catheterization,Blood Pressure,Drawing Blood,Evaluations,Dentistry,Insurance,Billing,Coding",
-//         "SegregatedSkill": [
-//             {
-//                 "Type": "SoftSkill",
-//                 "Skill": "Good Communication Skills",
-//                 "Ontology": "",
-//                 "Alias": "",
-//                 "FormattedName": "",
-//                 "Evidence": "SkillSection",
-//                 "LastUsed": "",
-//                 "ExperienceInMonths": 0
-//             },
-//             {
-//                 "Type": "SoftSkill",
-//                 "Skill": "Communication Skills",
-//                 "Ontology": "",
-//                 "Alias": "",
-//                 "FormattedName": "",
-//                 "Evidence": "SkillSection",
-//                 "LastUsed": "",
-//                 "ExperienceInMonths": 0
-//             },
-//             {
-//                 "Type": "SoftSkill",
-//                 "Skill": "Communication",
-//                 "Ontology": "Arts, Entertainment, and Recreation>Media and Communication Workers>Communication",
-//                 "Alias": "communicating, communicational, communications",
-//                 "FormattedName": "Communication",
-//                 "Evidence": "SkillSection",
-//                 "LastUsed": "",
-//                 "ExperienceInMonths": 0
-//             },
-//             {
-//                 "Type": "SoftSkill",
-//                 "Skill": "Examinations",
-//                 "Ontology": "",
-//                 "Alias": "",
-//                 "FormattedName": "",
-//                 "Evidence": "SkillSection",
-//                 "LastUsed": "",
-//                 "ExperienceInMonths": 0
-//             },
-//             {
-//                 "Type": "SoftSkill",
-//                 "Skill": "Methodology",
-//                 "Ontology": "Management of Companies and Enterprises>Computer and Information Systems Managers>Methodology",
-//                 "Alias": "methodology analysis",
-//                 "FormattedName": "Methodology",
-//                 "Evidence": "ExperienceSection",
-//                 "LastUsed": "12/31/2016",
-//                 "ExperienceInMonths": 48
-//             },
-//             {
-//                 "Type": "OperationalSkill",
-//                 "Skill": "Knowledge Of The Information and Techniques",
-//                 "Ontology": "",
-//                 "Alias": "",
-//                 "FormattedName": "",
-//                 "Evidence": "SkillSection",
-//                 "LastUsed": "",
-//                 "ExperienceInMonths": 0
-//             },
-//             {
-//                 "Type": "OperationalSkill",
-//                 "Skill": "Preparing Patients For Examination",
-//                 "Ontology": "Health Care and Social Assistance>HMO Medical Centers>Physical Examination",
-//                 "Alias": "clinical examination, Examining Patients, medical examination, Physical assessment:, Physical Assessments, physical-examination, Preparing Patients For Examination",
-//                 "FormattedName": "Physical Examination",
-//                 "Evidence": "SkillSection",
-//                 "LastUsed": "",
-//                 "ExperienceInMonths": 0
-//             },
-//             {
-//                 "Type": "OperationalSkill",
-//                 "Skill": "Taking and Recording Vital Signs",
-//                 "Ontology": "",
-//                 "Alias": "",
-//                 "FormattedName": "",
-//                 "Evidence": "SkillSection",
-//                 "LastUsed": "",
-//                 "ExperienceInMonths": 0
-//             },
-//             {
-//                 "Type": "OperationalSkill",
-//                 "Skill": "Scheduling Patient Appointments",
-//                 "Ontology": "",
-//                 "Alias": "",
-//                 "FormattedName": "",
-//                 "Evidence": "SkillSection",
-//                 "LastUsed": "",
-//                 "ExperienceInMonths": 0
-//             },
-//             {
-//                 "Type": "OperationalSkill",
-//                 "Skill": "Interpreting Medical Research",
-//                 "Ontology": "",
-//                 "Alias": "",
-//                 "FormattedName": "",
-//                 "Evidence": "ExperienceSection",
-//                 "LastUsed": "12/31/2016",
-//                 "ExperienceInMonths": 48
-//             },
-//             {
-//                 "Type": "OperationalSkill",
-//                 "Skill": "Market Research and Analysis",
-//                 "Ontology": "Finance and Insurance>Market Research Analysts and Marketing Specialists>Market Research",
-//                 "Alias": "Market Research and Analysis, market-research, Marketing Research",
-//                 "FormattedName": "Market Research",
-//                 "Evidence": "ExperienceSection",
-//                 "LastUsed": "12/31/2003",
-//                 "ExperienceInMonths": 48
-//             },
-//             {
-//                 "Type": "OperationalSkill",
-//                 "Skill": "Maintaining Medical Records",
-//                 "Ontology": "",
-//                 "Alias": "",
-//                 "FormattedName": "",
-//                 "Evidence": "SkillSection",
-//                 "LastUsed": "",
-//                 "ExperienceInMonths": 0
-//             },
-//             {
-//                 "Type": "OperationalSkill",
-//                 "Skill": "Giving Patients Injections",
-//                 "Ontology": "",
-//                 "Alias": "",
-//                 "FormattedName": "",
-//                 "Evidence": "SkillSection",
-//                 "LastUsed": "",
-//                 "ExperienceInMonths": 0
-//             },
-//             {
-//                 "Type": "OperationalSkill",
-//                 "Skill": "PowerPoint Presentations",
-//                 "Ontology": "",
-//                 "Alias": "",
-//                 "FormattedName": "",
-//                 "Evidence": "ExperienceSection",
-//                 "LastUsed": "12/31/2003",
-//                 "ExperienceInMonths": 48
-//             },
-//             {
-//                 "Type": "OperationalSkill",
-//                 "Skill": "Preparing Blood Samples",
-//                 "Ontology": "",
-//                 "Alias": "",
-//                 "FormattedName": "",
-//                 "Evidence": "SkillSection",
-//                 "LastUsed": "",
-//                 "ExperienceInMonths": 0
-//             },
-//             {
-//                 "Type": "OperationalSkill",
-//                 "Skill": "Helping Physicians",
-//                 "Ontology": "",
-//                 "Alias": "",
-//                 "FormattedName": "",
-//                 "Evidence": "SkillSection",
-//                 "LastUsed": "",
-//                 "ExperienceInMonths": 0
-//             },
-//             {
-//                 "Type": "OperationalSkill",
-//                 "Skill": "Clinical Research",
-//                 "Ontology": "",
-//                 "Alias": "",
-//                 "FormattedName": "",
-//                 "Evidence": "ExperienceSection",
-//                 "LastUsed": "12/31/2016",
-//                 "ExperienceInMonths": 48
-//             },
-//             {
-//                 "Type": "OperationalSkill",
-//                 "Skill": "Medical Research",
-//                 "Ontology": "Health Care and Social Assistance> Healthcare Support Workers, All Other>Healthcare>Clinical Research",
-//                 "Alias": "Clinical Research Pharmacy, Clinical-Research, Medical Research",
-//                 "FormattedName": "Clinical Research",
-//                 "Evidence": "ExperienceSection",
-//                 "LastUsed": "12/31/2016",
-//                 "ExperienceInMonths": 48
-//             },
-//             {
-//                 "Type": "OperationalSkill",
-//                 "Skill": "Catheterization",
-//                 "Ontology": "",
-//                 "Alias": "",
-//                 "FormattedName": "",
-//                 "Evidence": "SkillSection",
-//                 "LastUsed": "",
-//                 "ExperienceInMonths": 0
-//             },
-//             {
-//                 "Type": "OperationalSkill",
-//                 "Skill": "Blood Pressure",
-//                 "Ontology": "",
-//                 "Alias": "",
-//                 "FormattedName": "",
-//                 "Evidence": "SkillSection",
-//                 "LastUsed": "",
-//                 "ExperienceInMonths": 0
-//             },
-//             {
-//                 "Type": "OperationalSkill",
-//                 "Skill": "Drawing Blood",
-//                 "Ontology": "",
-//                 "Alias": "",
-//                 "FormattedName": "",
-//                 "Evidence": "SkillSection",
-//                 "LastUsed": "",
-//                 "ExperienceInMonths": 0
-//             },
-//             {
-//                 "Type": "OperationalSkill",
-//                 "Skill": "Evaluations",
-//                 "Ontology": "",
-//                 "Alias": "",
-//                 "FormattedName": "",
-//                 "Evidence": "SkillSection",
-//                 "LastUsed": "",
-//                 "ExperienceInMonths": 0
-//             },
-//             {
-//                 "Type": "OperationalSkill",
-//                 "Skill": "Dentistry",
-//                 "Ontology": "Health Care and Social Assistance>Prosthodontists>Dentistry",
-//                 "Alias": "Dental and Oral Medicine",
-//                 "FormattedName": "Dentistry",
-//                 "Evidence": "SkillSection",
-//                 "LastUsed": "",
-//                 "ExperienceInMonths": 0
-//             },
-//             {
-//                 "Type": "OperationalSkill",
-//                 "Skill": "Insurance",
-//                 "Ontology": "",
-//                 "Alias": "",
-//                 "FormattedName": "",
-//                 "Evidence": "SkillSection",
-//                 "LastUsed": "",
-//                 "ExperienceInMonths": 0
-//             },
-//             {
-//                 "Type": "OperationalSkill",
-//                 "Skill": "Billing",
-//                 "Ontology": "Finance and Insurance>Accountants and Auditors>Billing",
-//                 "Alias": "Billing Management, Invoices, Invoicing",
-//                 "FormattedName": "Billing",
-//                 "Evidence": "SkillSection",
-//                 "LastUsed": "",
-//                 "ExperienceInMonths": 0
-//             },
-//             {
-//                 "Type": "OperationalSkill",
-//                 "Skill": "Coding",
-//                 "Ontology": "Information>Software Developers and Programmers>Programming Language",
-//                 "Alias": "Coding, Computer Lang., Computer Language, Computer programming, Computer Programming Lang., Computer Programming Language, Programming, Programming Lang., Programming Language Theory, Programming Languages, Programming-Language, Software Programming",
-//                 "FormattedName": "Programming Language",
-//                 "Evidence": "SkillSection",
-//                 "LastUsed": "",
-//                 "ExperienceInMonths": 0
-//             }
-//         ],
-//         "Experience": "7/2016 - 12/2017 - Henry Ford Hospital, Detroit, MI, USA - Cardiologist \r Examine patients and assess their condition. \r Give health advice to patients. \r  \r 2013 - 2016\t - Allegiance Health, Detroit, MI \r Hospitalist, Clinical Decision Unit Physician \r Methodology, Clinical Research, Medical Research, Interpreting Medical Research \r  \r 2003 - 2005 \t - Kaplan Inc. Hanover, NJ \r Tutor, classroom teacher for MCAT and SAT preparatory courses \r  \r 2003 - 2005\t - Estelle Finkel Associates, Livingston, NJ \r Tutor, High School students for Advanced Placement science / math exams \r  \r 2000-2003\t - Market Measures, Intern. Livingston, NJ \r Created PowerPoint presentations for this market research and analysis firm \r  \r 1999 - 2000\t - Yale University, Tutor. New Haven, CT \r Tutor for students in Italian language courses",
 //         "SegregatedExperience": [
 //             {
 //                 "Employer": {
@@ -605,148 +240,8 @@ export class Resume {
 //                     }
 //                 ]
 //             },
-//             {
-//                 "Employer": {
-//                     "EmployerName": "Kaplan Inc",
-//                     "FormattedName": "",
-//                     "ConfidenceScore": 10
-//                 },
-//                 "JobProfile": {
-//                     "Title": "Tutor",
-//                     "FormattedName": "Tutor",
-//                     "Alias": "Classroom Tutor, Home Tutor, Private Tutor, Student Tutor, Students Assistant",
-//                     "RelatedSkills": [
-//                         {
-//                             "Skill": "Communication",
-//                             "ProficiencyLevel": "Proficient"
-//                         },
-//                         {
-//                             "Skill": "Student Engagement",
-//                             "ProficiencyLevel": "Moderate"
-//                         },
-//                         {
-//                             "Skill": "Student Counseling",
-//                             "ProficiencyLevel": "Moderate"
-//                         },
-//                         {
-//                             "Skill": "Teaching",
-//                             "ProficiencyLevel": "Proficient"
-//                         },
-//                         {
-//                             "Skill": "Collaborative Learning",
-//                             "ProficiencyLevel": "Proficient"
-//                         },
-//                         {
-//                             "Skill": "Coaching Process",
-//                             "ProficiencyLevel": "Proficient"
-//                         },
-//                         {
-//                             "Skill": "Tutor Students",
-//                             "ProficiencyLevel": "Moderate"
-//                         },
-//                         {
-//                             "Skill": "Escort Students On a Field Trip",
-//                             "ProficiencyLevel": "Moderate"
-//                         }
-//                     ],
-//                     "ConfidenceScore": 9
-//                 },
-//                 "Location": {
-//                     "City": "Hanover",
-//                     "State": "NJ",
-//                     "StateIsoCode": "US-NJ",
-//                     "Country": "USA",
-//                     "CountryCode": {
-//                         "IsoAlpha2": "US",
-//                         "IsoAlpha3": "USA",
-//                         "UNCode": "840"
-//                     }
-//                 },
-//                 "JobPeriod": "2003 - 2005",
-//                 "FormattedJobPeriod": "2003 to 2005",
-//                 "StartDate": "01/01/2003",
-//                 "EndDate": "12/31/2005",
-//                 "IsCurrentEmployer": "false",
-//                 "JobDescription": "",
-//                 "Projects": [
-//                     {
-//                         "UsedSkills": "",
-//                         "ProjectName": "",
-//                         "TeamSize": ""
-//                     }
-//                 ]
-//             },
-//             {
-//                 "Employer": {
-//                     "EmployerName": "Estelle Finkel Associates",
-//                     "FormattedName": "",
-//                     "ConfidenceScore": 10
-//                 },
-//                 "JobProfile": {
-//                     "Title": "Tutor",
-//                     "FormattedName": "Tutor",
-//                     "Alias": "Classroom Tutor, Home Tutor, Private Tutor, Student Tutor, Students Assistant",
-//                     "RelatedSkills": [
-//                         {
-//                             "Skill": "Communication",
-//                             "ProficiencyLevel": "Proficient"
-//                         },
-//                         {
-//                             "Skill": "Student Engagement",
-//                             "ProficiencyLevel": "Moderate"
-//                         },
-//                         {
-//                             "Skill": "Student Counseling",
-//                             "ProficiencyLevel": "Moderate"
-//                         },
-//                         {
-//                             "Skill": "Teaching",
-//                             "ProficiencyLevel": "Proficient"
-//                         },
-//                         {
-//                             "Skill": "Collaborative Learning",
-//                             "ProficiencyLevel": "Proficient"
-//                         },
-//                         {
-//                             "Skill": "Coaching Process",
-//                             "ProficiencyLevel": "Proficient"
-//                         },
-//                         {
-//                             "Skill": "Tutor Students",
-//                             "ProficiencyLevel": "Moderate"
-//                         },
-//                         {
-//                             "Skill": "Escort Students On a Field Trip",
-//                             "ProficiencyLevel": "Moderate"
-//                         }
-//                     ],
-//                     "ConfidenceScore": 9
-//                 },
-//                 "Location": {
-//                     "City": "Livingston",
-//                     "State": "NJ",
-//                     "StateIsoCode": "US-NJ",
-//                     "Country": "USA",
-//                     "CountryCode": {
-//                         "IsoAlpha2": "US",
-//                         "IsoAlpha3": "USA",
-//                         "UNCode": "840"
-//                     }
-//                 },
-//                 "JobPeriod": "2003 - 2005",
-//                 "FormattedJobPeriod": "2003 to 2005",
-//                 "StartDate": "01/01/2003",
-//                 "EndDate": "12/31/2005",
-//                 "IsCurrentEmployer": "false",
-//                 "JobDescription": "",
-//                 "Projects": [
-//                     {
-//                         "UsedSkills": "",
-//                         "ProjectName": "",
-//                         "TeamSize": ""
-//                     }
-//                 ]
-//             },
+//
+
 //             {
 //                 "Employer": {
 //                     "EmployerName": "Market Measures",

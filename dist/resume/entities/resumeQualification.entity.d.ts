@@ -1,0 +1,34 @@
+import { Resume } from './resume.entity';
+export declare class ResumeQualification {
+    id: string;
+    institutionName: string;
+    institutionConfidenceScore: number;
+    institutionType: string;
+    institutionCity: string;
+    institutionState: string;
+    institutionStateIsoCode: string;
+    institutionCountry: string;
+    institutionIsoAlpha2: string;
+    institutionIsoAlpha3: string;
+    institutionUNCode: string;
+    subInstitutionName: string;
+    subInstitutionConfidenceScore: number;
+    subInstitutionType: string;
+    subInstitutionCity: string;
+    subInstitutionState: string;
+    subInstitutionStateIsoCode: string;
+    subInstitutionCountry: string;
+    subInstitutionIsoAlpha2: string;
+    subInstitutionIsoAlpha3: string;
+    subInstitutionUNCode: string;
+    degreeName: string;
+    normalizeDegree: string;
+    degreeScore: number;
+    specialization: string[];
+    formattedDegreePeriod: string;
+    startDate: string;
+    endDate: string;
+    aggregateValue: string;
+    aggregateMeasureType: string;
+    res: Resume;
+}

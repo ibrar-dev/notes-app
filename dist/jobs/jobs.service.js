@@ -89,6 +89,19 @@ let JobService = class JobService {
             return { success: false, error: error.message };
         }
     }
+    async deleteByCategory() {
+        try {
+            const result = await this.jobsRepository.createQueryBuilder()
+                .delete()
+                .from(jobs_entity_1.Job)
+                .where("category = :id", { id: 'doctor' })
+                .execute();
+            return { success: true, result: result };
+        }
+        catch (error) {
+            return { success: false, error: error.message };
+        }
+    }
     async getCategories() {
         try {
             const res = await this.jobsRepository

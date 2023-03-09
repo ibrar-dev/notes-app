@@ -14,7 +14,7 @@ const typeorm_1 = require("typeorm");
 let Salary = class Salary {
 };
 __decorate([
-    (0, typeorm_1.PrimaryGeneratedColumn)('increment'),
+    (0, typeorm_1.PrimaryGeneratedColumn)('uuid'),
     __metadata("design:type", String)
 ], Salary.prototype, "id", void 0);
 __decorate([

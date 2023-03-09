@@ -15,7 +15,7 @@ const resume_entity_1 = require("./resume.entity");
 let Phone = class Phone {
 };
 __decorate([
-    (0, typeorm_1.PrimaryGeneratedColumn)('increment'),
+    (0, typeorm_1.PrimaryGeneratedColumn)('uuid'),
     __metadata("design:type", String)
 ], Phone.prototype, "id", void 0);
 __decorate([

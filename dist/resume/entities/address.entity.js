@@ -15,7 +15,7 @@ const resume_entity_1 = require("./resume.entity");
 let Address = class Address {
 };
 __decorate([
-    (0, typeorm_1.PrimaryGeneratedColumn)('increment'),
+    (0, typeorm_1.PrimaryGeneratedColumn)('uuid'),
     __metadata("design:type", String)
 ], Address.prototype, "id", void 0);
 __decorate([

@@ -29,6 +29,9 @@ let ResumeController = class ResumeController {
     create(createResumeDto) {
         return this.resumeService.create(createResumeDto);
     }
+    addFromJson() {
+        return this.resumeService.reStructureData();
+    }
     findAll() {
         return this.resumeService.findAll();
     }
@@ -54,6 +57,12 @@ __decorate([
     __metadata("design:paramtypes", [create_resume_dto_1.CreateResumeDto]),
     __metadata("design:returntype", void 0)
 ], ResumeController.prototype, "create", null);
+__decorate([
+    (0, common_1.Get)('/from-json'),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", []),
+    __metadata("design:returntype", void 0)
+], ResumeController.prototype, "addFromJson", null);
 __decorate([
     (0, common_1.Get)(),
     __metadata("design:type", Function),

@@ -3,7 +3,7 @@ import { Resume } from './resume.entity';
 
 @Entity('address')
 export class Address {
-    @PrimaryGeneratedColumn('increment')
+    @PrimaryGeneratedColumn('uuid')
     id: string;
     @Column()
     street: string;
