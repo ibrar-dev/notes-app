@@ -30,10 +30,10 @@ export class ResumeController {
   create(@Body() createResumeDto: CreateResumeDto) {
     return this.resumeService.create(createResumeDto);
   }
-  @Get('/from-json')
-  addFromJson() {
-    return this.resumeService.reStructureData();
-  }
+  // @Get('/from-json')
+  // addFromJson() {
+  //   return this.resumeService.reStructureData();
+  // }
   @Get()
   findAll() {
     return this.resumeService.findAll();

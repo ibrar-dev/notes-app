@@ -4,14 +4,14 @@ import { Column, Entity, JoinColumn, JoinTable, ManyToMany, ManyToOne, OneToMany
 export class Salary {
     @PrimaryGeneratedColumn('uuid')
     id: string;
-    @Column()
+    @Column({nullable:true})
     amount: string;
-    @Column()
+    @Column({nullable:true})
     symbol: string
-    @Column()
+    @Column({nullable:true})
     currency: string;
-    @Column()
+    @Column({nullable:true})
     unit: string;
-    @Column()
+    @Column({nullable:true})
     text: string;
 }
