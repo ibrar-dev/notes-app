@@ -231,6 +231,10 @@ __decorate([
     __metadata("design:type", String)
 ], Resume.prototype, "references", void 0);
 __decorate([
+    (0, typeorm_1.Column)({ nullable: true }),
+    __metadata("design:type", String)
+], Resume.prototype, "userId", void 0);
+__decorate([
     (0, typeorm_1.ManyToMany)(() => language_entity_1.Language, (category) => category.title, {
         cascade: true,
     }),

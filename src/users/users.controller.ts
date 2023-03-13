@@ -6,13 +6,12 @@
 //   Param,
 //   Post,
 //   ParseIntPipe,
-//   HttpException,
-//   HttpStatus,
+
 //   UseGuards,
 //   Request,
 //   Headers
 // } from '@nestjs/common';
-// import { CreateUserDto, SampleDto } from './dto/create-user.dto';
+import { CreateUserDto, SampleDto } from './dto/create-user.dto';
 // import { User } from './entity/users.entity';
 // import { UsersService } from './users.service';
 
@@ -94,26 +93,52 @@
 
 //   // @ApiExtraModels(Authorization)
 //   // @UseGuards(JwtAuthGuard)
-  
+
 // }
 
 
 
-import { Controller, Get, Request, Post, UseGuards, Body, Headers } from '@nestjs/common';
+import {
+  Controller, HttpException,
+  HttpStatus, Get, Request, Post, UseGuards, Body, Headers
+} from '@nestjs/common';
 import { ApiBearerAuth, ApiOperation, ApiExcludeEndpoint, ApiExtraModels, ApiResponse, getSchemaPath, ApiTags } from '@nestjs/swagger';
 import { Auth, Authorization } from '../auth/dto/user-login.dto';
 import { JwtAuthGuard } from '../auth/jwt-auth.guard';
+import { UsersService } from './users.service';
+import { User } from './entity/users.entity';
 
 @ApiTags('User')
 @ApiBearerAuth()
 @Controller('user')
 export class UsersController {
- 
+  constructor(private readonly usersService: UsersService) { }
+
   @ApiOperation({ summary: 'add access token in authorize (see top right corner on this page) then you can use this endpoint' })
   @ApiExtraModels(Authorization)
   @UseGuards(JwtAuthGuard)
   @Get('profile')
   getProfile(@Request() req) {
     return req.user;
+  }
+
+  @ApiExtraModels(CreateUserDto)
+  // @ApiResponse({
+  //   schema: {
+  //     '$ref': getSchemaPath(Auth)
+  //   }
+  // })
+  @Post()
+  async create(@Body() createUserDto: CreateUserDto): Promise<User> {
+    try {
+      let u = await this.usersService.create(createUserDto)
+      delete u.password;
+      return u;
+    } catch (error) {
+      throw new HttpException({
+        status: HttpStatus.FORBIDDEN,
+        error: error.message.includes('unique') ? 'Username and Email should be unique' : error.message,
+      }, HttpStatus.FORBIDDEN);
+    }
   }
 }

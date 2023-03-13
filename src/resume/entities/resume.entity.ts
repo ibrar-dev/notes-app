@@ -119,6 +119,8 @@ export class Resume {
     achievement: string;
     @Column({nullable:true})
     references: string;
+    @Column({nullable:true})
+    userId: string;
     @ManyToMany(() => Language, (category) => category.title, {
         cascade: true,
     })
@@ -172,6 +174,6 @@ export class Resume {
     @OneToMany(() => Achievement, (ph) => ph.res, { eager: true, cascade: true })
     achievements: Achievement[]
 
-
+    
 
 }

@@ -77,9 +77,7 @@ let ResumeService = class ResumeService {
         return `This action removes a #${id} resume`;
     }
     async uploadResume(res) {
-        console.log(res);
         let data = fs.readFileSync(`./uploads/` + res.file);
-        console.log(data.toString('base64'));
         let jsonObject = JSON.stringify({
             'filedata': data.toString('base64'),
             'filename': 'Abid Hussain _CV.pdf',
@@ -105,9 +103,7 @@ let ResumeService = class ResumeService {
             'version': '8.0.0',
             'subuserid': 'Bobby Singh'
         });
-        console.log("h1---", res2);
         let resData = res2.data;
-        console.log("h3---", resData);
         let resumeFileName = resData.ResumeParserData.ResumeFileName;
         let resumeLanguage = resData.ResumeParserData.ResumeLanguage ? resData.ResumeParserData.ResumeLanguage.Language : "";
         let resumeLanguageCode = resData.ResumeParserData.ResumeLanguage ? resData.ResumeParserData.ResumeLanguage.LanguageCode : "";
@@ -158,6 +154,7 @@ let ResumeService = class ResumeService {
         let objectives = resData.ResumeParserData.Objectives;
         let achievement = resData.ResumeParserData.Achievements;
         let references = resData.ResumeParserData.References;
+        let userId = res.userId;
         console.log("h4---");
         let languages = [];
         for (let index = 0; index < (resData.ResumeParserData.LanguageKnown ? resData.ResumeParserData.LanguageKnown.length : 0); index++) {
@@ -304,6 +301,7 @@ let ResumeService = class ResumeService {
             preferredLocation.push(iObj);
         }
         let obj = {
+            userId,
             resumeFileName, resumeLanguage, resumeLanguageCode, parsingDate, fullName, titleName, firstName, middleName, lastName, formattedName, nameScore, dateOfBirth, gender, fatherName, motherName, maritalStatus, nationality, uniqueId, licenseNo, passportNumber, dateOfExpiry, dateOfIssue, placeOfIssue, panNo, visaStatus, category, subCategory, certificationText, qualification, skillBlock, skillKeywords, experienceText, currentEmployer, jobProfile, workedPeriodTotalExperienceInMonths, workedPeriodTotalExperienceInYear, workedPeriodTotalExperienceRange, gapPeriod, averageStay, longestStay, summary, executiveSummary, managementSummary, coverLetter, publication, availability, hobbies, objectives, achievement, references
         };
         if (currentLocation) {
@@ -346,7 +344,6 @@ let ResumeService = class ResumeService {
             obj['qualifications'] = [...qualifications];
         }
         let newJob = this.resumeRepository.create(Object.assign({}, obj));
-        console.log(newJob);
         let aw = await this.resumeRepository.save(newJob);
         return aw;
         return data.toString('base64');

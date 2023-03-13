@@ -10,5 +10,5 @@ export declare class ResumeController {
     findOne(id: string): Promise<any>;
     update(id: string, updateResumeDto: UpdateResumeDto): string;
     remove(id: string): string;
-    uploadFile(body: any, file: Express.Multer.File): Promise<any>;
+    uploadFile(body: any, req: any, file: Express.Multer.File): Promise<any>;
 }

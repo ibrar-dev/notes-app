@@ -53,18 +53,23 @@ let UsersService = class UsersService {
         return this.usersRepository.findOneBy({ id: id });
     }
     async verifyUser(username, password) {
-        let v = await this.usersRepository.createQueryBuilder()
-            .select('*')
-            .where('username = :username', { username: username })
-            .orWhere('email = :email', { email: username })
-            .getRawOne();
-        console.log(v, password);
-        const isMatch = await bcrypt.compare(password, v.password);
-        if (isMatch) {
-            delete v.password;
-            return v;
+        try {
+            let v = await this.usersRepository.createQueryBuilder()
+                .select('*')
+                .where('username = :username', { username: username })
+                .orWhere('email = :email', { email: username })
+                .getRawOne();
+            console.log(v, password);
+            const isMatch = await bcrypt.compare(password, v.password);
+            if (isMatch) {
+                delete v.password;
+                return v;
+            }
+            else {
+                return null;
+            }
         }
-        else {
+        catch (error) {
             return null;
         }
     }

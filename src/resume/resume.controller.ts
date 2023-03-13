@@ -1,8 +1,7 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete } from '@nestjs/common';
+import { Controller, Request,Get, Post, Body, Patch, Param, Delete } from '@nestjs/common';
 import { ResumeService } from './resume.service';
 import { CreateResumeDto } from './dto/create-resume.dto';
 import { UpdateResumeDto } from './dto/update-resume.dto';
-import { ApiExtraModels, ApiTags } from '@nestjs/swagger';
 import {
   UploadedFile,
   UseInterceptors,
@@ -12,7 +11,12 @@ import { Express } from 'express';
 import { FilesInterceptor } from '@nestjs/platform-express';
 import { diskStorage } from 'multer';
 import { extname } from 'path'
-
+import { UseGuards , Headers } from '@nestjs/common';
+import { ApiBearerAuth, ApiOperation, ApiExcludeEndpoint, ApiExtraModels, ApiResponse, getSchemaPath, ApiTags } from '@nestjs/swagger';
+import { Authorization } from '../auth/dto/user-login.dto';
+import { JwtAuthGuard } from '../auth/jwt-auth.guard';
+// import { Auth, Authorization } from '../auth/dto/user-login.dto';
+// import { JwtAuthGuard } from '../auth/jwt-auth.guard';
 
 @ApiTags('Resume')
 @Controller('resume')
@@ -34,6 +38,9 @@ export class ResumeController {
   // addFromJson() {
   //   return this.resumeService.reStructureData();
   // }
+  @ApiOperation({ summary: 'add access token in authorize (see top right corner on this page) then you can use this endpoint' })
+  @ApiExtraModels(Authorization)
+  @UseGuards(JwtAuthGuard)
   @Get()
   findAll() {
     return this.resumeService.findAll();
@@ -56,7 +63,9 @@ export class ResumeController {
   
 
 
-  // @ApiExcludeEndpoint()
+  @ApiOperation({ summary: 'add access token in authorize (see top right corner on this page) then you can use this endpoint' })
+  @ApiExtraModels(Authorization)
+  @UseGuards(JwtAuthGuard)
   @Post('upload')
   @UseInterceptors(FileInterceptor('file', {
     storage: diskStorage({
@@ -70,10 +79,11 @@ export class ResumeController {
 
   uploadFile(
     @Body() body: any,
+    @Request() req,
     @UploadedFile() file: Express.Multer.File,
   ): Promise<any> {
-    console.log("here", body, file)
-    return this.resumeService.uploadResume({ id: body.id, file: file.filename });
+    console.log("here",req)
+    return this.resumeService.uploadResume({ id: body.id, file: file.filename,userId:req.user.id });
 
   }
 }

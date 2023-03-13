@@ -83,10 +83,8 @@ export class ResumeService {
     return `This action removes a #${id} resume`;
   }
   async uploadResume(res: any) {
-    console.log(res)
     let data = fs.readFileSync(`./uploads/` + res.file);
 
-    console.log(data.toString('base64'));
     let jsonObject = JSON.stringify({
       'filedata': data.toString('base64'),
       'filename': 'Abid Hussain _CV.pdf',
@@ -117,12 +115,10 @@ export class ResumeService {
       'version': '8.0.0',
       'subuserid': 'Bobby Singh'
     })
-    console.log("h1---", res2)
 
     let resData = res2.data;
     // console.log("h2---", data2)
     // const resData = JSON.parse(data2);
-    console.log("h3---", resData)
     let resumeFileName = resData.ResumeParserData.ResumeFileName
     let resumeLanguage = resData.ResumeParserData.ResumeLanguage ? resData.ResumeParserData.ResumeLanguage.Language : "";
     let resumeLanguageCode = resData.ResumeParserData.ResumeLanguage ? resData.ResumeParserData.ResumeLanguage.LanguageCode : "";
@@ -173,6 +169,7 @@ export class ResumeService {
     let objectives = resData.ResumeParserData.Objectives;
     let achievement = resData.ResumeParserData.Achievements;
     let references = resData.ResumeParserData.References;
+    let userId = res.userId;
     console.log("h4---")
 
     let languages = []
@@ -419,6 +416,7 @@ export class ResumeService {
     }
 
     let obj = {
+      userId,
       resumeFileName, resumeLanguage, resumeLanguageCode, parsingDate, fullName, titleName, firstName, middleName, lastName, formattedName, nameScore, dateOfBirth, gender, fatherName, motherName, maritalStatus, nationality, uniqueId, licenseNo, passportNumber, dateOfExpiry, dateOfIssue, placeOfIssue, panNo, visaStatus, category, subCategory, certificationText, qualification, skillBlock, skillKeywords, experienceText, currentEmployer, jobProfile, workedPeriodTotalExperienceInMonths, workedPeriodTotalExperienceInYear, workedPeriodTotalExperienceRange, gapPeriod, averageStay, longestStay, summary, executiveSummary, managementSummary, coverLetter, publication, availability, hobbies, objectives, achievement, references
     }
 
@@ -465,7 +463,6 @@ export class ResumeService {
     // return obj;
 
     let newJob: any = this.resumeRepository.create({ ...obj })
-    console.log(newJob)
     let aw = await this.resumeRepository.save(newJob);
     return aw;
     // var reqPost = https.request(optionspost, async function (res) {

@@ -63,6 +63,7 @@ export declare class Resume {
     objectives: string;
     achievement: string;
     references: string;
+    userId: string;
     languages: Language[];
     phone: Phone[];
     email: Email[];

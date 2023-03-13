@@ -49,26 +49,31 @@ export class UsersService {
     return this.usersRepository.findOneBy({ id: id });
   }
   async verifyUser(username: string, password: string): Promise<User> {
+    try {
+      let v=await this.usersRepository.createQueryBuilder()
+      .select('*')
+      .where('username = :username', { username: username })
+      .orWhere('email = :email', { email: username })
+      .getRawOne();
+      console.log(v,password)
     
-    let v=await this.usersRepository.createQueryBuilder()
-    .select('*')
-    .where('username = :username', { username: username })
-    .orWhere('email = :email', { email: username })
-    .getRawOne();
-    console.log(v,password)
+      const isMatch = await bcrypt.compare(password, v.password);
   
-    const isMatch = await bcrypt.compare(password, v.password);
-
-    if(isMatch){
-      delete v.password;
-      return v;
-    }else{
+      if(isMatch){
+        delete v.password;
+        return v;
+      }else{
+        return null;
+      }
+    } catch (error) {
       return null;
     }
+  
     // return this.usersRepository.findOneBy({ username: username, password: password });
   }
 
   async remove(id: string): Promise<void> {
     await this.usersRepository.delete(id);
   }
+  
 }

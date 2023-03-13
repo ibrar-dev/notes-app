@@ -13,13 +13,31 @@ var __param = (this && this.__param) || function (paramIndex, decorator) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.UsersController = void 0;
+const create_user_dto_1 = require("./dto/create-user.dto");
 const common_1 = require("@nestjs/common");
 const swagger_1 = require("@nestjs/swagger");
 const user_login_dto_1 = require("../auth/dto/user-login.dto");
 const jwt_auth_guard_1 = require("../auth/jwt-auth.guard");
+const users_service_1 = require("./users.service");
 let UsersController = class UsersController {
+    constructor(usersService) {
+        this.usersService = usersService;
+    }
     getProfile(req) {
         return req.user;
+    }
+    async create(createUserDto) {
+        try {
+            let u = await this.usersService.create(createUserDto);
+            delete u.password;
+            return u;
+        }
+        catch (error) {
+            throw new common_1.HttpException({
+                status: common_1.HttpStatus.FORBIDDEN,
+                error: error.message.includes('unique') ? 'Username and Email should be unique' : error.message,
+            }, common_1.HttpStatus.FORBIDDEN);
+        }
     }
 };
 __decorate([
@@ -32,10 +50,19 @@ __decorate([
     __metadata("design:paramtypes", [Object]),
     __metadata("design:returntype", void 0)
 ], UsersController.prototype, "getProfile", null);
+__decorate([
+    (0, swagger_1.ApiExtraModels)(create_user_dto_1.CreateUserDto),
+    (0, common_1.Post)(),
+    __param(0, (0, common_1.Body)()),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", [create_user_dto_1.CreateUserDto]),
+    __metadata("design:returntype", Promise)
+], UsersController.prototype, "create", null);
 UsersController = __decorate([
     (0, swagger_1.ApiTags)('User'),
     (0, swagger_1.ApiBearerAuth)(),
-    (0, common_1.Controller)('user')
+    (0, common_1.Controller)('user'),
+    __metadata("design:paramtypes", [users_service_1.UsersService])
 ], UsersController);
 exports.UsersController = UsersController;
 //# sourceMappingURL=users.controller.js.map

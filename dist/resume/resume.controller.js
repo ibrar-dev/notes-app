@@ -17,11 +17,14 @@ const common_1 = require("@nestjs/common");
 const resume_service_1 = require("./resume.service");
 const create_resume_dto_1 = require("./dto/create-resume.dto");
 const update_resume_dto_1 = require("./dto/update-resume.dto");
-const swagger_1 = require("@nestjs/swagger");
 const common_2 = require("@nestjs/common");
 const platform_express_1 = require("@nestjs/platform-express");
 const multer_1 = require("multer");
 const path_1 = require("path");
+const common_3 = require("@nestjs/common");
+const swagger_1 = require("@nestjs/swagger");
+const user_login_dto_1 = require("../auth/dto/user-login.dto");
+const jwt_auth_guard_1 = require("../auth/jwt-auth.guard");
 let ResumeController = class ResumeController {
     constructor(resumeService) {
         this.resumeService = resumeService;
@@ -41,9 +44,9 @@ let ResumeController = class ResumeController {
     remove(id) {
         return this.resumeService.remove(+id);
     }
-    uploadFile(body, file) {
-        console.log("here", body, file);
-        return this.resumeService.uploadResume({ id: body.id, file: file.filename });
+    uploadFile(body, req, file) {
+        console.log("here", req);
+        return this.resumeService.uploadResume({ id: body.id, file: file.filename, userId: req.user.id });
     }
 };
 __decorate([
@@ -55,6 +58,9 @@ __decorate([
     __metadata("design:returntype", void 0)
 ], ResumeController.prototype, "create", null);
 __decorate([
+    (0, swagger_1.ApiOperation)({ summary: 'add access token in authorize (see top right corner on this page) then you can use this endpoint' }),
+    (0, swagger_1.ApiExtraModels)(user_login_dto_1.Authorization),
+    (0, common_3.UseGuards)(jwt_auth_guard_1.JwtAuthGuard),
     (0, common_1.Get)(),
     __metadata("design:type", Function),
     __metadata("design:paramtypes", []),
@@ -83,6 +89,9 @@ __decorate([
     __metadata("design:returntype", void 0)
 ], ResumeController.prototype, "remove", null);
 __decorate([
+    (0, swagger_1.ApiOperation)({ summary: 'add access token in authorize (see top right corner on this page) then you can use this endpoint' }),
+    (0, swagger_1.ApiExtraModels)(user_login_dto_1.Authorization),
+    (0, common_3.UseGuards)(jwt_auth_guard_1.JwtAuthGuard),
     (0, common_1.Post)('upload'),
     (0, common_2.UseInterceptors)((0, platform_express_1.FileInterceptor)('file', {
         storage: (0, multer_1.diskStorage)({
@@ -94,9 +103,10 @@ __decorate([
         })
     })),
     __param(0, (0, common_1.Body)()),
-    __param(1, (0, common_2.UploadedFile)()),
+    __param(1, (0, common_1.Request)()),
+    __param(2, (0, common_2.UploadedFile)()),
     __metadata("design:type", Function),
-    __metadata("design:paramtypes", [Object, Object]),
+    __metadata("design:paramtypes", [Object, Object, Object]),
     __metadata("design:returntype", Promise)
 ], ResumeController.prototype, "uploadFile", null);
 ResumeController = __decorate([
