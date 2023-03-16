@@ -7,4 +7,13 @@ export declare class JobController {
     getJobTitles(res: Response): Promise<any>;
     count(res: Response): Promise<any>;
     findOne(res: Response, id: string): Promise<void>;
+    deleteByCategory(res: Response): Promise<{
+        success: boolean;
+        result: import("typeorm").DeleteResult;
+        error?: undefined;
+    } | {
+        success: boolean;
+        error: any;
+        result?: undefined;
+    }>;
 }

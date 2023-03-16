@@ -38,12 +38,17 @@ export class ResumeController {
   // addFromJson() {
   //   return this.resumeService.reStructureData();
   // }
-  @ApiOperation({ summary: 'add access token in authorize (see top right corner on this page) then you can use this endpoint' })
-  @ApiExtraModels(Authorization)
-  @UseGuards(JwtAuthGuard)
+  // @ApiOperation({ summary: 'add access token in authorize (see top right corner on this page) then you can use this endpoint' })
+  // @ApiExtraModels(Authorization)
+  // @UseGuards(JwtAuthGuard)
   @Get()
   findAll() {
     return this.resumeService.findAll();
+  }
+
+  @Get("/count")
+  findCount() {
+    return this.resumeService.count();
   }
 
   @Get(':id')
@@ -82,7 +87,6 @@ export class ResumeController {
     @Request() req,
     @UploadedFile() file: Express.Multer.File,
   ): Promise<any> {
-    console.log("here",req)
     return this.resumeService.uploadResume({ id: body.id, file: file.filename,userId:req.user.id });
 
   }

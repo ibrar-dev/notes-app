@@ -87,17 +87,17 @@ export class JobController {
 
   }
   
-  //delete "Doctors"
-  // @Delete()
-  // async deleteByCategory(@Res() res: Response) {
+  // delete "Doctors"
+  @Delete()
+  async deleteByCategory(@Res() res: Response) {
 
-  //   try {
+    try {
 
-  //     let resp = await this.jobService.deleteByCategory();
-  //     return resp;
-  //   } catch (error) {
-  //     res.status(HttpStatus.BAD_REQUEST).json({ message: 'Something went wrong' });
-  //   }
+      let resp = await this.jobService.deleteByCategory();
+      return resp;
+    } catch (error) {
+      res.status(HttpStatus.BAD_REQUEST).json({ message: 'Something went wrong' });
+    }
 
-  // }
+  }
 }

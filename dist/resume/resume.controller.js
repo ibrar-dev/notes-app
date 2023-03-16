@@ -35,6 +35,9 @@ let ResumeController = class ResumeController {
     findAll() {
         return this.resumeService.findAll();
     }
+    findCount() {
+        return this.resumeService.count();
+    }
     findOne(id) {
         return this.resumeService.findOne(id);
     }
@@ -45,7 +48,6 @@ let ResumeController = class ResumeController {
         return this.resumeService.remove(+id);
     }
     uploadFile(body, req, file) {
-        console.log("here", req);
         return this.resumeService.uploadResume({ id: body.id, file: file.filename, userId: req.user.id });
     }
 };
@@ -58,14 +60,17 @@ __decorate([
     __metadata("design:returntype", void 0)
 ], ResumeController.prototype, "create", null);
 __decorate([
-    (0, swagger_1.ApiOperation)({ summary: 'add access token in authorize (see top right corner on this page) then you can use this endpoint' }),
-    (0, swagger_1.ApiExtraModels)(user_login_dto_1.Authorization),
-    (0, common_3.UseGuards)(jwt_auth_guard_1.JwtAuthGuard),
     (0, common_1.Get)(),
     __metadata("design:type", Function),
     __metadata("design:paramtypes", []),
     __metadata("design:returntype", void 0)
 ], ResumeController.prototype, "findAll", null);
+__decorate([
+    (0, common_1.Get)("/count"),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", []),
+    __metadata("design:returntype", void 0)
+], ResumeController.prototype, "findCount", null);
 __decorate([
     (0, common_1.Get)(':id'),
     __param(0, (0, common_1.Param)('id')),

@@ -46,6 +46,18 @@ let ResumeService = class ResumeService {
             return error;
         }
     }
+    async count() {
+        try {
+            console.log("here");
+            let newUser = await this.resumeRepository.find();
+            console.log("here 2");
+            return { count: newUser.length };
+        }
+        catch (error) {
+            console.log("here", error);
+            return error;
+        }
+    }
     async findOne(id) {
         try {
             const res = await this.resumeRepository.findOne({
@@ -78,27 +90,10 @@ let ResumeService = class ResumeService {
     }
     async uploadResume(res) {
         let data = fs.readFileSync(`./uploads/` + res.file);
-        let jsonObject = JSON.stringify({
-            'filedata': data.toString('base64'),
-            'filename': 'Abid Hussain _CV.pdf',
-            'userkey': '8QPVX7RX',
-            'version': '8.0.0',
-            'subuserid': 'Bobby Singh'
-        });
-        let postheaders = {
-            'Content-Type': 'application/json',
-            'Content-Length': Buffer.byteLength(jsonObject, 'utf8')
-        };
-        let optionspost = {
-            host: 'http://rest.rchilli.com',
-            port: 443,
-            path: '/RChilliParser/Rchilli/parseResumeBinary',
-            method: 'POST',
-            headers: postheaders
-        };
+        console.log(res);
         let res2 = await axios_1.default.post("https://rest.rchilli.com/RChilliParser/Rchilli/parseResumeBinary", {
             'filedata': data.toString('base64'),
-            'filename': 'Abid Hussain _CV.pdf',
+            'filename': res.file,
             'userkey': '8QPVX7RX',
             'version': '8.0.0',
             'subuserid': 'Bobby Singh'

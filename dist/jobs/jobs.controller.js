@@ -82,6 +82,15 @@ let JobController = class JobController {
             res.status(common_1.HttpStatus.BAD_REQUEST).json({ message: 'Something went wrong' });
         }
     }
+    async deleteByCategory(res) {
+        try {
+            let resp = await this.jobService.deleteByCategory();
+            return resp;
+        }
+        catch (error) {
+            res.status(common_1.HttpStatus.BAD_REQUEST).json({ message: 'Something went wrong' });
+        }
+    }
 };
 __decorate([
     (0, swagger_1.ApiExtraModels)(response_job_dto_1.JobsResponse),
@@ -124,6 +133,13 @@ __decorate([
     __metadata("design:paramtypes", [Object, String]),
     __metadata("design:returntype", Promise)
 ], JobController.prototype, "findOne", null);
+__decorate([
+    (0, common_1.Delete)(),
+    __param(0, (0, common_1.Res)()),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", [Object]),
+    __metadata("design:returntype", Promise)
+], JobController.prototype, "deleteByCategory", null);
 JobController = __decorate([
     (0, swagger_1.ApiTags)('Job'),
     (0, common_1.Controller)('job'),

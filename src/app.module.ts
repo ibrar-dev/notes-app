@@ -37,23 +37,23 @@ import { Achievement } from './resume/entities/achievement.entity';
 
  
   TypeOrmModule.forRoot({
-    // host: 'ec2-3-21-254-99.us-east-2.compute.amazonaws.com',
-    // password: '1234',
-    // database: 'jobs',
-    // entities: [User, Qualifications, Job, Resume, Language, Phone,Email,Website,Salary,Address,ResumeQualification,Certification,Skills,Experience,RelatedSkills,Projects,Publication,Location,Achievement],
-    // synchronize: true,
-    // type: 'postgres',
-    // port: 5432,
-    // username: 'bobby',
-
-    host: 'localhost',
+    host: 'ec2-3-21-254-99.us-east-2.compute.amazonaws.com',
     password: '1234',
     database: 'jobs',
     entities: [User, Qualifications, Job, Resume, Language, Phone,Email,Website,Salary,Address,ResumeQualification,Certification,Skills,Experience,RelatedSkills,Projects,Publication,Location,Achievement],
     synchronize: true,
     type: 'postgres',
-    port: 5433,
-    username: 'postgres',
+    port: 5432,
+    username: 'bobby',
+
+    // host: 'localhost',
+    // password: '1234',
+    // database: 'jobs',
+    // entities: [User, Qualifications, Job, Resume, Language, Phone,Email,Website,Salary,Address,ResumeQualification,Certification,Skills,Experience,RelatedSkills,Projects,Publication,Location,Achievement],
+    // synchronize: true,
+    // type: 'postgres',
+    // port: 5433,
+    // username: 'postgres',
 
   }),
     AuthModule, UsersModule, QualificationModule, JobModule, TaskModule, ResumeModule, LanguagesModule],
