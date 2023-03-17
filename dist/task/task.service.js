@@ -21,9 +21,10 @@ let TaskService = TaskService_1 = class TaskService {
     }
     async handleCron() {
         let urlsList = [
-            "https://api.apify.com/v2/actor-tasks/peerless_protractor~google-jobs-scraper-task-2/runs/last/dataset/items?token=apify_api_XhPKZZyP7nTPD1y4SWtdNQYF3QkXHv1jkqa6",
-            "https://api.apify.com/v2/actor-tasks/peerless_protractor~google-jobs-scraper-data-scientist/runs/last/dataset/items?token=apify_api_XhPKZZyP7nTPD1y4SWtdNQYF3QkXHv1jkqa6",
-            "https://api.apify.com/v2/actor-tasks/peerless_protractor~blockchain/runs/last/dataset/items?token=apify_api_XhPKZZyP7nTPD1y4SWtdNQYF3QkXHv1jkqa6",
+            "https://api.apify.com/v2/actor-tasks/peerless_protractor~mltask/runs/last/dataset/items?token=apify_api_XhPKZZyP7nTPD1y4SWtdNQYF3QkXHv1jkqa6",
+            "https://api.apify.com/v2/actor-tasks/peerless_protractor~aitask/runs/last/dataset/items?token=apify_api_XhPKZZyP7nTPD1y4SWtdNQYF3QkXHv1jkqa6",
+            "https://api.apify.com/v2/actor-tasks/peerless_protractor~datasciencetask/runs/last/dataset/items?token=apify_api_XhPKZZyP7nTPD1y4SWtdNQYF3QkXHv1jkqa6",
+            "https://api.apify.com/v2/actor-tasks/peerless_protractor~blockchaintask/runs/last/dataset/items?token=apify_api_XhPKZZyP7nTPD1y4SWtdNQYF3QkXHv1jkqa6"
         ];
         for (let index = 0; index < urlsList.length; index++) {
             const element = urlsList[index];
@@ -39,7 +40,7 @@ let TaskService = TaskService_1 = class TaskService {
                                 if (element && element.searchQuery && element.searchQuery.term) {
                                     category = element.searchQuery.term;
                                     if (category) {
-                                        category = category.toLowerCase();
+                                        category = category.replace("%20", " ").replace("%", " ").toLowerCase();
                                     }
                                 }
                                 const job = element.googleJobs[index];

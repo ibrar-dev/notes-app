@@ -42,15 +42,16 @@ export class TaskService {
   // @Cron('* * * * * *')
   @Cron('0 1 * * * *')
   async handleCron() {
-
+    // "Machine Learning"
+    //'artificial intelligence'
     // 'Software Engineer'
     // 'Data Scientist'
     // 'Blockchain'
     let urlsList = [
-      // "https://api.apify.com/v2/actor-tasks/peerless_protractor~google-jobs-scraper-task-2/runs/last/dataset/items?token=apify_api_XhPKZZyP7nTPD1y4SWtdNQYF3QkXHv1jkqa6",
-      "https://api.apify.com/v2/actor-tasks/peerless_protractor~google-jobs-scraper-data-scientist/runs/last/dataset/items?token=apify_api_XhPKZZyP7nTPD1y4SWtdNQYF3QkXHv1jkqa6",
-      "https://api.apify.com/v2/actor-tasks/peerless_protractor~blockchain/runs/last/dataset/items?token=apify_api_XhPKZZyP7nTPD1y4SWtdNQYF3QkXHv1jkqa6",
-      // "https://api.apify.com/v2/datasets/UxAZH6cIM2UwfrYJg/items?token=apify_api_XhPKZZyP7nTPD1y4SWtdNQYF3QkXHv1jkqa6"
+      "https://api.apify.com/v2/actor-tasks/peerless_protractor~mltask/runs/last/dataset/items?token=apify_api_XhPKZZyP7nTPD1y4SWtdNQYF3QkXHv1jkqa6",
+      "https://api.apify.com/v2/actor-tasks/peerless_protractor~aitask/runs/last/dataset/items?token=apify_api_XhPKZZyP7nTPD1y4SWtdNQYF3QkXHv1jkqa6",
+   "https://api.apify.com/v2/actor-tasks/peerless_protractor~datasciencetask/runs/last/dataset/items?token=apify_api_XhPKZZyP7nTPD1y4SWtdNQYF3QkXHv1jkqa6",
+      "https://api.apify.com/v2/actor-tasks/peerless_protractor~blockchaintask/runs/last/dataset/items?token=apify_api_XhPKZZyP7nTPD1y4SWtdNQYF3QkXHv1jkqa6"
     ]
 
     for (let index = 0; index < urlsList.length; index++) {
@@ -69,7 +70,7 @@ export class TaskService {
                   if (element && element.searchQuery && element.searchQuery.term) {
                     category = element.searchQuery.term;
                     if (category) {
-                      category = category.toLowerCase();
+                      category = category.replace("%20"," ").replace("%"," ").toLowerCase();
                     }
                   }
 
@@ -90,30 +91,30 @@ export class TaskService {
                     }
                   } catch (error) {
                   }
-                  if (category !== 'doctor') {
-                    let obj: CreateJobDto = {
-                      title: job.title,
-                      companyName: job.companyName,
-                      location: job.location,
-                      via: job.via,
-                      description: job.description,
-                      thumbnail: job.thumbnail,
-                      applyLink: job.applyLink.link ? job.applyLink.link : '',
-                      applyLinkTitle: job.applyLink.title ? job.applyLink.title : '',
-                      postedAt: job.metadata.postedAt ? job.metadata.postedAt : '',
-                      scheduleType: job.metadata.scheduleType ? job.metadata.scheduleType : '',
-                      workFromHome: job.metadata.workFromHome ? job.metadata.workFromHome : false,
-                      salary: job.metadata.salary ? job.metadata.salary : '',
-                      qualifications: [...qualify],
-                      responsibilities: [...resp], category: category
-                    }
-                    try {
-                      let sav = await this.jobService.createFromCronJob(obj);
-                    } catch (error) {
-                    }
+                  // if (category ==="artificial intelligence") {
+                  let obj: CreateJobDto = {
+                    title: job.title,
+                    companyName: job.companyName,
+                    location: job.location,
+                    via: job.via,
+                    description: job.description,
+                    thumbnail: job.thumbnail,
+                    applyLink: job.applyLink.link ? job.applyLink.link : '',
+                    applyLinkTitle: job.applyLink.title ? job.applyLink.title : '',
+                    postedAt: job.metadata.postedAt ? job.metadata.postedAt : '',
+                    scheduleType: job.metadata.scheduleType ? job.metadata.scheduleType : '',
+                    workFromHome: job.metadata.workFromHome ? job.metadata.workFromHome : false,
+                    salary: job.metadata.salary ? job.metadata.salary : '',
+                    qualifications: [...qualify],
+                    responsibilities: [...resp], category: category
                   }
-
+                  try {
+                    let sav = await this.jobService.createFromCronJob(obj);
+                  } catch (error) {
+                  }
                 }
+
+                // }
               }
 
             }
