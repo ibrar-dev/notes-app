@@ -99,7 +99,7 @@ __decorate([
     __metadata("design:type", jobs_service_1.JobService)
 ], TaskService.prototype, "jobService", void 0);
 __decorate([
-    (0, schedule_1.Cron)('0 1 * * * *'),
+    (0, schedule_1.Cron)('0 15 * * * *'),
     __metadata("design:type", Function),
     __metadata("design:paramtypes", []),
     __metadata("design:returntype", Promise)

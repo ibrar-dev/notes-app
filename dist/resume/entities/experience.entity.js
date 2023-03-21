@@ -21,63 +21,63 @@ __decorate([
     __metadata("design:type", String)
 ], Experience.prototype, "id", void 0);
 __decorate([
-    (0, typeorm_1.Column)(),
+    (0, typeorm_1.Column)({ nullable: true }),
     __metadata("design:type", String)
 ], Experience.prototype, "employerName", void 0);
 __decorate([
-    (0, typeorm_1.Column)(),
+    (0, typeorm_1.Column)({ nullable: true }),
     __metadata("design:type", String)
 ], Experience.prototype, "employerFormattedName", void 0);
 __decorate([
-    (0, typeorm_1.Column)(),
+    (0, typeorm_1.Column)({ nullable: true }),
     __metadata("design:type", Number)
 ], Experience.prototype, "employerConfidenceScore", void 0);
 __decorate([
-    (0, typeorm_1.Column)(),
+    (0, typeorm_1.Column)({ nullable: true }),
     __metadata("design:type", String)
 ], Experience.prototype, "title", void 0);
 __decorate([
-    (0, typeorm_1.Column)(),
+    (0, typeorm_1.Column)({ nullable: true }),
     __metadata("design:type", String)
 ], Experience.prototype, "jobFormattedName", void 0);
 __decorate([
-    (0, typeorm_1.Column)(),
+    (0, typeorm_1.Column)({ nullable: true }),
     __metadata("design:type", String)
 ], Experience.prototype, "jobAlias", void 0);
 __decorate([
-    (0, typeorm_1.Column)(),
+    (0, typeorm_1.Column)({ nullable: true }),
     __metadata("design:type", Number)
 ], Experience.prototype, "jobConfidenceScore", void 0);
 __decorate([
-    (0, typeorm_1.Column)(),
+    (0, typeorm_1.Column)({ nullable: true }),
     __metadata("design:type", String)
 ], Experience.prototype, "jobPeriod", void 0);
 __decorate([
-    (0, typeorm_1.Column)(),
+    (0, typeorm_1.Column)({ nullable: true }),
     __metadata("design:type", String)
 ], Experience.prototype, "formattedJobPeriod", void 0);
 __decorate([
-    (0, typeorm_1.Column)(),
+    (0, typeorm_1.Column)({ nullable: true }),
     __metadata("design:type", String)
 ], Experience.prototype, "startDate", void 0);
 __decorate([
-    (0, typeorm_1.Column)(),
+    (0, typeorm_1.Column)({ nullable: true }),
     __metadata("design:type", String)
 ], Experience.prototype, "endDate", void 0);
 __decorate([
-    (0, typeorm_1.Column)(),
+    (0, typeorm_1.Column)({ nullable: true }),
     __metadata("design:type", String)
 ], Experience.prototype, "isCurrentEmployer", void 0);
 __decorate([
-    (0, typeorm_1.Column)(),
+    (0, typeorm_1.Column)({ nullable: true }),
     __metadata("design:type", String)
 ], Experience.prototype, "jobDescription", void 0);
 __decorate([
-    (0, typeorm_1.OneToMany)(() => relatedSkills_entity_1.RelatedSkills, (ph) => ph.res, { eager: true, cascade: true }),
+    (0, typeorm_1.OneToMany)(() => relatedSkills_entity_1.RelatedSkills, (ph) => ph.res, { cascade: true }),
     __metadata("design:type", Array)
 ], Experience.prototype, "relatedSkills", void 0);
 __decorate([
-    (0, typeorm_1.OneToMany)(() => projects_entity_1.Projects, (ph) => ph.res, { eager: true, cascade: true }),
+    (0, typeorm_1.OneToMany)(() => projects_entity_1.Projects, (ph) => ph.res, { cascade: true }),
     __metadata("design:type", Array)
 ], Experience.prototype, "projects", void 0);
 __decorate([

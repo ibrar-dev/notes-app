@@ -8,7 +8,7 @@ export declare class ResumeController {
     create(createResumeDto: CreateResumeDto): Promise<import("./entities/resume.entity").Resume>;
     findAll(): Promise<any>;
     findCount(): Promise<any>;
-    findOne(id: string): Promise<any>;
+    findOne(userId: string): Promise<any>;
     update(id: string, updateResumeDto: UpdateResumeDto): string;
     remove(id: string): string;
     uploadFile(body: any, req: any, file: Express.Multer.File): Promise<any>;

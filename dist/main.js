@@ -20,7 +20,7 @@ async function bootstrap() {
         origin: "*"
     });
     app.useStaticAssets((0, path_1.join)(__dirname, '..', ''));
-    await app.listen(3000);
+    await app.listen(3002);
 }
 bootstrap();
 //# sourceMappingURL=main.js.map

@@ -5,29 +5,29 @@ import { Resume } from './resume.entity';
 export class Address {
     @PrimaryGeneratedColumn('uuid')
     id: string;
-    @Column()
+    @Column({nullable:true})
     street: string;
-    @Column()
+    @Column({nullable:true})
     city: string;
-    @Column()
+    @Column({nullable:true})
     state: string;
-    @Column()
+    @Column({nullable:true})
     stateIsoCode: string;
-    @Column()
+    @Column({nullable:true})
     country: string;
-    @Column()
+    @Column({nullable:true})
     zipCode: string;
-    @Column()
+    @Column({nullable:true})
     formattedAddress:string;
-    @Column()
+    @Column({nullable:true})
     type:string;
-    @Column()
+    @Column({nullable:true})
     isoAlpha2:string;
-    @Column()
+    @Column({nullable:true})
     isoAlpha3:string;
-    @Column()
+    @Column({nullable:true})
     uNCode:string;
-    @Column()
+    @Column({nullable:true})
     confidenceScore: number;
 
     @ManyToOne(() => Resume, (user) => user.address)

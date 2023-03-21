@@ -242,61 +242,61 @@ __decorate([
     __metadata("design:type", Array)
 ], Resume.prototype, "languages", void 0);
 __decorate([
-    (0, typeorm_1.OneToMany)(() => phone_entity_1.Phone, (ph) => ph.res, { eager: true, cascade: true }),
+    (0, typeorm_1.OneToMany)(() => phone_entity_1.Phone, (ph) => ph.res, { cascade: true }),
     __metadata("design:type", Array)
 ], Resume.prototype, "phone", void 0);
 __decorate([
-    (0, typeorm_1.OneToMany)(() => email_entity_1.Email, (ph) => ph.res, { eager: true, cascade: true }),
+    (0, typeorm_1.OneToMany)(() => email_entity_1.Email, (ph) => ph.res, { cascade: true }),
     __metadata("design:type", Array)
 ], Resume.prototype, "email", void 0);
 __decorate([
-    (0, typeorm_1.OneToMany)(() => website_entity_1.Website, (ph) => ph.res, { eager: true, cascade: true }),
+    (0, typeorm_1.OneToMany)(() => website_entity_1.Website, (ph) => ph.res, { cascade: true }),
     __metadata("design:type", Array)
 ], Resume.prototype, "website", void 0);
 __decorate([
-    (0, typeorm_1.OneToOne)(() => salary_entity_1.Salary, { eager: true, cascade: true }),
+    (0, typeorm_1.OneToOne)(() => salary_entity_1.Salary, { cascade: true }),
     (0, typeorm_1.JoinColumn)(),
     __metadata("design:type", Array)
 ], Resume.prototype, "currentSalary", void 0);
 __decorate([
-    (0, typeorm_1.OneToOne)(() => salary_entity_1.Salary, { nullable: true, eager: true, cascade: true }),
+    (0, typeorm_1.OneToOne)(() => salary_entity_1.Salary, { nullable: true, cascade: true }),
     (0, typeorm_1.JoinColumn)(),
     __metadata("design:type", Array)
 ], Resume.prototype, "expectedSalary", void 0);
 __decorate([
-    (0, typeorm_1.OneToMany)(() => address_entity_1.Address, (ph) => ph.res, { eager: true, cascade: true }),
+    (0, typeorm_1.OneToMany)(() => address_entity_1.Address, (ph) => ph.res, { cascade: true }),
     __metadata("design:type", Array)
 ], Resume.prototype, "address", void 0);
 __decorate([
-    (0, typeorm_1.OneToMany)(() => resumeQualification_entity_1.ResumeQualification, (ph) => ph.res, { eager: true, cascade: true }),
+    (0, typeorm_1.OneToMany)(() => resumeQualification_entity_1.ResumeQualification, (ph) => ph.res, { cascade: true }),
     __metadata("design:type", Array)
 ], Resume.prototype, "qualifications", void 0);
 __decorate([
-    (0, typeorm_1.OneToMany)(() => certifications_entity_1.Certification, (ph) => ph.res, { eager: true, cascade: true }),
+    (0, typeorm_1.OneToMany)(() => certifications_entity_1.Certification, (ph) => ph.res, { cascade: true }),
     __metadata("design:type", Array)
 ], Resume.prototype, "certification", void 0);
 __decorate([
-    (0, typeorm_1.OneToMany)(() => skills_entity_1.Skills, (ph) => ph.res, { eager: true, cascade: true }),
+    (0, typeorm_1.OneToMany)(() => skills_entity_1.Skills, (ph) => ph.res, { cascade: true }),
     __metadata("design:type", Array)
 ], Resume.prototype, "skills", void 0);
 __decorate([
-    (0, typeorm_1.OneToMany)(() => experience_entity_1.Experience, (ph) => ph.res, { eager: true, cascade: true }),
+    (0, typeorm_1.OneToMany)(() => experience_entity_1.Experience, (ph) => ph.res, { cascade: true }),
     __metadata("design:type", Array)
 ], Resume.prototype, "experience", void 0);
 __decorate([
-    (0, typeorm_1.OneToMany)(() => publications_entity_1.Publication, (ph) => ph.res, { eager: true, cascade: true }),
+    (0, typeorm_1.OneToMany)(() => publications_entity_1.Publication, (ph) => ph.res, { cascade: true }),
     __metadata("design:type", Array)
 ], Resume.prototype, "publications", void 0);
 __decorate([
-    (0, typeorm_1.OneToMany)(() => location_entity_1.Location, (ph) => ph.res1, { eager: true, cascade: true }),
+    (0, typeorm_1.OneToMany)(() => location_entity_1.Location, (ph) => ph.res1, { cascade: true }),
     __metadata("design:type", Array)
 ], Resume.prototype, "currentLocation", void 0);
 __decorate([
-    (0, typeorm_1.OneToMany)(() => location_entity_1.Location, (ph) => ph.res, { eager: true, cascade: true }),
+    (0, typeorm_1.OneToMany)(() => location_entity_1.Location, (ph) => ph.res, { cascade: true }),
     __metadata("design:type", Array)
 ], Resume.prototype, "preferredLocation", void 0);
 __decorate([
-    (0, typeorm_1.OneToMany)(() => achievement_entity_1.Achievement, (ph) => ph.res, { eager: true, cascade: true }),
+    (0, typeorm_1.OneToMany)(() => achievement_entity_1.Achievement, (ph) => ph.res, { cascade: true }),
     __metadata("design:type", Array)
 ], Resume.prototype, "achievements", void 0);
 Resume = __decorate([

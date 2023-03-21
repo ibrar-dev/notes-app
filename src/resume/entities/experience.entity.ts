@@ -7,38 +7,38 @@ import { Resume } from './resume.entity';
 export class Experience {
     @PrimaryGeneratedColumn('uuid')
     id: string;
-    @Column()
+    @Column({nullable:true})
     employerName: string;
-    @Column()
+    @Column({nullable:true})
     employerFormattedName: string;
-    @Column()
+    @Column({nullable:true})
     employerConfidenceScore: number;
-    @Column()
+    @Column({nullable:true})
     title: string;
-    @Column()
+    @Column({nullable:true})
     jobFormattedName: string;
-    @Column()
+    @Column({nullable:true})
     jobAlias: string;
-    @Column()
+    @Column({nullable:true})
     jobConfidenceScore: number;
-    @Column()
+    @Column({nullable:true})
     jobPeriod: string;
-    @Column()
+    @Column({nullable:true})
     formattedJobPeriod: string;
-    @Column()
+    @Column({nullable:true})
     startDate: string;
-    @Column()
+    @Column({nullable:true})
     endDate: string;
-    @Column()
+    @Column({nullable:true})
     isCurrentEmployer: string;
-    @Column()
+    @Column({nullable:true})
     jobDescription: string;
 
-    @OneToMany(() => RelatedSkills, (ph) => ph.res, { eager: true, cascade: true })
+    @OneToMany(() => RelatedSkills, (ph) => ph.res, { cascade: true })
     relatedSkills: RelatedSkills[]
-    @OneToMany(() => Projects, (ph) => ph.res, { eager: true, cascade: true })
+    @OneToMany(() => Projects, (ph) => ph.res, { cascade: true })
     projects: Projects[]
-    // @OneToMany(() => Experience, (ph) => ph.res, { eager: true, cascade: true })
+    // @OneToMany(() => Experience, (ph) => ph.res, { cascade: true })
     // experience: Experience[]
     @ManyToOne(() => Resume, (user) => user.experience)
     res: Resume;

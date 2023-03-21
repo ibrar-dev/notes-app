@@ -6,9 +6,9 @@ import { Resume } from './resume.entity';
 export class RelatedSkills {
     @PrimaryGeneratedColumn('uuid')
     id: string;
-    @Column()
+    @Column({nullable:true})
     skill: string;
-    @Column()
+    @Column({nullable:true})
     proficiencyLevel: string;
     @ManyToOne(() => Experience, (user) => user.relatedSkills)
     res: Experience;

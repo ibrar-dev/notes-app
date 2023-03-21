@@ -5,17 +5,17 @@ import { Resume } from './resume.entity';
 export class Publication {
     @PrimaryGeneratedColumn('uuid')
     id: string;
-    @Column()
+    @Column({nullable:true})
     publicationTitle: string;
-    @Column()
+    @Column({nullable:true})
     publisher: string;
-    @Column()
+    @Column({nullable:true})
     publicationNumber: string;
-    @Column()
+    @Column({nullable:true})
     publicationUrl: string;
-    @Column()
+    @Column({nullable:true})
     authors: string;
-    @Column()
+    @Column({nullable:true})
     description: string;
 
     @ManyToOne(() => Resume, (user) => user.publications)

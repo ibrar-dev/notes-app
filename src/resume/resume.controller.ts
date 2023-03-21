@@ -51,9 +51,9 @@ export class ResumeController {
     return this.resumeService.count();
   }
 
-  @Get(':id')
-  findOne(@Param('id') id: string) {
-    return this.resumeService.findOne(id);
+  @Get(':userId')
+  findOne(@Param('userId') userId: string) {
+    return this.resumeService.findOne(userId);
   }
 
   @Patch(':id')

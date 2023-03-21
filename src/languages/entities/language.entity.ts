@@ -10,9 +10,9 @@ export class Language {
 
     @PrimaryGeneratedColumn()
     id: number;
-    @Column()
+    @Column({nullable:true})
     title: string;
-    @Column()
+    @Column({nullable:true})
     code: string;
     // @ManyToOne(() => Resume, (user) => user.languages)
     // res: Resume;

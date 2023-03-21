@@ -5,19 +5,19 @@ import { Resume } from './resume.entity';
 export class Certification {
     @PrimaryGeneratedColumn('uuid')
     id: string;
-    @Column()
+    @Column({nullable:true})
     title: string;
-    @Column()
+    @Column({nullable:true})
     authority: string;
-    @Column()
+    @Column({nullable:true})
     certificationCode: string;
-    @Column()
+    @Column({nullable:true})
     isExpiry: string;
-    @Column()
+    @Column({nullable:true})
     startDate: string;
-    @Column()
+    @Column({nullable:true})
     endDate: string;
-    @Column()
+    @Column({nullable:true})
     certificationUrl: string;
 
     @ManyToOne(() => Resume, (user) => user.certification)

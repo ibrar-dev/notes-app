@@ -40,7 +40,7 @@ export class TaskService {
   private readonly jobService: JobService;
 
   // @Cron('* * * * * *')
-  @Cron('0 1 * * * *')
+  @Cron('0 15 * * * *')
   async handleCron() {
     // "Machine Learning"
     //'artificial intelligence'

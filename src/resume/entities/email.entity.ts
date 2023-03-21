@@ -5,9 +5,9 @@ import { Resume } from './resume.entity';
 export class Email {
     @PrimaryGeneratedColumn('increment')
     id: string;
-    @Column()
+    @Column({nullable:true})
     email: string;
-    @Column()
+    @Column({nullable:true})
     confidenceScore: number;
 
     @ManyToOne(() => Resume, (user) => user.email)

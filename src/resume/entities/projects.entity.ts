@@ -5,11 +5,11 @@ import { Experience } from './experience.entity';
 export class Projects {
     @PrimaryGeneratedColumn('uuid')
     id: string;
-    @Column()
+    @Column({nullable:true})
     usedSkills: string;
-    @Column()
+    @Column({nullable:true})
     projectName: string;
-    @Column()
+    @Column({nullable:true})
     teamSize: string;
     @ManyToOne(() => Experience, (user) => user.projects)
     res: Experience;

@@ -5,17 +5,17 @@ import { Resume } from './resume.entity';
 export class Phone {
     @PrimaryGeneratedColumn('uuid')
     id: string;
-    @Column()
+    @Column({nullable:true})
     phoneNumber: string;
-    @Column()
+    @Column({nullable:true})
     ISDCode: string;
-    @Column()
+    @Column({nullable:true})
     originalNumber: string;
-    @Column()
+    @Column({nullable:true})
     formattedNumber: string;
-    @Column()
+    @Column({nullable:true})
     type: string;
-    @Column()
+    @Column({nullable:true})
     confidenceScore: number;
 
     @ManyToOne(() => Resume, (user) => user.phone)

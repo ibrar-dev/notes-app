@@ -5,19 +5,19 @@ import { Resume } from './resume.entity';
 export class Location {
     @PrimaryGeneratedColumn('uuid')
     id: string;
-    @Column()
+    @Column({nullable:true})
     city: string;
-    @Column()
+    @Column({nullable:true})
     state: string;
-    @Column()
+    @Column({nullable:true})
     stateIsoCode: string;
-    @Column()
+    @Column({nullable:true})
     country: string;
-    @Column()
+    @Column({nullable:true})
     IsoAlpha2: string;
-    @Column()
+    @Column({nullable:true})
     IsoAlpha3: string;
-    @Column()
+    @Column({nullable:true})
     UNCode: string;
     @ManyToOne(() => Resume, (user) => user.currentLocation)
     res1: Resume;

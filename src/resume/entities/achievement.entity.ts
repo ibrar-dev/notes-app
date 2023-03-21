@@ -5,15 +5,15 @@ import { Resume } from './resume.entity';
 export class Achievement {
     @PrimaryGeneratedColumn('uuid')
     id: string;
-    @Column()
+    @Column({nullable:true})
     awardTitle: string;
-    @Column()
+    @Column({nullable:true})
     issuer: string;
-    @Column()
+    @Column({nullable:true})
     associatedWith: string;
-    @Column()
+    @Column({nullable:true})
     issuingDate: string;
-    @Column()
+    @Column({nullable:true})
     description: string;
     @ManyToOne(() => Resume, (user) => user.achievements)
     res: Resume;

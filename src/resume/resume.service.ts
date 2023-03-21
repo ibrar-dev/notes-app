@@ -49,11 +49,23 @@ export class ResumeService {
   }
   async count(): Promise<any> {
     try {
-      console.log("here")
-      let newUser = await this.resumeRepository.find()
+      console.log("here mm")
+      let [results,count] = await this.resumeRepository.findAndCount({
+        relations: {
+          phone: false,
+          email: false,
+          website: false,
+          currentSalary: false,
+          skills: false,
+          expectedSalary: false,
+          experience: true,
+          qualifications: true
+
+        }
+      })
       console.log("here 2")
 
-      return { count: newUser.length };
+      return { count: count };
     } catch (error) {
       console.log("here", error)
       return error;
@@ -63,17 +75,17 @@ export class ResumeService {
   async findOne(id: string) {
     try {
 
-      const res = await this.resumeRepository.findOne({
+      const res = await this.resumeRepository.find({
         where: {
-          id: id,
+          userId: id,
         },
         relations: {
-          phone: false,
-          email: false,
-          website: false,
-          currentSalary: false,
-          skills: false,
-          expectedSalary: false,
+          phone: true,
+          email: true,
+          website: true,
+          currentSalary: true,
+          skills: true,
+          expectedSalary: true,
           experience: true,
           qualifications: true
 
