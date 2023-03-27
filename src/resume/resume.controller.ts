@@ -1,4 +1,4 @@
-import { Controller, Request,Get, Post, Body, Patch, Param, Delete } from '@nestjs/common';
+import { Controller, Request, Get, Post, Body,Response, Patch, Param, Delete, Res } from '@nestjs/common';
 import { ResumeService } from './resume.service';
 import { CreateResumeDto } from './dto/create-resume.dto';
 import { UpdateResumeDto } from './dto/update-resume.dto';
@@ -11,7 +11,7 @@ import { Express } from 'express';
 import { FilesInterceptor } from '@nestjs/platform-express';
 import { diskStorage } from 'multer';
 import { extname } from 'path'
-import { UseGuards , Headers } from '@nestjs/common';
+import { UseGuards, Headers } from '@nestjs/common';
 import { ApiBearerAuth, ApiOperation, ApiExcludeEndpoint, ApiExtraModels, ApiResponse, getSchemaPath, ApiTags } from '@nestjs/swagger';
 import { Authorization } from '../auth/dto/user-login.dto';
 import { JwtAuthGuard } from '../auth/jwt-auth.guard';
@@ -65,7 +65,20 @@ export class ResumeController {
   remove(@Param('id') id: string) {
     return this.resumeService.remove(+id);
   }
-  
+
+  @Delete()
+  async deleteByCategory(@Res() res: Response) {
+
+    try {
+
+      let resp = await this.resumeService.deleteByCategory();
+      return resp;
+    } catch (error) {
+      return error;
+      // res.status(HttpStatus.BAD_REQUEST).json({ message: 'Something went wrong' });
+    }
+
+  }
 
 
   @ApiOperation({ summary: 'add access token in authorize (see top right corner on this page) then you can use this endpoint' })
@@ -87,7 +100,7 @@ export class ResumeController {
     @Request() req,
     @UploadedFile() file: Express.Multer.File,
   ): Promise<any> {
-    return this.resumeService.uploadResume({ id: body.id, file: file.filename,userId:req.user.id });
+    return this.resumeService.uploadResume({ id: body.id, file: file.filename, userId: req.user.id });
 
   }
 }

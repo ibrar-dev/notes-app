@@ -121,31 +121,52 @@ export class Resume {
     references: string;
     @Column({ nullable: true })
     userId: string;
-    @ManyToMany(() => Language, (category) => category.title, {
-        cascade: true,
-    })
-    @JoinTable()
-    languages: Language[];
+    //1
+    @Column({ nullable: true })
+    emailAddress: string;
 
-    @OneToMany(() => Phone, (ph) => ph.res, { cascade: true })
-    phone: Phone[]
+    @Column({ nullable: true })
+    phoneNumber: string;
 
-    @OneToMany(() => Email, (ph) => ph.res, { cascade: true })
-    email: Email[]
+    @Column({ nullable: true })
+    currentSalary: string;
 
-    @OneToMany(() => Website, (ph) => ph.res, { cascade: true })
-    website: Website[]
+    @Column({ nullable: true })
+    expectedSalary: string;
 
-    @OneToOne(() => Salary, { cascade: true })
-    @JoinColumn()
-    currentSalary: Salary[]
 
-    @OneToOne(() => Salary, { nullable: true, cascade: true })
-    @JoinColumn()
-    expectedSalary: Salary[]
+    @Column({ nullable: true })
+    address: string;
+    @Column({ nullable: true })
+    state: string;
+    @Column({ nullable: true })
+    country: string;
+    @Column({ nullable: true })
+    city: string;
 
-    @OneToMany(() => Address, (ph) => ph.res, { cascade: true })
-    address: Address[]
+    @Column({ nullable: true })
+    languages: string;
+
+
+    @Column({ nullable: true })
+    website: string;
+
+
+    // @ManyToMany(() => Language, (category) => category.title, {
+    //     cascade: true,
+    // })
+    // @JoinTable()
+    // languages: Language[];
+
+
+    // @OneToMany(() => Email, (ph) => ph.res, { cascade: true })
+    // email: Email[]
+
+    // @OneToMany(() => Website, (ph) => ph.res, { cascade: true })
+    // website: Website[]
+
+    // @OneToMany(() => Address, (ph) => ph.res, { cascade: true })
+    // address: Address[]
 
     @OneToMany(() => ResumeQualification, (ph) => ph.res, { cascade: true })
     qualifications: ResumeQualification[]
@@ -162,11 +183,6 @@ export class Resume {
     @OneToMany(() => Publication, (ph) => ph.res, { cascade: true })
     publications: Publication[]
 
-    @OneToMany(() => Location, (ph) => ph.res1, { cascade: true })
-    currentLocation: Location[]
-
-    @OneToMany(() => Location, (ph) => ph.res, { cascade: true })
-    preferredLocation: Location[]
 
     @OneToMany(() => Achievement, (ph) => ph.res, { cascade: true })
     achievements: Achievement[]

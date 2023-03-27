@@ -8,9 +8,17 @@ export declare class ResumeService {
     create(createResumeDto: CreateResumeDto): Promise<Resume>;
     findAll(): Promise<any>;
     count(): Promise<any>;
+    deleteByCategory(): Promise<{
+        success: boolean;
+        result: import("typeorm").DeleteResult;
+        error?: undefined;
+    } | {
+        success: boolean;
+        error: any;
+        result?: undefined;
+    }>;
     findOne(id: string): Promise<any>;
     update(id: number, updateResumeDto: UpdateResumeDto): string;
     remove(id: number): string;
     uploadResume(res: any): Promise<any>;
-    reStructureData(resData: any): Promise<any>;
 }

@@ -11,18 +11,11 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.Resume = void 0;
 const typeorm_1 = require("typeorm");
-const language_entity_1 = require("../../languages/entities/language.entity");
-const address_entity_1 = require("./address.entity");
 const certifications_entity_1 = require("./certifications.entity");
-const email_entity_1 = require("./email.entity");
 const experience_entity_1 = require("./experience.entity");
-const phone_entity_1 = require("./phone.entity");
 const publications_entity_1 = require("./publications.entity");
 const resumeQualification_entity_1 = require("./resumeQualification.entity");
-const salary_entity_1 = require("./salary.entity");
 const skills_entity_1 = require("./skills.entity");
-const website_entity_1 = require("./website.entity");
-const location_entity_1 = require("./location.entity");
 const achievement_entity_1 = require("./achievement.entity");
 let Resume = class Resume {
 };
@@ -235,38 +228,45 @@ __decorate([
     __metadata("design:type", String)
 ], Resume.prototype, "userId", void 0);
 __decorate([
-    (0, typeorm_1.ManyToMany)(() => language_entity_1.Language, (category) => category.title, {
-        cascade: true,
-    }),
-    (0, typeorm_1.JoinTable)(),
-    __metadata("design:type", Array)
-], Resume.prototype, "languages", void 0);
+    (0, typeorm_1.Column)({ nullable: true }),
+    __metadata("design:type", String)
+], Resume.prototype, "emailAddress", void 0);
 __decorate([
-    (0, typeorm_1.OneToMany)(() => phone_entity_1.Phone, (ph) => ph.res, { cascade: true }),
-    __metadata("design:type", Array)
-], Resume.prototype, "phone", void 0);
+    (0, typeorm_1.Column)({ nullable: true }),
+    __metadata("design:type", String)
+], Resume.prototype, "phoneNumber", void 0);
 __decorate([
-    (0, typeorm_1.OneToMany)(() => email_entity_1.Email, (ph) => ph.res, { cascade: true }),
-    __metadata("design:type", Array)
-], Resume.prototype, "email", void 0);
-__decorate([
-    (0, typeorm_1.OneToMany)(() => website_entity_1.Website, (ph) => ph.res, { cascade: true }),
-    __metadata("design:type", Array)
-], Resume.prototype, "website", void 0);
-__decorate([
-    (0, typeorm_1.OneToOne)(() => salary_entity_1.Salary, { cascade: true }),
-    (0, typeorm_1.JoinColumn)(),
-    __metadata("design:type", Array)
+    (0, typeorm_1.Column)({ nullable: true }),
+    __metadata("design:type", String)
 ], Resume.prototype, "currentSalary", void 0);
 __decorate([
-    (0, typeorm_1.OneToOne)(() => salary_entity_1.Salary, { nullable: true, cascade: true }),
-    (0, typeorm_1.JoinColumn)(),
-    __metadata("design:type", Array)
+    (0, typeorm_1.Column)({ nullable: true }),
+    __metadata("design:type", String)
 ], Resume.prototype, "expectedSalary", void 0);
 __decorate([
-    (0, typeorm_1.OneToMany)(() => address_entity_1.Address, (ph) => ph.res, { cascade: true }),
-    __metadata("design:type", Array)
+    (0, typeorm_1.Column)({ nullable: true }),
+    __metadata("design:type", String)
 ], Resume.prototype, "address", void 0);
+__decorate([
+    (0, typeorm_1.Column)({ nullable: true }),
+    __metadata("design:type", String)
+], Resume.prototype, "state", void 0);
+__decorate([
+    (0, typeorm_1.Column)({ nullable: true }),
+    __metadata("design:type", String)
+], Resume.prototype, "country", void 0);
+__decorate([
+    (0, typeorm_1.Column)({ nullable: true }),
+    __metadata("design:type", String)
+], Resume.prototype, "city", void 0);
+__decorate([
+    (0, typeorm_1.Column)({ nullable: true }),
+    __metadata("design:type", String)
+], Resume.prototype, "languages", void 0);
+__decorate([
+    (0, typeorm_1.Column)({ nullable: true }),
+    __metadata("design:type", String)
+], Resume.prototype, "website", void 0);
 __decorate([
     (0, typeorm_1.OneToMany)(() => resumeQualification_entity_1.ResumeQualification, (ph) => ph.res, { cascade: true }),
     __metadata("design:type", Array)
@@ -287,14 +287,6 @@ __decorate([
     (0, typeorm_1.OneToMany)(() => publications_entity_1.Publication, (ph) => ph.res, { cascade: true }),
     __metadata("design:type", Array)
 ], Resume.prototype, "publications", void 0);
-__decorate([
-    (0, typeorm_1.OneToMany)(() => location_entity_1.Location, (ph) => ph.res1, { cascade: true }),
-    __metadata("design:type", Array)
-], Resume.prototype, "currentLocation", void 0);
-__decorate([
-    (0, typeorm_1.OneToMany)(() => location_entity_1.Location, (ph) => ph.res, { cascade: true }),
-    __metadata("design:type", Array)
-], Resume.prototype, "preferredLocation", void 0);
 __decorate([
     (0, typeorm_1.OneToMany)(() => achievement_entity_1.Achievement, (ph) => ph.res, { cascade: true }),
     __metadata("design:type", Array)

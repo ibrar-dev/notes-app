@@ -10,8 +10,8 @@ export class RelatedSkills {
     skill: string;
     @Column({nullable:true})
     proficiencyLevel: string;
-    @ManyToOne(() => Experience, (user) => user.relatedSkills)
-    res: Experience;
+    // @ManyToOne(() => Experience, (user) => user.relatedSkills)
+    // res: Experience;
 }
 
 

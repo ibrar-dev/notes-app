@@ -1,5 +1,3 @@
-import { Projects } from './projects.entity';
-import { RelatedSkills } from './relatedSkills.entity';
 import { Resume } from './resume.entity';
 export declare class Experience {
     id: string;
@@ -16,7 +14,6 @@ export declare class Experience {
     endDate: string;
     isCurrentEmployer: string;
     jobDescription: string;
-    relatedSkills: RelatedSkills[];
-    projects: Projects[];
+    projects: string;
     res: Resume;
 }

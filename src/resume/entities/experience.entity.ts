@@ -7,37 +7,40 @@ import { Resume } from './resume.entity';
 export class Experience {
     @PrimaryGeneratedColumn('uuid')
     id: string;
-    @Column({nullable:true})
+    @Column({ nullable: true })
     employerName: string;
-    @Column({nullable:true})
+    @Column({ nullable: true })
     employerFormattedName: string;
-    @Column({nullable:true})
+    @Column({ nullable: true })
     employerConfidenceScore: number;
-    @Column({nullable:true})
+    @Column({ nullable: true })
     title: string;
-    @Column({nullable:true})
+    @Column({ nullable: true })
     jobFormattedName: string;
-    @Column({nullable:true})
+    @Column({ nullable: true })
     jobAlias: string;
-    @Column({nullable:true})
+    @Column({ nullable: true })
     jobConfidenceScore: number;
-    @Column({nullable:true})
+    @Column({ nullable: true })
     jobPeriod: string;
-    @Column({nullable:true})
+    @Column({ nullable: true })
     formattedJobPeriod: string;
-    @Column({nullable:true})
+    @Column({ nullable: true })
     startDate: string;
-    @Column({nullable:true})
+    @Column({ nullable: true })
     endDate: string;
-    @Column({nullable:true})
+    @Column({ nullable: true })
     isCurrentEmployer: string;
-    @Column({nullable:true})
+
+    @Column({ nullable: true })
     jobDescription: string;
 
-    @OneToMany(() => RelatedSkills, (ph) => ph.res, { cascade: true })
-    relatedSkills: RelatedSkills[]
-    @OneToMany(() => Projects, (ph) => ph.res, { cascade: true })
-    projects: Projects[]
+    @Column({ nullable: true })
+    projects: string;
+
+
+    // @OneToMany(() => Projects, (ph) => ph.res, { cascade: true })
+    // projects: Projects[]
     // @OneToMany(() => Experience, (ph) => ph.res, { cascade: true })
     // experience: Experience[]
     @ManyToOne(() => Resume, (user) => user.experience)

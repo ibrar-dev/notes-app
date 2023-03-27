@@ -1,15 +1,8 @@
-import { Language } from "../../languages/entities/language.entity";
-import { Address } from './address.entity';
 import { Certification } from './certifications.entity';
-import { Email } from './email.entity';
 import { Experience } from './experience.entity';
-import { Phone } from './phone.entity';
 import { Publication } from './publications.entity';
 import { ResumeQualification } from './resumeQualification.entity';
-import { Salary } from './salary.entity';
 import { Skills } from './skills.entity';
-import { Website } from './website.entity';
-import { Location } from './location.entity';
 import { Achievement } from './achievement.entity';
 export declare class Resume {
     id: string;
@@ -64,19 +57,20 @@ export declare class Resume {
     achievement: string;
     references: string;
     userId: string;
-    languages: Language[];
-    phone: Phone[];
-    email: Email[];
-    website: Website[];
-    currentSalary: Salary[];
-    expectedSalary: Salary[];
-    address: Address[];
+    emailAddress: string;
+    phoneNumber: string;
+    currentSalary: string;
+    expectedSalary: string;
+    address: string;
+    state: string;
+    country: string;
+    city: string;
+    languages: string;
+    website: string;
     qualifications: ResumeQualification[];
     certification: Certification[];
     skills: Skills[];
     experience: Experience[];
     publications: Publication[];
-    currentLocation: Location[];
-    preferredLocation: Location[];
     achievements: Achievement[];
 }

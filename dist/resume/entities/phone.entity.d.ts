@@ -1,4 +1,3 @@
-import { Resume } from './resume.entity';
 export declare class Phone {
     id: string;
     phoneNumber: string;
@@ -7,5 +6,4 @@ export declare class Phone {
     formattedNumber: string;
     type: string;
     confidenceScore: number;
-    res: Resume;
 }

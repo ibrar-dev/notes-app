@@ -11,7 +11,6 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.Email = void 0;
 const typeorm_1 = require("typeorm");
-const resume_entity_1 = require("./resume.entity");
 let Email = class Email {
 };
 __decorate([
@@ -26,10 +25,6 @@ __decorate([
     (0, typeorm_1.Column)({ nullable: true }),
     __metadata("design:type", Number)
 ], Email.prototype, "confidenceScore", void 0);
-__decorate([
-    (0, typeorm_1.ManyToOne)(() => resume_entity_1.Resume, (user) => user.email),
-    __metadata("design:type", resume_entity_1.Resume)
-], Email.prototype, "res", void 0);
 Email = __decorate([
     (0, typeorm_1.Entity)('email')
 ], Email);

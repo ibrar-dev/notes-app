@@ -18,6 +18,6 @@ export class Phone {
     @Column({nullable:true})
     confidenceScore: number;
 
-    @ManyToOne(() => Resume, (user) => user.phone)
-    res: Resume;
+    // @ManyToOne(() => Resume, (user) => user.phone)
+    // res: Resume;
 }

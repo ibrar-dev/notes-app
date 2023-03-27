@@ -19,10 +19,10 @@ export class Location {
     IsoAlpha3: string;
     @Column({nullable:true})
     UNCode: string;
-    @ManyToOne(() => Resume, (user) => user.currentLocation)
-    res1: Resume;
-    @ManyToOne(() => Resume, (user) => user.preferredLocation)
-    res: Resume;
+    // @ManyToOne(() => Resume, (user) => user.currentLocation)
+    // res1: Resume;
+    // @ManyToOne(() => Resume, (user) => user.preferredLocation)
+    // res: Resume;
 }
 
 

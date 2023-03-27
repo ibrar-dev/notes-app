@@ -1,4 +1,3 @@
-import { Resume } from './resume.entity';
 export declare class Location {
     id: string;
     city: string;
@@ -8,6 +7,4 @@ export declare class Location {
     IsoAlpha2: string;
     IsoAlpha3: string;
     UNCode: string;
-    res1: Resume;
-    res: Resume;
 }

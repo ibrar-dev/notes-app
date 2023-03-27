@@ -10,6 +10,6 @@ export class Email {
     @Column({nullable:true})
     confidenceScore: number;
 
-    @ManyToOne(() => Resume, (user) => user.email)
-    res: Resume;
+    // @ManyToOne(() => Resume, (user) => user.email)
+    // res: Resume;
 }

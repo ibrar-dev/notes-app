@@ -50,14 +50,9 @@ export class ResumeService {
   async count(): Promise<any> {
     try {
       console.log("here mm")
-      let [results,count] = await this.resumeRepository.findAndCount({
+      let [results, count] = await this.resumeRepository.findAndCount({
         relations: {
-          phone: false,
-          email: false,
-          website: false,
-          currentSalary: false,
           skills: false,
-          expectedSalary: false,
           experience: true,
           qualifications: true
 
@@ -71,7 +66,19 @@ export class ResumeService {
       return error;
     }
   }
-
+  async deleteByCategory() {
+    try {
+      console.log("in delete")
+      const result = await this.resumeRepository.createQueryBuilder()
+        .delete()
+        .from(Resume)
+        .where("userId = :id", { id: '176bd526-38bd-4586-b2a7-91797098232a' })
+        .execute();
+      return { success: true, result: result };
+    } catch (error) {
+      return { success: false, error: error.message };
+    }
+  }
   async findOne(id: string) {
     try {
 
@@ -80,12 +87,7 @@ export class ResumeService {
           userId: id,
         },
         relations: {
-          phone: true,
-          email: true,
-          website: true,
-          currentSalary: true,
           skills: true,
-          expectedSalary: true,
           experience: true,
           qualifications: true
 
@@ -176,19 +178,23 @@ export class ResumeService {
     let languages = []
     for (let index = 0; index < (resData.ResumeParserData.LanguageKnown ? resData.ResumeParserData.LanguageKnown.length : 0); index++) {
       const element = resData.ResumeParserData.LanguageKnown[index];
-      languages.push({ title: element.Language, code: element.LanguageCode })
+      languages.push({ title: element.Language })
     }
     console.log("h5---")
 
-    let phone = []
+    let phoneNumber = ''
     for (let index = 0; index < (resData.ResumeParserData.PhoneNumber ? resData.ResumeParserData.PhoneNumber.length : 0); index++) {
       const element = resData.ResumeParserData.PhoneNumber[index];
-      phone.push({ phoneNumber: element.Number, ISDCode: element.ISDCode, originalNumber: element.OriginalNumber, formattedNumber: element.FormattedNumber, type: element.Type, confidenceScore: element.ConfidenceScore })
+      if (element.Number && element.Number !== '') {
+        phoneNumber = element.Number;
+      }
     }
-    let email = []
+    let email = '';
     for (let index = 0; index < (resData.ResumeParserData.Email ? resData.ResumeParserData.Email.length : 0); index++) {
       const element = resData.ResumeParserData.Email[index];
-      email.push({ email: element.EmailAddress, confidenceScore: element.ConfidenceScore })
+      if (element.EmailAddress && element.EmailAddress !== '') {
+        email = element.EmailAddress;
+      }
     }
 
     let website = []
@@ -198,15 +204,15 @@ export class ResumeService {
     }
 
 
-    let currentSalary = null
+    let currentSalary = ''
     if (resData.ResumeParserData.CurrentSalary) {
       const element = resData.ResumeParserData.CurrentSalary;
-      currentSalary = { amount: element.Amount, symbol: element.Symbol, currency: element.Currency, unit: element.Unit, text: element.Text }
+      currentSalary = element.Amount;
     }
-    let expectedSalary = null
+    let expectedSalary = ''
     if (resData.ResumeParserData.ExpectedSalary) {
       const element = resData.ResumeParserData.ExpectedSalary;
-      expectedSalary = { amount: element.Amount, symbol: element.Symbol, currency: element.Currency, unit: element.Unit, text: element.Text }
+      expectedSalary = element.Amount;
     }
     //SegregatedSkill
     let skills = []
@@ -215,11 +221,19 @@ export class ResumeService {
       skills.push({ type: element.Type, skill: element.Skill, ontology: element.Ontology, alias: element.Alias, formattedName: element.FormattedName, evidence: element.Evidence, lastUsed: element.LastUsed, experienceInMonths: element.ExperienceInMonths })
     }
 
-    let address = []
+    let address = '';
+    let state = '';
+    let country = '';
+    let city = '';
     for (let index = 0; index < (resData.ResumeParserData.Address ? resData.ResumeParserData.Address.length : 0); index++) {
       const element = resData.ResumeParserData.Address[index];
-      address.push({ street: element.Street, city: element.City, state: element.State, stateIsoCode: element.StateIsoCode, country: element.Country, zipCode: element.ZipCode, formattedAddress: element.FormattedAddress, type: element.Type, isoAlpha2: element.CountryCode ? element.CountryCode.IsoAlpha2 : "", isoAlpha3: element.CountryCode ? element.CountryCode.IsoAlpha3 : "", uNCode: element.CountryCode ? element.CountryCode.UNCode : "", confidenceScore: element.ConfidenceScore })
+      city = element.City;
+      state = element.State;
+      country = element.Country;
+      address = element.FormattedAddress;
     }
+
+
     console.log("h6---")
 
     let qualifications = []
@@ -328,16 +342,7 @@ export class ResumeService {
             jobAlias: element.JobProfile.Alias
           };
         }
-        let relatedSkills = []
-        for (let index2 = 0; index2 < element.JobProfile.RelatedSkills.length; index2++) {
-          const element2 = element.JobProfile.RelatedSkills[index2];
-          let ne = {
-            skill: element2.Skill,
-            proficiencyLevel: element2.ProficiencyLevel
 
-          }
-          relatedSkills.push(ne)
-        }
         nObj = {
           ...nObj,
           jobPeriod: element.JobPeriod,
@@ -346,20 +351,14 @@ export class ResumeService {
           endDate: element.EndDate,
           isCurrentEmployer: element.IsCurrentEmployer,
           jobDescription: element.JobDescription,
-          relatedSkills: relatedSkills
         }
 
 
       }
-      let projects = []
+      let projects = ''
       for (let index = 0; index < element.Projects.length; index++) {
         const element2 = element.Projects[index];
-        let ne = {
-          usedSkills: element2.UsedSkills,
-          projectName: element2.ProjectName,
-          teamSize: element2.TeamSize
-        }
-        projects.push(ne)
+        projects = projects + "," + element2.ProjectName;
       }
       nObj = {
         ...nObj,
@@ -369,94 +368,89 @@ export class ResumeService {
       experience.push(nObj)
     }
 
+    // let currentLocation = []
+    // for (let index4 = 0; index4 < (resData.ResumeParserData.CurrentLocation ? resData.ResumeParserData.CurrentLocation.length : 0); index4++) {
+    //   const element = resData.ResumeParserData.CurrentLocation[index4];
+    //   let iObj = {
+    //     city: element.City,
+    //     state: element.State,
+    //     stateIsoCode: element.StateIsoCode,
+    //     country: element.Country,
+    //     IsoAlpha2: element.City,
+    //     IsoAlpha3: element.City,
+    //     UNCode: element.City,
+    //   }
+    //   if (element.CountryCode) {
+    //     iObj = {
+    //       ...iObj,
+    //       IsoAlpha2: element.CountryCode.IsoAlpha2,
+    //       IsoAlpha3: element.CountryCode.IsoAlpha3,
+    //       UNCode: element.CountryCode.UNCode,
+    //     }
+    //   }
+    //   currentLocation.push(iObj)
+    // }
 
-    let currentLocation = []
-    for (let index4 = 0; index4 < (resData.ResumeParserData.CurrentLocation ? resData.ResumeParserData.CurrentLocation.length : 0); index4++) {
-      const element = resData.ResumeParserData.CurrentLocation[index4];
-      let iObj = {
-        city: element.City,
-        state: element.State,
-        stateIsoCode: element.StateIsoCode,
-        country: element.Country,
-        IsoAlpha2: element.City,
-        IsoAlpha3: element.City,
-        UNCode: element.City,
-      }
-      if (element.CountryCode) {
-        iObj = {
-          ...iObj,
-          IsoAlpha2: element.CountryCode.IsoAlpha2,
-          IsoAlpha3: element.CountryCode.IsoAlpha3,
-          UNCode: element.CountryCode.UNCode,
-        }
-      }
-      currentLocation.push(iObj)
-    }
-
-    let preferredLocation = []
-    for (let index4 = 0; index4 < (resData.ResumeParserData.PreferredLocation ? resData.ResumeParserData.PreferredLocation.length : 0); index4++) {
-      const element = resData.ResumeParserData.PreferredLocation[index4];
-      let iObj = {
-        city: element.City,
-        state: element.State,
-        stateIsoCode: element.StateIsoCode,
-        country: element.Country,
-        IsoAlpha2: element.City,
-        IsoAlpha3: element.City,
-        UNCode: element.City,
-      }
-      if (element.CountryCode) {
-        iObj = {
-          ...iObj,
-          IsoAlpha2: element.CountryCode.IsoAlpha2,
-          IsoAlpha3: element.CountryCode.IsoAlpha3,
-          UNCode: element.CountryCode.UNCode,
-        }
-      }
-      preferredLocation.push(iObj)
-    }
+    // let preferredLocation = []
+    // for (let index4 = 0; index4 < (resData.ResumeParserData.PreferredLocation ? resData.ResumeParserData.PreferredLocation.length : 0); index4++) {
+    //   const element = resData.ResumeParserData.PreferredLocation[index4];
+    //   let iObj = {
+    //     city: element.City,
+    //     state: element.State,
+    //     stateIsoCode: element.StateIsoCode,
+    //     country: element.Country,
+    //     IsoAlpha2: element.City,
+    //     IsoAlpha3: element.City,
+    //     UNCode: element.City,
+    //   }
+    //   if (element.CountryCode) {
+    //     iObj = {
+    //       ...iObj,
+    //       IsoAlpha2: element.CountryCode.IsoAlpha2,
+    //       IsoAlpha3: element.CountryCode.IsoAlpha3,
+    //       UNCode: element.CountryCode.UNCode,
+    //     }
+    //   }
+    //   preferredLocation.push(iObj)
+    // }
 
     let obj = {
       userId,
+      city,
+      state,
+      country,
+      address,
       resumeFileName, resumeLanguage, resumeLanguageCode, parsingDate, fullName, titleName, firstName, middleName, lastName, formattedName, nameScore, dateOfBirth, gender, fatherName, motherName, maritalStatus, nationality, uniqueId, licenseNo, passportNumber, dateOfExpiry, dateOfIssue, placeOfIssue, panNo, visaStatus, category, subCategory, certificationText, qualification, skillBlock, skillKeywords, experienceText, currentEmployer, jobProfile, workedPeriodTotalExperienceInMonths, workedPeriodTotalExperienceInYear, workedPeriodTotalExperienceRange, gapPeriod, averageStay, longestStay, summary, executiveSummary, managementSummary, coverLetter, publication, availability, hobbies, objectives, achievement, references
     }
 
-    if (currentLocation) {
-      obj['currentLocation'] = [...currentLocation]
-    }
-    if (preferredLocation) {
-      obj['preferredLocation'] = [...preferredLocation]
-    }
+    // if (currentLocation) {
+    //   obj['currentLocation'] = [...currentLocation]
+    // }
+    // if (preferredLocation) {
+    //   obj['preferredLocation'] = [...preferredLocation]
+    // }
     if (experience) {
       obj['experience'] = [...experience]
     }
     if (certification) {
       obj['certification'] = { ...certification }
     }
-    if (expectedSalary) {
-      obj['expectedSalary'] = { ...expectedSalary }
-    }
-    if (currentSalary) {
-      obj['currentSalary'] = { ...currentSalary }
-    }
+    obj['expectedSalary'] = expectedSalary;
+    obj['currentSalary'] = currentSalary;
+    obj['emailAddress'] = email;
+    obj['phoneNumber'] = phoneNumber;
+
     if (website) {
-      obj['website'] = [...website]
+      obj['website'] = JSON.stringify(website);
     }
-    if (email) {
-      obj['email'] = [...email]
-    }
-    if (phone) {
-      obj['phone'] = [...phone]
-    }
+
     if (languages) {
-      obj['languages'] = [...languages]
+      obj['languages'] = JSON.stringify(languages);
     }
     if (skills) {
       obj['skills'] = [...skills]
     }
-    if (address) {
-      obj['address'] = [...address]
-    }
+
     if (qualifications) {
       obj['qualifications'] = [...qualifications]
     }
@@ -466,771 +460,6 @@ export class ResumeService {
     let newJob: any = this.resumeRepository.create({ ...obj })
     let aw = await this.resumeRepository.save(newJob);
     return aw;
-    // var reqPost = https.request(optionspost, async function (res) {
-    //   console.log("statusCode: ", res.statusCode);
-    //   // uncomment it for header details
-    //   //console.log("headers: ", res.headers);
-    //   var data = "";
-    //   res.on('data', function (d) {
-    //     console.info('POST result:\n', d);
-    //     data = data + d;
-    //     console.log(data)
-    //     //process.stdout.write(d);
-
-
-    //   });
-    //   res.on('end', async function () {
-
-
-    //     fs.writeFile(`./${Date.now().toString()}test.json`, data, err => {
-    //       if (err) {
-    //         console.error(err);
-    //       }
-    //       // file written successfully
-    //     });
-    //     const resData = JSON.parse(data);
-    //     let resumeFileName = resData.ResumeParserData.ResumeFileName
-    //     let resumeLanguage = resData.ResumeParserData.ResumeLanguage ? resData.ResumeParserData.ResumeLanguage.Language : "";
-    //     let resumeLanguageCode = resData.ResumeParserData.ResumeLanguage ? resData.ResumeParserData.ResumeLanguage.LanguageCode : "";
-    //     let parsingDate = resData.ResumeParserData.ParsingDate;
-    //     let fullName = resData.ResumeParserData.Name.FullName;
-    //     let titleName = resData.ResumeParserData.Name.TitleName;
-    //     let firstName = resData.ResumeParserData.Name.FirstName;
-    //     let middleName = resData.ResumeParserData.Name.MiddleName;
-    //     let lastName = resData.ResumeParserData.Name.LastName;
-    //     let formattedName = resData.ResumeParserData.Name.FormattedName;
-    //     let nameScore = resData.ResumeParserData.Name.ConfidenceScore;
-    //     let dateOfBirth = resData.ResumeParserData.DateOfBirth;
-    //     let gender = resData.ResumeParserData.Gender;
-    //     let fatherName = resData.ResumeParserData.FatherName;
-    //     let motherName = resData.ResumeParserData.MotherName;
-    //     let maritalStatus = resData.ResumeParserData.MaritalStatus;
-    //     let nationality = resData.ResumeParserData.Nationality;
-    //     let uniqueId = resData.ResumeParserData.UniqueID;
-    //     let licenseNo = resData.ResumeParserData.LicenseNo;
-    //     let passportNumber = resData.ResumeParserData.PassportDetail ? resData.ResumeParserData.PassportDetail.PassportNumber : "";
-    //     let dateOfExpiry = resData.ResumeParserData.PassportDetail ? resData.ResumeParserData.PassportDetail.DateOfExpiry : "";
-    //     let dateOfIssue = resData.ResumeParserData.PassportDetail ? resData.ResumeParserData.PassportDetail.DateOfIssue : "";
-    //     let placeOfIssue = resData.ResumeParserData.PassportDetail ? resData.ResumeParserData.PassportDetail.PlaceOfIssue : "";
-    //     let panNo = resData.ResumeParserData.PanNo;
-    //     let visaStatus = resData.ResumeParserData.VisaStatus;
-    //     let category = resData.ResumeParserData.Category;
-    //     let subCategory = resData.ResumeParserData.SubCategory;
-    //     let certificationText = resData.ResumeParserData.Certification;
-    //     let qualification = resData.ResumeParserData.Qualification;
-    //     let skillBlock = resData.ResumeParserData.SkillBlock;
-    //     let skillKeywords = resData.ResumeParserData.SkillKeywords;
-    //     let experienceText = resData.ResumeParserData.Experience;
-    //     let currentEmployer = resData.ResumeParserData.CurrentEmployer;
-    //     let jobProfile = resData.ResumeParserData.JobProfile;
-    //     let workedPeriodTotalExperienceInMonths = resData.ResumeParserData.WorkedPeriod ? resData.ResumeParserData.WorkedPeriod.TotalExperienceInMonths : "";
-    //     let workedPeriodTotalExperienceInYear = resData.ResumeParserData.WorkedPeriod ? resData.ResumeParserData.WorkedPeriod.TotalExperienceInYear : "";
-    //     let workedPeriodTotalExperienceRange = resData.ResumeParserData.WorkedPeriod ? resData.ResumeParserData.WorkedPeriod.TotalExperienceRange : "";
-    //     let gapPeriod = resData.ResumeParserData.GapPeriod;
-    //     let averageStay = resData.ResumeParserData.AverageStay;
-    //     let longestStay = resData.ResumeParserData.LongestStay;
-    //     let summary = resData.ResumeParserData.Summary;
-    //     let executiveSummary = resData.ResumeParserData.ExecutiveSummary;
-    //     let managementSummary = resData.ResumeParserData.ManagementSummary;
-    //     let coverLetter = resData.ResumeParserData.Coverletter;
-    //     let publication = resData.ResumeParserData.Publication;
-    //     let availability = resData.ResumeParserData.Availability;
-    //     let hobbies = resData.ResumeParserData.Hobbies;
-    //     let objectives = resData.ResumeParserData.Objectives;
-    //     let achievement = resData.ResumeParserData.Achievements;
-    //     let references = resData.ResumeParserData.References;
-
-    //     let languages = []
-    //     for (let index = 0; index < (resData.ResumeParserData.LanguageKnown ? resData.ResumeParserData.LanguageKnown.length : 0); index++) {
-    //       const element = resData.ResumeParserData.LanguageKnown[index];
-    //       languages.push({ title: element.Language, code: element.LanguageCode })
-    //     }
-
-    //     let phone = []
-    //     for (let index = 0; index < (resData.ResumeParserData.PhoneNumber ? resData.ResumeParserData.PhoneNumber.length : 0); index++) {
-    //       const element = resData.ResumeParserData.PhoneNumber[index];
-    //       phone.push({ phoneNumber: element.Number, ISDCode: element.ISDCode, originalNumber: element.OriginalNumber, formattedNumber: element.FormattedNumber, type: element.Type, confidenceScore: element.ConfidenceScore })
-    //     }
-    //     let email = []
-    //     for (let index = 0; index < (resData.ResumeParserData.Email ? resData.ResumeParserData.Email.length : 0); index++) {
-    //       const element = resData.ResumeParserData.Email[index];
-    //       email.push({ email: element.EmailAddress, confidenceScore: element.ConfidenceScore })
-    //     }
-
-    //     let website = []
-    //     for (let index = 0; index < (resData.ResumeParserData.WebSite ? resData.ResumeParserData.WebSite.length : 0); index++) {
-    //       const element = resData.ResumeParserData.WebSite[index];
-    //       website.push({ type: element.Type, url: element.Url })
-    //     }
-
-
-    //     let currentSalary = null
-    //     if (resData.ResumeParserData.CurrentSalary) {
-    //       const element = resData.ResumeParserData.CurrentSalary;
-    //       currentSalary = { amount: element.Amount, symbol: element.Symbol, currency: element.Currency, unit: element.Unit, text: element.Text }
-    //     }
-    //     let expectedSalary = null
-    //     if (resData.ResumeParserData.ExpectedSalary) {
-    //       const element = resData.ResumeParserData.ExpectedSalary;
-    //       expectedSalary = { amount: element.Amount, symbol: element.Symbol, currency: element.Currency, unit: element.Unit, text: element.Text }
-    //     }
-    //     //SegregatedSkill
-    //     let skills = []
-    //     for (let index = 0; index < (resData.ResumeParserData.SegregatedSkill ? resData.ResumeParserData.SegregatedSkill.length : 0); index++) {
-    //       const element = resData.ResumeParserData.SegregatedSkill[index];
-    //       skills.push({ type: element.Type, skill: element.Skill, ontology: element.Ontology, alias: element.Alias, formattedName: element.FormattedName, evidence: element.Evidence, lastUsed: element.LastUsed, experienceInMonths: element.ExperienceInMonths })
-    //     }
-
-    //     let address = []
-    //     for (let index = 0; index < (resData.ResumeParserData.Address ? resData.ResumeParserData.Address.length : 0); index++) {
-    //       const element = resData.ResumeParserData.Address[index];
-    //       address.push({ street: element.Street, city: element.City, state: element.State, stateIsoCode: element.StateIsoCode, country: element.Country, zipCode: element.ZipCode, formattedAddress: element.FormattedAddress, type: element.Type, isoAlpha2: element.CountryCode ? element.CountryCode.IsoAlpha2 : "", isoAlpha3: element.CountryCode ? element.CountryCode.IsoAlpha3 : "", uNCode: element.CountryCode ? element.CountryCode.UNCode : "", confidenceScore: element.ConfidenceScore })
-    //     }
-    //     let qualifications = []
-    //     for (let index = 0; index < (resData.ResumeParserData.SegregatedQualification ? resData.ResumeParserData.SegregatedQualification.length : 0); index++) {
-    //       const element: any = resData.ResumeParserData.SegregatedQualification[index];
-    //       let nObj = {};
-    //       if (element.Institution) {
-    //         nObj = {
-    //           ...nObj,
-    //           institutionName: element.Institution.Name,
-    //           institutionConfidenceScore: element.Institution.ConfidenceScore,
-    //           institutionType: element.Institution.Type,
-    //         };
-    //         if (element.Institution.Location) {
-    //           nObj = {
-    //             ...nObj,
-    //             institutionCity: element.Institution.Location.City,
-    //             institutionState: element.Institution.Location.State,
-    //             institutionStateIsoCode: element.Institution.Location.StateIsoCode,
-    //             institutionCountry: element.Institution.Location.Country
-    //           };
-    //           if (element.Institution.Location.CountryCode) {
-    //             nObj = {
-    //               ...nObj,
-    //               institutionIsoAlpha2: element.Institution.Location.CountryCode.IsoAlpha2,
-    //               institutionIsoAlpha3: element.Institution.Location.CountryCode.IsoAlpha3,
-    //               institutionUNCode: element.Institution.Location.CountryCode.UNCode,
-    //             };
-    //           }
-    //         }
-
-    //       }
-
-    //       if (element && element.SubInstitution) {
-    //         nObj = {
-    //           ...nObj,
-    //           subInstitutionName: element.SubInstitution.Name,
-    //           subInstitutionConfidenceScore: element.SubInstitution.ConfidenceScore,
-    //           subInstitutionType: element.SubInstitution.Type,
-    //         };
-    //         if (element.SubInstitution.Location) {
-    //           nObj = {
-    //             ...nObj,
-    //             subInstitutionCity: element.SubInstitution.Location.City,
-    //             subInstitutionState: element.SubInstitution.Location.State,
-    //             subInstitutionStateIsoCode: element.SubInstitution.Location.StateIsoCode,
-    //             subInstitutionCountry: element.SubInstitution.Location.Country
-    //           };
-    //           if (element.SubInstitution.Location.CountryCode) {
-    //             nObj = {
-    //               ...nObj,
-    //               subInstitutionIsoAlpha2: element.SubInstitution.Location.CountryCode.IsoAlpha2,
-    //               subInstitutionIsoAlpha3: element.SubInstitution.Location.CountryCode.IsoAlpha3,
-    //               subInstitutionUNCode: element.SubInstitution.Location.CountryCode.UNCode,
-    //             };
-    //           }
-    //         }
-    //       }
-    //       if (element.Degree) {
-    //         nObj = {
-    //           ...nObj,
-    //           degreeName: element.Degree.DegreeName,
-    //           normalizeDegree: element.Degree.NormalizeDegree,
-    //           degreeScore: element.Degree.ConfidenceScore,
-    //           specialization: element.Degree.Specialization,
-    //           formattedDegreePeriod: element.FormattedDegreePeriod,
-    //           startDate: element.StartDate,
-    //           endDate: element.EndDate
-    //         };
-    //       }
-    //       if (element.Aggregate) {
-    //         nObj = {
-    //           ...nObj,
-    //           aggregateValue: element.Aggregate.Value,
-    //           aggregateMeasureType: element.Aggregate.MeasureType,
-
-    //         };
-    //       }
-
-    //       qualifications.push(nObj)
-    //     }
-    //     let certification = [];
-
-    //     for (let index = 0; index < (resData.ResumeParserData.SegregatedCertification ? resData.ResumeParserData.SegregatedCertification.length : 0); index++) {
-    //       const element = resData.ResumeParserData.SegregatedCertification[index];
-    //       certification.push({ title: element.CertificationTitle, authority: element.Authority, certificationCode: element.CertificationCode, isExpiry: element.IsExpiry, startDate: element.StartDate, endDate: element.EndDate, certificationUrl: element.CertificationUrl })
-    //     }
-
-    //     let experience = []
-    //     for (let index = 0; index < (resData.ResumeParserData.SegregatedExperience ? resData.ResumeParserData.SegregatedExperience.length : 0); index++) {
-    //       const element: any = resData.ResumeParserData.SegregatedExperience[index];
-    //       let nObj = {};
-    //       if (element.Employer) {
-    //         nObj = {
-    //           ...nObj,
-    //           employerName: element.Employer.EmployerName,
-    //           employerConfidenceScore: element.Employer.ConfidenceScore,
-    //           employerFormattedName: element.Employer.FormattedName
-    //         };
-    //         if (element.JobProfile) {
-    //           nObj = {
-    //             ...nObj,
-    //             title: element.JobProfile.Title,
-    //             jobConfidenceScore: element.JobProfile.ConfidenceScore,
-    //             jobFormattedName: element.JobProfile.FormattedName,
-    //             jobAlias: element.JobProfile.Alias
-    //           };
-    //         }
-    //         let relatedSkills = []
-    //         for (let index2 = 0; index2 < element.JobProfile.RelatedSkills.length; index2++) {
-    //           const element2 = element.JobProfile.RelatedSkills[index2];
-    //           let ne = {
-    //             skill: element2.Skill,
-    //             proficiencyLevel: element2.ProficiencyLevel
-
-    //           }
-    //           relatedSkills.push(ne)
-    //         }
-    //         nObj = {
-    //           ...nObj,
-    //           jobPeriod: element.JobPeriod,
-    //           formattedJobPeriod: element.FormattedJobPeriod,
-    //           startDate: element.StartDate,
-    //           endDate: element.EndDate,
-    //           isCurrentEmployer: element.IsCurrentEmployer,
-    //           jobDescription: element.JobDescription,
-    //           relatedSkills: relatedSkills
-    //         }
-
-
-    //       }
-    //       let projects = []
-    //       for (let index = 0; index < element.Projects.length; index++) {
-    //         const element2 = element.Projects[index];
-    //         let ne = {
-    //           usedSkills: element2.UsedSkills,
-    //           projectName: element2.ProjectName,
-    //           teamSize: element2.TeamSize
-    //         }
-    //         projects.push(ne)
-    //       }
-    //       nObj = {
-    //         ...nObj,
-    //         projects: projects
-    //       }
-
-    //       experience.push(nObj)
-    //     }
-
-
-    //     let currentLocation = []
-    //     for (let index4 = 0; index4 < (resData.ResumeParserData.CurrentLocation ? resData.ResumeParserData.CurrentLocation.length : 0); index4++) {
-    //       const element = resData.ResumeParserData.CurrentLocation[index4];
-    //       let iObj = {
-    //         city: element.City,
-    //         state: element.State,
-    //         stateIsoCode: element.StateIsoCode,
-    //         country: element.Country,
-    //         IsoAlpha2: element.City,
-    //         IsoAlpha3: element.City,
-    //         UNCode: element.City,
-    //       }
-    //       if (element.CountryCode) {
-    //         iObj = {
-    //           ...iObj,
-    //           IsoAlpha2: element.CountryCode.IsoAlpha2,
-    //           IsoAlpha3: element.CountryCode.IsoAlpha3,
-    //           UNCode: element.CountryCode.UNCode,
-    //         }
-    //       }
-    //       currentLocation.push(iObj)
-    //     }
-
-    //     let preferredLocation = []
-    //     for (let index4 = 0; index4 < (resData.ResumeParserData.PreferredLocation ? resData.ResumeParserData.PreferredLocation.length : 0); index4++) {
-    //       const element = resData.ResumeParserData.PreferredLocation[index4];
-    //       let iObj = {
-    //         city: element.City,
-    //         state: element.State,
-    //         stateIsoCode: element.StateIsoCode,
-    //         country: element.Country,
-    //         IsoAlpha2: element.City,
-    //         IsoAlpha3: element.City,
-    //         UNCode: element.City,
-    //       }
-    //       if (element.CountryCode) {
-    //         iObj = {
-    //           ...iObj,
-    //           IsoAlpha2: element.CountryCode.IsoAlpha2,
-    //           IsoAlpha3: element.CountryCode.IsoAlpha3,
-    //           UNCode: element.CountryCode.UNCode,
-    //         }
-    //       }
-    //       preferredLocation.push(iObj)
-    //     }
-
-    //     let obj = {
-    //       resumeFileName, resumeLanguage, resumeLanguageCode, parsingDate, fullName, titleName, firstName, middleName, lastName, formattedName, nameScore, dateOfBirth, gender, fatherName, motherName, maritalStatus, nationality, uniqueId, licenseNo, passportNumber, dateOfExpiry, dateOfIssue, placeOfIssue, panNo, visaStatus, category, subCategory, certificationText, qualification, skillBlock, skillKeywords, experienceText, currentEmployer, jobProfile, workedPeriodTotalExperienceInMonths, workedPeriodTotalExperienceInYear, workedPeriodTotalExperienceRange, gapPeriod, averageStay, longestStay, summary, executiveSummary, managementSummary, coverLetter, publication, availability, hobbies, objectives, achievement, references
-    //     }
-
-    //     if (currentLocation) {
-    //       obj['currentLocation'] = [...currentLocation]
-    //     }
-    //     if (preferredLocation) {
-    //       obj['preferredLocation'] = [...preferredLocation]
-    //     }
-    //     if (experience) {
-    //       obj['experience'] = [...experience]
-    //     }
-    //     if (certification) {
-    //       obj['certification'] = { ...certification }
-    //     }
-    //     if (expectedSalary) {
-    //       obj['expectedSalary'] = { ...expectedSalary }
-    //     }
-    //     if (currentSalary) {
-    //       obj['currentSalary'] = { ...currentSalary }
-    //     }
-    //     if (website) {
-    //       obj['website'] = [...website]
-    //     }
-    //     if (email) {
-    //       obj['email'] = [...email]
-    //     }
-    //     if (phone) {
-    //       obj['phone'] = [...phone]
-    //     }
-    //     if (languages) {
-    //       obj['languages'] = [...languages]
-    //     }
-    //     if (skills) {
-    //       obj['skills'] = [...skills]
-    //     }
-    //     if (address) {
-    //       obj['address'] = [...address]
-    //     }
-    //     if (qualifications) {
-    //       obj['qualifications'] = [...qualifications]
-    //     }
-
-    //     // return obj;
-
-    //     let newJob: any = this.resumeRepository.create({ ...obj })
-    //     console.log(newJob)
-    //     let aw = await this.resumeRepository.save(newJob);
-    //     console.log("Reee", aw)
-    //     // return aw;
-
-    //     // console.info(resumeParserData.ResumeParserData.ResumeLanguage);
-    //     // console.info(resumeParserData.ResumeParserData.ResumeCountry);
-    //     // console.info(resumeParserData.ResumeParserData.CountryCode);
-    //     // console.info(resumeParserData.ResumeParserData.Name);
-    //     // console.info(resumeParserData.ResumeParserData.LanguageKnown);
-    //     // console.info(resumeParserData.ResumeParserData.PassportDetail);
-    //     // console.info(resumeParserData.ResumeParserData.Email);
-    //     // console.info(resumeParserData.ResumeParserData.PhoneNumber);
-    //     // console.info(resumeParserData.ResumeParserData.WebSite);
-    //     // console.info(resumeParserData.ResumeParserData.Address);
-    //     // console.info(resumeParserData.ResumeParserData.CurrentSalary);
-    //     // console.info(resumeParserData.ResumeParserData.ExpectedSalary);
-    //     // console.info(resumeParserData.ResumeParserData.Location);
-    //     // console.info(resumeParserData.ResumeParserData.Institution);
-    //     // console.info(resumeParserData.ResumeParserData.SubInstitution);
-    //     // console.info(resumeParserData.ResumeParserData.Degree);
-    //     // console.info(resumeParserData.ResumeParserData.Aggregate);
-    //     // console.info(resumeParserData.ResumeParserData.SegregatedQualification);
-    //     // console.info(resumeParserData.ResumeParserData.SegregatedCertification);
-    //     // console.info(resumeParserData.ResumeParserData.SegregatedSkill);
-    //     // console.info(resumeParserData.ResumeParserData.Employer);
-    //     // console.info(resumeParserData.ResumeParserData.RelatedSkills);
-    //     // console.info(resumeParserData.ResumeParserData.jobProfile);
-    //     // console.info(resumeParserData.ResumeParserData.Projects);
-    //     // console.info(resumeParserData.ResumeParserData.SegregatedExperience);
-    //     // console.info(resumeParserData.ResumeParserData.WorkedPeriod);
-    //     // console.info(resumeParserData.ResumeParserData.SegregatedPublication);
-    //     // console.info(resumeParserData.ResumeParserData.CurrentLocation);
-    //     // console.info(resumeParserData.ResumeParserData.PreferredLocation);
-    //     // console.info(resumeParserData.ResumeParserData.SegregatedAchievement);
-    //     // console.info(resumeParserData.ResumeParserData.EmailInfo);
-    //     // console.info(resumeParserData.ResumeParserData.Recommendations);
-    //     // console.info(resumeParserData.ResumeParserData.CandidateImage);
-    //     // console.info(resumeParserData.ResumeParserData.TemplateOutput);
-    //     // console.info(resumeParserData.ResumeParserData.ApiInfo);
-    //   });
-    // });
-
-    // // write the json data
-    // reqPost.write(jsonObject);
-
-
-
-    // reqPost.end();
-    // reqPost.on('error', function (e) {
-    //   console.error(e);
-    // });
-
-
-
-
-
-    return data.toString('base64');
-  }
-  async reStructureData(resData) {
-    let resumeFileName = resData.ResumeParserData.ResumeFileName
-    let resumeLanguage = resData.ResumeParserData.ResumeLanguage ? resData.ResumeParserData.ResumeLanguage.Language : "";
-    let resumeLanguageCode = resData.ResumeParserData.ResumeLanguage ? resData.ResumeParserData.ResumeLanguage.LanguageCode : "";
-    let parsingDate = resData.ResumeParserData.ParsingDate;
-    let fullName = resData.ResumeParserData.Name.FullName;
-    let titleName = resData.ResumeParserData.Name.TitleName;
-    let firstName = resData.ResumeParserData.Name.FirstName;
-    let middleName = resData.ResumeParserData.Name.MiddleName;
-    let lastName = resData.ResumeParserData.Name.LastName;
-    let formattedName = resData.ResumeParserData.Name.FormattedName;
-    let nameScore = resData.ResumeParserData.Name.ConfidenceScore;
-    let dateOfBirth = resData.ResumeParserData.DateOfBirth;
-    let gender = resData.ResumeParserData.Gender;
-    let fatherName = resData.ResumeParserData.FatherName;
-    let motherName = resData.ResumeParserData.MotherName;
-    let maritalStatus = resData.ResumeParserData.MaritalStatus;
-    let nationality = resData.ResumeParserData.Nationality;
-    let uniqueId = resData.ResumeParserData.UniqueID;
-    let licenseNo = resData.ResumeParserData.LicenseNo;
-    let passportNumber = resData.ResumeParserData.PassportDetail ? resData.ResumeParserData.PassportDetail.PassportNumber : "";
-    let dateOfExpiry = resData.ResumeParserData.PassportDetail ? resData.ResumeParserData.PassportDetail.DateOfExpiry : "";
-    let dateOfIssue = resData.ResumeParserData.PassportDetail ? resData.ResumeParserData.PassportDetail.DateOfIssue : "";
-    let placeOfIssue = resData.ResumeParserData.PassportDetail ? resData.ResumeParserData.PassportDetail.PlaceOfIssue : "";
-    let panNo = resData.ResumeParserData.PanNo;
-    let visaStatus = resData.ResumeParserData.VisaStatus;
-    let category = resData.ResumeParserData.Category;
-    let subCategory = resData.ResumeParserData.SubCategory;
-    let certificationText = resData.ResumeParserData.Certification;
-    let qualification = resData.ResumeParserData.Qualification;
-    let skillBlock = resData.ResumeParserData.SkillBlock;
-    let skillKeywords = resData.ResumeParserData.SkillKeywords;
-    let experienceText = resData.ResumeParserData.Experience;
-    let currentEmployer = resData.ResumeParserData.CurrentEmployer;
-    let jobProfile = resData.ResumeParserData.JobProfile;
-    let workedPeriodTotalExperienceInMonths = resData.ResumeParserData.WorkedPeriod ? resData.ResumeParserData.WorkedPeriod.TotalExperienceInMonths : "";
-    let workedPeriodTotalExperienceInYear = resData.ResumeParserData.WorkedPeriod ? resData.ResumeParserData.WorkedPeriod.TotalExperienceInYear : "";
-    let workedPeriodTotalExperienceRange = resData.ResumeParserData.WorkedPeriod ? resData.ResumeParserData.WorkedPeriod.TotalExperienceRange : "";
-    let gapPeriod = resData.ResumeParserData.GapPeriod;
-    let averageStay = resData.ResumeParserData.AverageStay;
-    let longestStay = resData.ResumeParserData.LongestStay;
-    let summary = resData.ResumeParserData.Summary;
-    let executiveSummary = resData.ResumeParserData.ExecutiveSummary;
-    let managementSummary = resData.ResumeParserData.ManagementSummary;
-    let coverLetter = resData.ResumeParserData.Coverletter;
-    let publication = resData.ResumeParserData.Publication;
-    let availability = resData.ResumeParserData.Availability;
-    let hobbies = resData.ResumeParserData.Hobbies;
-    let objectives = resData.ResumeParserData.Objectives;
-    let achievement = resData.ResumeParserData.Achievements;
-    let references = resData.ResumeParserData.References;
-
-    let languages = []
-    for (let index = 0; index < (resData.ResumeParserData.LanguageKnown ? resData.ResumeParserData.LanguageKnown.length : 0); index++) {
-      const element = resData.ResumeParserData.LanguageKnown[index];
-      languages.push({ title: element.Language, code: element.LanguageCode })
-    }
-
-    let phone = []
-    for (let index = 0; index < (resData.ResumeParserData.PhoneNumber ? resData.ResumeParserData.PhoneNumber.length : 0); index++) {
-      const element = resData.ResumeParserData.PhoneNumber[index];
-      phone.push({ phoneNumber: element.Number, ISDCode: element.ISDCode, originalNumber: element.OriginalNumber, formattedNumber: element.FormattedNumber, type: element.Type, confidenceScore: element.ConfidenceScore })
-    }
-    let email = []
-    for (let index = 0; index < (resData.ResumeParserData.Email ? resData.ResumeParserData.Email.length : 0); index++) {
-      const element = resData.ResumeParserData.Email[index];
-      email.push({ email: element.EmailAddress, confidenceScore: element.ConfidenceScore })
-    }
-
-    let website = []
-    for (let index = 0; index < (resData.ResumeParserData.WebSite ? resData.ResumeParserData.WebSite.length : 0); index++) {
-      const element = resData.ResumeParserData.WebSite[index];
-      website.push({ type: element.Type, url: element.Url })
-    }
-
-
-    let currentSalary = null
-    if (resData.ResumeParserData.CurrentSalary) {
-      const element = resData.ResumeParserData.CurrentSalary;
-      currentSalary = { amount: element.Amount, symbol: element.Symbol, currency: element.Currency, unit: element.Unit, text: element.Text }
-    }
-    let expectedSalary = null
-    if (resData.ResumeParserData.ExpectedSalary) {
-      const element = resData.ResumeParserData.ExpectedSalary;
-      expectedSalary = { amount: element.Amount, symbol: element.Symbol, currency: element.Currency, unit: element.Unit, text: element.Text }
-    }
-    //SegregatedSkill
-    let skills = []
-    for (let index = 0; index < (resData.ResumeParserData.SegregatedSkill ? resData.ResumeParserData.SegregatedSkill.length : 0); index++) {
-      const element = resData.ResumeParserData.SegregatedSkill[index];
-      skills.push({ type: element.Type, skill: element.Skill, ontology: element.Ontology, alias: element.Alias, formattedName: element.FormattedName, evidence: element.Evidence, lastUsed: element.LastUsed, experienceInMonths: element.ExperienceInMonths })
-    }
-
-    let address = []
-    for (let index = 0; index < (resData.ResumeParserData.Address ? resData.ResumeParserData.Address.length : 0); index++) {
-      const element = resData.ResumeParserData.Address[index];
-      address.push({ street: element.Street, city: element.City, state: element.State, stateIsoCode: element.StateIsoCode, country: element.Country, zipCode: element.ZipCode, formattedAddress: element.FormattedAddress, type: element.Type, isoAlpha2: element.CountryCode ? element.CountryCode.IsoAlpha2 : "", isoAlpha3: element.CountryCode ? element.CountryCode.IsoAlpha3 : "", uNCode: element.CountryCode ? element.CountryCode.UNCode : "", confidenceScore: element.ConfidenceScore })
-    }
-    let qualifications = []
-    for (let index = 0; index < (resData.ResumeParserData.SegregatedQualification ? resData.ResumeParserData.SegregatedQualification.length : 0); index++) {
-      const element: any = resData.ResumeParserData.SegregatedQualification[index];
-      let nObj = {};
-      if (element.Institution) {
-        nObj = {
-          ...nObj,
-          institutionName: element.Institution.Name,
-          institutionConfidenceScore: element.Institution.ConfidenceScore,
-          institutionType: element.Institution.Type,
-        };
-        if (element.Institution.Location) {
-          nObj = {
-            ...nObj,
-            institutionCity: element.Institution.Location.City,
-            institutionState: element.Institution.Location.State,
-            institutionStateIsoCode: element.Institution.Location.StateIsoCode,
-            institutionCountry: element.Institution.Location.Country
-          };
-          if (element.Institution.Location.CountryCode) {
-            nObj = {
-              ...nObj,
-              institutionIsoAlpha2: element.Institution.Location.CountryCode.IsoAlpha2,
-              institutionIsoAlpha3: element.Institution.Location.CountryCode.IsoAlpha3,
-              institutionUNCode: element.Institution.Location.CountryCode.UNCode,
-            };
-          }
-        }
-
-      }
-
-      if (element && element.SubInstitution) {
-        nObj = {
-          ...nObj,
-          subInstitutionName: element.SubInstitution.Name,
-          subInstitutionConfidenceScore: element.SubInstitution.ConfidenceScore,
-          subInstitutionType: element.SubInstitution.Type,
-        };
-        if (element.SubInstitution.Location) {
-          nObj = {
-            ...nObj,
-            subInstitutionCity: element.SubInstitution.Location.City,
-            subInstitutionState: element.SubInstitution.Location.State,
-            subInstitutionStateIsoCode: element.SubInstitution.Location.StateIsoCode,
-            subInstitutionCountry: element.SubInstitution.Location.Country
-          };
-          if (element.SubInstitution.Location.CountryCode) {
-            nObj = {
-              ...nObj,
-              subInstitutionIsoAlpha2: element.SubInstitution.Location.CountryCode.IsoAlpha2,
-              subInstitutionIsoAlpha3: element.SubInstitution.Location.CountryCode.IsoAlpha3,
-              subInstitutionUNCode: element.SubInstitution.Location.CountryCode.UNCode,
-            };
-          }
-        }
-      }
-      if (element.Degree) {
-        nObj = {
-          ...nObj,
-          degreeName: element.Degree.DegreeName,
-          normalizeDegree: element.Degree.NormalizeDegree,
-          degreeScore: element.Degree.ConfidenceScore,
-          specialization: element.Degree.Specialization,
-          formattedDegreePeriod: element.FormattedDegreePeriod,
-          startDate: element.StartDate,
-          endDate: element.EndDate
-        };
-      }
-      if (element.Aggregate) {
-        nObj = {
-          ...nObj,
-          aggregateValue: element.Aggregate.Value,
-          aggregateMeasureType: element.Aggregate.MeasureType,
-
-        };
-      }
-
-      qualifications.push(nObj)
-    }
-    let certification = [];
-
-    for (let index = 0; index < (resData.ResumeParserData.SegregatedCertification ? resData.ResumeParserData.SegregatedCertification.length : 0); index++) {
-      const element = resData.ResumeParserData.SegregatedCertification[index];
-      certification.push({ title: element.CertificationTitle, authority: element.Authority, certificationCode: element.CertificationCode, isExpiry: element.IsExpiry, startDate: element.StartDate, endDate: element.EndDate, certificationUrl: element.CertificationUrl })
-    }
-
-    let experience = []
-    for (let index = 0; index < (resData.ResumeParserData.SegregatedExperience ? resData.ResumeParserData.SegregatedExperience.length : 0); index++) {
-      const element: any = resData.ResumeParserData.SegregatedExperience[index];
-      let nObj = {};
-      if (element.Employer) {
-        nObj = {
-          ...nObj,
-          employerName: element.Employer.EmployerName,
-          employerConfidenceScore: element.Employer.ConfidenceScore,
-          employerFormattedName: element.Employer.FormattedName
-        };
-        if (element.JobProfile) {
-          nObj = {
-            ...nObj,
-            title: element.JobProfile.Title,
-            jobConfidenceScore: element.JobProfile.ConfidenceScore,
-            jobFormattedName: element.JobProfile.FormattedName,
-            jobAlias: element.JobProfile.Alias
-          };
-        }
-        let relatedSkills = []
-        for (let index2 = 0; index2 < element.JobProfile.RelatedSkills.length; index2++) {
-          const element2 = element.JobProfile.RelatedSkills[index2];
-          let ne = {
-            skill: element2.Skill,
-            proficiencyLevel: element2.ProficiencyLevel
-
-          }
-          relatedSkills.push(ne)
-        }
-        nObj = {
-          ...nObj,
-          jobPeriod: element.JobPeriod,
-          formattedJobPeriod: element.FormattedJobPeriod,
-          startDate: element.StartDate,
-          endDate: element.EndDate,
-          isCurrentEmployer: element.IsCurrentEmployer,
-          jobDescription: element.JobDescription,
-          relatedSkills: relatedSkills
-        }
-
-
-      }
-      let projects = []
-      for (let index = 0; index < element.Projects.length; index++) {
-        const element2 = element.Projects[index];
-        let ne = {
-          usedSkills: element2.UsedSkills,
-          projectName: element2.ProjectName,
-          teamSize: element2.TeamSize
-        }
-        projects.push(ne)
-      }
-      nObj = {
-        ...nObj,
-        projects: projects
-      }
-
-      experience.push(nObj)
-    }
-
-
-    let currentLocation = []
-    for (let index4 = 0; index4 < (resData.ResumeParserData.CurrentLocation ? resData.ResumeParserData.CurrentLocation.length : 0); index4++) {
-      const element = resData.ResumeParserData.CurrentLocation[index4];
-      let iObj = {
-        city: element.City,
-        state: element.State,
-        stateIsoCode: element.StateIsoCode,
-        country: element.Country,
-        IsoAlpha2: element.City,
-        IsoAlpha3: element.City,
-        UNCode: element.City,
-      }
-      if (element.CountryCode) {
-        iObj = {
-          ...iObj,
-          IsoAlpha2: element.CountryCode.IsoAlpha2,
-          IsoAlpha3: element.CountryCode.IsoAlpha3,
-          UNCode: element.CountryCode.UNCode,
-        }
-      }
-      currentLocation.push(iObj)
-    }
-
-    let preferredLocation = []
-    for (let index4 = 0; index4 < (resData.ResumeParserData.PreferredLocation ? resData.ResumeParserData.PreferredLocation.length : 0); index4++) {
-      const element = resData.ResumeParserData.PreferredLocation[index4];
-      let iObj = {
-        city: element.City,
-        state: element.State,
-        stateIsoCode: element.StateIsoCode,
-        country: element.Country,
-        IsoAlpha2: element.City,
-        IsoAlpha3: element.City,
-        UNCode: element.City,
-      }
-      if (element.CountryCode) {
-        iObj = {
-          ...iObj,
-          IsoAlpha2: element.CountryCode.IsoAlpha2,
-          IsoAlpha3: element.CountryCode.IsoAlpha3,
-          UNCode: element.CountryCode.UNCode,
-        }
-      }
-      preferredLocation.push(iObj)
-    }
-
-    let obj = {
-      resumeFileName, resumeLanguage, resumeLanguageCode, parsingDate, fullName, titleName, firstName, middleName, lastName, formattedName, nameScore, dateOfBirth, gender, fatherName, motherName, maritalStatus, nationality, uniqueId, licenseNo, passportNumber, dateOfExpiry, dateOfIssue, placeOfIssue, panNo, visaStatus, category, subCategory, certificationText, qualification, skillBlock, skillKeywords, experienceText, currentEmployer, jobProfile, workedPeriodTotalExperienceInMonths, workedPeriodTotalExperienceInYear, workedPeriodTotalExperienceRange, gapPeriod, averageStay, longestStay, summary, executiveSummary, managementSummary, coverLetter, publication, availability, hobbies, objectives, achievement, references
-    }
-
-    if (currentLocation) {
-      obj['currentLocation'] = [...currentLocation]
-    }
-    if (preferredLocation) {
-      obj['preferredLocation'] = [...preferredLocation]
-    }
-    if (experience) {
-      obj['experience'] = [...experience]
-    }
-    if (certification) {
-      obj['certification'] = { ...certification }
-    }
-    if (expectedSalary) {
-      obj['expectedSalary'] = { ...expectedSalary }
-    }
-    if (currentSalary) {
-      obj['currentSalary'] = { ...currentSalary }
-    }
-    if (website) {
-      obj['website'] = [...website]
-    }
-    if (email) {
-      obj['email'] = [...email]
-    }
-    if (phone) {
-      obj['phone'] = [...phone]
-    }
-    if (languages) {
-      obj['languages'] = [...languages]
-    }
-    if (skills) {
-      obj['skills'] = [...skills]
-    }
-    if (address) {
-      obj['address'] = [...address]
-    }
-    if (qualifications) {
-      obj['qualifications'] = [...qualifications]
-    }
-
-    // return obj;
-
-    let newJob: any = this.resumeRepository.create({ ...obj })
-    console.log(newJob)
-    let aw = await this.resumeRepository.save(newJob);
-    console.log("Reee", aw)
-    return aw;
-
-
   }
 }
 

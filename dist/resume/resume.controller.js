@@ -47,6 +47,15 @@ let ResumeController = class ResumeController {
     remove(id) {
         return this.resumeService.remove(+id);
     }
+    async deleteByCategory(res) {
+        try {
+            let resp = await this.resumeService.deleteByCategory();
+            return resp;
+        }
+        catch (error) {
+            return error;
+        }
+    }
     uploadFile(body, req, file) {
         return this.resumeService.uploadResume({ id: body.id, file: file.filename, userId: req.user.id });
     }
@@ -93,6 +102,13 @@ __decorate([
     __metadata("design:paramtypes", [String]),
     __metadata("design:returntype", void 0)
 ], ResumeController.prototype, "remove", null);
+__decorate([
+    (0, common_1.Delete)(),
+    __param(0, (0, common_1.Res)()),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", [Object]),
+    __metadata("design:returntype", Promise)
+], ResumeController.prototype, "deleteByCategory", null);
 __decorate([
     (0, swagger_1.ApiOperation)({ summary: 'add access token in authorize (see top right corner on this page) then you can use this endpoint' }),
     (0, swagger_1.ApiExtraModels)(user_login_dto_1.Authorization),

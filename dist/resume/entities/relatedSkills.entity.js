@@ -11,7 +11,6 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.RelatedSkills = void 0;
 const typeorm_1 = require("typeorm");
-const experience_entity_1 = require("./experience.entity");
 let RelatedSkills = class RelatedSkills {
 };
 __decorate([
@@ -26,10 +25,6 @@ __decorate([
     (0, typeorm_1.Column)({ nullable: true }),
     __metadata("design:type", String)
 ], RelatedSkills.prototype, "proficiencyLevel", void 0);
-__decorate([
-    (0, typeorm_1.ManyToOne)(() => experience_entity_1.Experience, (user) => user.relatedSkills),
-    __metadata("design:type", experience_entity_1.Experience)
-], RelatedSkills.prototype, "res", void 0);
 RelatedSkills = __decorate([
     (0, typeorm_1.Entity)('relatedskills')
 ], RelatedSkills);
