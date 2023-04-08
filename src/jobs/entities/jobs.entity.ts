@@ -2,7 +2,7 @@
 import { Qualifications } from 'src/qualification/entities/qualifications.entity';
 import { Column, Entity, JoinColumn, JoinTable, ManyToMany, ManyToOne, OneToMany, PrimaryGeneratedColumn } from 'typeorm';
 import { CreateDateColumn, UpdateDateColumn } from "typeorm";
-
+import {JobCategory} from "./category.entity"
 @Entity()
 export class Job {
     @PrimaryGeneratedColumn('uuid')
@@ -61,9 +61,10 @@ export class Job {
     @Column({ nullable: true })
     category: string;
 
+    @ManyToOne(() => JobCategory, (apJob) => apJob.jobs)
+    job_category: JobCategory;
 
-
-}
+    }
 
 
 

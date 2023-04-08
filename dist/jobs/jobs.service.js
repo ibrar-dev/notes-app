@@ -17,9 +17,11 @@ const common_1 = require("@nestjs/common");
 const typeorm_1 = require("@nestjs/typeorm");
 const typeorm_2 = require("typeorm");
 const jobs_entity_1 = require("./entities/jobs.entity");
+const jobs_category_service_1 = require("./jobs-category.service");
 let JobService = class JobService {
-    constructor(jobsRepository) {
+    constructor(jobsRepository, jobCategoryService) {
         this.jobsRepository = jobsRepository;
+        this.jobCategoryService = jobCategoryService;
     }
     async create(createTourDto) {
         try {
@@ -32,7 +34,9 @@ let JobService = class JobService {
     }
     async createFromCronJob(createTourDto) {
         try {
-            let newJob = this.jobsRepository.create(createTourDto);
+            let newCat = await this.jobCategoryService.create({ title: createTourDto.category, order: 5 });
+            console.log(newCat);
+            let newJob = this.jobsRepository.create(Object.assign(Object.assign({}, createTourDto), { job_category: newCat }));
             await this.jobsRepository.save(newJob);
             return true;
         }
@@ -61,7 +65,7 @@ let JobService = class JobService {
             if (Object.keys(whereClause).length > 0) {
                 filter['where'] = Object.assign({}, whereClause);
             }
-            const [result, total] = await this.jobsRepository.findAndCount(Object.assign(Object.assign({}, filter), { order: { created_at: "DESC" } }));
+            const [result, total] = await this.jobsRepository.findAndCount(Object.assign(Object.assign({}, filter), { order: { created_at: "DESC" }, relations: { job_category: true } }));
             return { page: page, limit: take, total: total, result: result };
         }
         catch (error) {
@@ -81,6 +85,9 @@ let JobService = class JobService {
     async findOne(id) {
         try {
             const result = await this.jobsRepository.findOne({
+                relations: {
+                    job_category: true
+                },
                 where: { id: id }
             });
             return { success: true, result: result };
@@ -104,11 +111,71 @@ let JobService = class JobService {
     }
     async getCategories() {
         try {
-            const res = await this.jobsRepository
-                .createQueryBuilder('job')
-                .select('DISTINCT job.category')
-                .getRawMany();
-            return { result: res };
+            const res = await this.jobCategoryService.find();
+            return res;
+        }
+        catch (error) {
+            console.log("here");
+            return error;
+        }
+    }
+    async getCompanies() {
+        try {
+            const queryBuilder = await this.jobsRepository.createQueryBuilder('job')
+                .select('job.companyName', 'company')
+                .addSelect('COALESCE(job.thumbnail, \'\')', 'thumbnail')
+                .addSelect('COUNT(job.id)', 'jobs')
+                .groupBy('job.companyName,thumbnail')
+                .orderBy('jobs', 'DESC');
+            const result = await queryBuilder.getRawMany();
+            const combinedJobs = result.reduce((acc, curr) => {
+                const existingCompany = acc.find(item => item.company === curr.company);
+                if (existingCompany) {
+                    existingCompany.jobs = Number(existingCompany.jobs) + Number(curr.jobs);
+                    if (curr.thumbnail) {
+                        existingCompany.thumbnail = curr.thumbnail;
+                    }
+                }
+                else {
+                    acc.push(curr);
+                }
+                return acc;
+            }, []);
+            return combinedJobs;
+        }
+        catch (error) {
+            console.log("here");
+            return error;
+        }
+    }
+    async getLatestJobs() {
+        try {
+            const result = await this.jobsRepository.query(`
+      SELECT *
+        FROM (
+          SELECT *,
+                 ROW_NUMBER() OVER (PARTITION BY "jobCategoryId" ORDER BY created_at) AS order_number
+          FROM public.job
+        ) AS j
+        JOIN public.job_category jc ON j."jobCategoryId" = jc.id
+        WHERE j.order_number <= 20
+      `);
+            return result;
+        }
+        catch (error) {
+            console.log("here");
+            return error;
+        }
+    }
+    async getJobsCountByCategory() {
+        try {
+            const result = await this.jobsRepository.query(`
+        SELECT c.title AS category, COUNT(j.id) AS jobs
+        FROM public.job j
+        INNER JOIN job_category c ON j."jobCategoryId" = c.id 
+        GROUP BY c.title
+      `);
+            return result;
         }
         catch (error) {
             console.log("here");
@@ -119,7 +186,8 @@ let JobService = class JobService {
 JobService = __decorate([
     (0, common_1.Injectable)(),
     __param(0, (0, typeorm_1.InjectRepository)(jobs_entity_1.Job)),
-    __metadata("design:paramtypes", [typeorm_2.Repository])
+    __metadata("design:paramtypes", [typeorm_2.Repository,
+        jobs_category_service_1.JobsCategoryService])
 ], JobService);
 exports.JobService = JobService;
 //# sourceMappingURL=jobs.service.js.map

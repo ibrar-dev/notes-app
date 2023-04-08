@@ -50,7 +50,7 @@ export class TaskService {
     let urlsList = [
       "https://api.apify.com/v2/actor-tasks/peerless_protractor~mltask/runs/last/dataset/items?token=apify_api_XhPKZZyP7nTPD1y4SWtdNQYF3QkXHv1jkqa6",
       "https://api.apify.com/v2/actor-tasks/peerless_protractor~aitask/runs/last/dataset/items?token=apify_api_XhPKZZyP7nTPD1y4SWtdNQYF3QkXHv1jkqa6",
-   "https://api.apify.com/v2/actor-tasks/peerless_protractor~datasciencetask/runs/last/dataset/items?token=apify_api_XhPKZZyP7nTPD1y4SWtdNQYF3QkXHv1jkqa6",
+      "https://api.apify.com/v2/actor-tasks/peerless_protractor~datasciencetask/runs/last/dataset/items?token=apify_api_XhPKZZyP7nTPD1y4SWtdNQYF3QkXHv1jkqa6",
       "https://api.apify.com/v2/actor-tasks/peerless_protractor~blockchaintask/runs/last/dataset/items?token=apify_api_XhPKZZyP7nTPD1y4SWtdNQYF3QkXHv1jkqa6"
     ]
 
@@ -70,7 +70,7 @@ export class TaskService {
                   if (element && element.searchQuery && element.searchQuery.term) {
                     category = element.searchQuery.term;
                     if (category) {
-                      category = category.replace("%20"," ").replace("%"," ").toLowerCase();
+                      category = category.replace("%20", " ").replace("%", " ").toLowerCase();
                     }
                   }
 

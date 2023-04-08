@@ -1,100 +1,21 @@
-id
-resumeFileName
-resumeLanguage
-resumeLanguageCode
-parsingDate
-fullName
-titleName
-firstName
-middleName
-lastName
-formattedName
-dateOfBirth
-gender
-fatherName
-motherName
-maritalStatus
-nationality
-uniqueId
-licenseNo
-passportNumber
-dateOfExpiry
-dateOfIssue
-placeOfIssue
-panNo
-visaStatus
-category
-subCategory
-qualification
-certificationText
-skillBlock
-skillKeywords
-experienceText
-currentEmployer
-jobProfile
-workedPeriodTotalExperienceInMonths
-workedPeriodTotalExperienceInYear
-workedPeriodTotalExperienceRange
-gapPeriod
-averageStay
-longestStay
-summary
-executiveSummary
-managementSummary
-coverLetter
-publication
-availability
-hobbies
-objectives
-achievement
-references
-userId
+    main Table
+    
+    resumes
 
+    @OneToMany
+    qualifications
 
-    languages: Language[];
+    @OneToMany
+    certification
 
-    @OneToMany(() => Phone, (ph) => ph.res, { cascade: true })
-    phone: Phone[]
+    @OneToMany
+    skills
 
-    @OneToMany(() => Email, (ph) => ph.res, { cascade: true })
-    email: Email[]
+    @OneToMany
+    experience
 
-    @OneToMany(() => Website, (ph) => ph.res, { cascade: true })
-    website: Website[]
+    @OneToMany
+    publications
 
-    @OneToOne(() => Salary, { cascade: true })
-    @JoinColumn()
-    currentSalary: Salary[]
-
-    @OneToOne(() => Salary, { nullable: true, cascade: true })
-    @JoinColumn()
-    expectedSalary: Salary[]
-
-    @OneToMany(() => Address, (ph) => ph.res, { cascade: true })
-    address: Address[]
-
-    @OneToMany(() => ResumeQualification, (ph) => ph.res, { cascade: true })
-    qualifications: ResumeQualification[]
-
-    @OneToMany(() => Certification, (ph) => ph.res, { cascade: true })
-    certification: Certification[]
-
-    @OneToMany(() => Skills, (ph) => ph.res, { cascade: true })
-    skills: Skills[]
-
-    @OneToMany(() => Experience, (ph) => ph.res, { cascade: true })
-    experience: Experience[]
-
-    @OneToMany(() => Publication, (ph) => ph.res, { cascade: true })
-    publications: Publication[]
-
-    @OneToMany(() => Location, (ph) => ph.res1, { cascade: true })
-    currentLocation: Location[]
-
-    @OneToMany(() => Location, (ph) => ph.res, { cascade: true })
-    preferredLocation: Location[]
-
-    @OneToMany(() => Achievement, (ph) => ph.res, { cascade: true })
-    achievements: Achievement[]
-
-
+    @OneToMany
+    achievements

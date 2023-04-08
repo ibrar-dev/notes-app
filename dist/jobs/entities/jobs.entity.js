@@ -12,6 +12,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.Job = void 0;
 const typeorm_1 = require("typeorm");
 const typeorm_2 = require("typeorm");
+const category_entity_1 = require("./category.entity");
 let Job = class Job {
 };
 __decorate([
@@ -86,6 +87,10 @@ __decorate([
     (0, typeorm_1.Column)({ nullable: true }),
     __metadata("design:type", String)
 ], Job.prototype, "category", void 0);
+__decorate([
+    (0, typeorm_1.ManyToOne)(() => category_entity_1.JobCategory, (apJob) => apJob.jobs),
+    __metadata("design:type", category_entity_1.JobCategory)
+], Job.prototype, "job_category", void 0);
 Job = __decorate([
     (0, typeorm_1.Entity)()
 ], Job);

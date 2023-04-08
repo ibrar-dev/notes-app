@@ -40,6 +40,10 @@ const projects_entity_1 = require("./resume/entities/projects.entity");
 const location_entity_1 = require("./resume/entities/location.entity");
 const publications_entity_1 = require("./resume/entities/publications.entity");
 const achievement_entity_1 = require("./resume/entities/achievement.entity");
+const applied_jobs_module_1 = require("./applied-jobs/applied-jobs.module");
+const applied_job_entity_1 = require("./applied-jobs/entities/applied-job.entity");
+const category_entity_1 = require("./applied-jobs/entities/category.entity");
+const category_entity_2 = require("./jobs/entities/category.entity");
 let AppModule = class AppModule {
 };
 AppModule = __decorate([
@@ -49,13 +53,13 @@ AppModule = __decorate([
                 host: 'ec2-3-21-254-99.us-east-2.compute.amazonaws.com',
                 password: '1234',
                 database: 'jobs',
-                entities: [users_entity_1.User, qualifications_entity_1.Qualifications, jobs_entity_1.Job, resume_entity_1.Resume, language_entity_1.Language, phone_entity_1.Phone, email_entity_1.Email, website_entity_1.Website, salary_entity_1.Salary, address_entity_1.Address, resumeQualification_entity_1.ResumeQualification, certifications_entity_1.Certification, skills_entity_1.Skills, experience_entity_1.Experience, relatedSkills_entity_1.RelatedSkills, projects_entity_1.Projects, publications_entity_1.Publication, location_entity_1.Location, achievement_entity_1.Achievement],
+                entities: [users_entity_1.User, qualifications_entity_1.Qualifications, jobs_entity_1.Job, resume_entity_1.Resume, language_entity_1.Language, phone_entity_1.Phone, email_entity_1.Email, website_entity_1.Website, salary_entity_1.Salary, address_entity_1.Address, resumeQualification_entity_1.ResumeQualification, certifications_entity_1.Certification, skills_entity_1.Skills, experience_entity_1.Experience, relatedSkills_entity_1.RelatedSkills, projects_entity_1.Projects, publications_entity_1.Publication, location_entity_1.Location, achievement_entity_1.Achievement, applied_job_entity_1.AppliedJob, category_entity_1.AppliedJobCategory, category_entity_2.JobCategory],
                 synchronize: true,
                 type: 'postgres',
                 port: 5432,
                 username: 'bobby',
             }),
-            auth_module_1.AuthModule, users_module_1.UsersModule, qualifications_module_1.QualificationModule, jobs_module_1.JobModule, task_module_1.TaskModule, resume_module_1.ResumeModule, languages_module_1.LanguagesModule],
+            auth_module_1.AuthModule, users_module_1.UsersModule, qualifications_module_1.QualificationModule, jobs_module_1.JobModule, task_module_1.TaskModule, resume_module_1.ResumeModule, languages_module_1.LanguagesModule, applied_jobs_module_1.AppliedJobsModule],
         controllers: [app_controller_1.AppController, users_controller_1.UsersController, auth_controller_1.AuthController],
         providers: [app_service_1.AppService],
     })

@@ -4,6 +4,7 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { Like, Repository, Raw } from 'typeorm';
 import { CreateJobDto } from './dto/create-job.dto';
 import { Job } from './entities/jobs.entity';
+import { JobsCategoryService } from './jobs-category.service';
 
 @Injectable()
 export class JobService {
@@ -11,6 +12,8 @@ export class JobService {
   constructor(
     @InjectRepository(Job)
     private readonly jobsRepository: Repository<Job>,
+    private readonly jobCategoryService: JobsCategoryService
+
   ) { }
 
   async create(createTourDto: CreateJobDto): Promise<Job> {
@@ -23,7 +26,9 @@ export class JobService {
   }
   async createFromCronJob(createTourDto: CreateJobDto): Promise<any> {
     try {
-      let newJob: any = this.jobsRepository.create(createTourDto)
+      let newCat: any = await this.jobCategoryService.create({ title: createTourDto.category, order: 5 })
+      console.log(newCat)
+      let newJob: any = this.jobsRepository.create({ ...createTourDto, job_category: newCat })
       await this.jobsRepository.save(newJob);
       return true;
     } catch (error) {
@@ -58,6 +63,7 @@ export class JobService {
         {
           ...filter,
           order: { created_at: "DESC" },
+          relations: { job_category: true }
         }
       );
       return { page: page, limit: take, total: total, result: result };
@@ -81,6 +87,9 @@ export class JobService {
 
       const result = await this.jobsRepository.findOne(
         {
+          relations: {
+            job_category: true
+          },
           where:
             { id: id }
         }
@@ -95,27 +104,93 @@ export class JobService {
     try {
 
       const result = await this.jobsRepository.createQueryBuilder()
-      .delete()
-      .from(Job)
-      .where("category = :id", { id: 'doctor' })
-      .execute();
+        .delete()
+        .from(Job)
+        .where("category = :id", { id: 'doctor' })
+        .execute();
       return { success: true, result: result };
     } catch (error) {
       return { success: false, error: error.message };
     }
   }
-  
+
 
   async getCategories() {
     try {
-      const res = await this.jobsRepository
-        .createQueryBuilder('job')
-        .select('DISTINCT job.category')
-        .getRawMany();
-      return { result: res };
+      const res = await this.jobCategoryService.find();
+      return res;
     } catch (error) {
       console.log("here")
       return error;
     }
   }
+
+  async getCompanies() {
+    try {
+      const queryBuilder = await this.jobsRepository.createQueryBuilder('job')
+        .select('job.companyName', 'company')
+        .addSelect('COALESCE(job.thumbnail, \'\')', 'thumbnail')
+        .addSelect('COUNT(job.id)', 'jobs')
+        .groupBy('job.companyName,thumbnail')
+        .orderBy('jobs', 'DESC');
+      const result = await queryBuilder.getRawMany();
+
+      const combinedJobs = result.reduce((acc, curr) => {
+        const existingCompany = acc.find(item => item.company === curr.company);
+        if (existingCompany) {
+          existingCompany.jobs = Number(existingCompany.jobs) + Number(curr.jobs);
+          if (curr.thumbnail) {
+            existingCompany.thumbnail = curr.thumbnail;
+          }
+        } else {
+          acc.push(curr);
+        }
+        return acc;
+      }, []);
+      return combinedJobs;
+
+    } catch (error) {
+      console.log("here")
+      return error;
+    }
+  }
+
+
+  async getLatestJobs() {
+    try {
+      const result = await this.jobsRepository.query(`
+      SELECT *
+        FROM (
+          SELECT *,
+                 ROW_NUMBER() OVER (PARTITION BY "jobCategoryId" ORDER BY created_at) AS order_number
+          FROM public.job
+        ) AS j
+        JOIN public.job_category jc ON j."jobCategoryId" = jc.id
+        WHERE j.order_number <= 20
+      `);
+      return result;
+
+    } catch (error) {
+      console.log("here")
+      return error;
+    }
+  }
+
+
+  async getJobsCountByCategory() {
+    try {
+      const result = await this.jobsRepository.query(`
+        SELECT c.title AS category, COUNT(j.id) AS jobs
+        FROM public.job j
+        INNER JOIN job_category c ON j."jobCategoryId" = c.id 
+        GROUP BY c.title
+      `);
+      return result;
+
+    } catch (error) {
+      console.log("here")
+      return error;
+    }
+  }
+
 }

@@ -12,13 +12,15 @@ const jobs_service_1 = require("./jobs.service");
 const jobs_controller_1 = require("./jobs.controller");
 const typeorm_1 = require("@nestjs/typeorm");
 const jobs_entity_1 = require("./entities/jobs.entity");
+const category_entity_1 = require("./entities/category.entity");
+const jobs_category_service_1 = require("./jobs-category.service");
 let JobModule = class JobModule {
 };
 JobModule = __decorate([
     (0, common_1.Module)({
-        imports: [typeorm_1.TypeOrmModule.forFeature([jobs_entity_1.Job])],
+        imports: [typeorm_1.TypeOrmModule.forFeature([jobs_entity_1.Job, category_entity_1.JobCategory])],
         controllers: [jobs_controller_1.JobController],
-        providers: [jobs_service_1.JobService],
+        providers: [jobs_service_1.JobService, jobs_category_service_1.JobsCategoryService],
         exports: [jobs_service_1.JobService],
     })
 ], JobModule);

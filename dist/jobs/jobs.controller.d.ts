@@ -5,6 +5,9 @@ export declare class JobController {
     constructor(jobService: JobService);
     findAll(res: Response, page: number, limit: number, category?: string, company?: string): Promise<any>;
     getJobTitles(res: Response): Promise<any>;
+    getJobCountByCategory(res: Response): Promise<any>;
+    getLatestJobs(res: Response): Promise<any>;
+    getCompanies(res: Response): Promise<any>;
     count(res: Response): Promise<any>;
     findOne(res: Response, id: string): Promise<void>;
     deleteByCategory(res: Response): Promise<{

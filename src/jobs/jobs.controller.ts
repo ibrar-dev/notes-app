@@ -52,6 +52,51 @@ export class JobController {
       res.status(HttpStatus.BAD_REQUEST).json({ message: 'Something went wrong' });
     }
   }
+  @Get('job-count-by-categories')
+  async getJobCountByCategory(@Res() res: Response
+  ): Promise<any> {
+    try {
+      let resp = await this.jobService.getJobsCountByCategory();
+      if (resp) {
+        res.status(HttpStatus.OK).json(resp);
+      } else {
+        res.status(HttpStatus.NO_CONTENT).json({ message: 'Please check your Limits, No record Found' });
+      }
+    } catch (error) {
+      console.log("here",error.message)
+      res.status(HttpStatus.BAD_REQUEST).json({ message: 'Something went wrong' });
+    }
+  }
+  @Get('latest-jobs')
+  async getLatestJobs(@Res() res: Response
+  ): Promise<any> {
+    try {
+      let resp = await this.jobService.getLatestJobs();
+      if (resp) {
+        res.status(HttpStatus.OK).json(resp);
+      } else {
+        res.status(HttpStatus.NO_CONTENT).json({ message: 'Please check your Limits, No record Found' });
+      }
+    } catch (error) {
+      console.log("here",error.message)
+      res.status(HttpStatus.BAD_REQUEST).json({ message: 'Something went wrong' });
+    }
+  }
+  @Get('companies')
+  async getCompanies(@Res() res: Response
+  ): Promise<any> {
+    try {
+      let resp = await this.jobService.getCompanies();
+      if (resp) {
+        res.status(HttpStatus.OK).json(resp);
+      } else {
+        res.status(HttpStatus.NO_CONTENT).json({ message: 'No record Found' });
+      }
+    } catch (error) {
+      console.log("here",error.message)
+      res.status(HttpStatus.BAD_REQUEST).json({ message: 'Something went wrong' });
+    }
+  }
   @Get('count')
   async count(@Res() res: Response,
   ): Promise<any> {

@@ -31,16 +31,20 @@ import { Projects } from './resume/entities/projects.entity';
 import { Location } from './resume/entities/location.entity';
 import { Publication } from './resume/entities/publications.entity';
 import { Achievement } from './resume/entities/achievement.entity';
+import { AppliedJobsModule } from './applied-jobs/applied-jobs.module';
+import { AppliedJob } from './applied-jobs/entities/applied-job.entity';
+import { AppliedJobCategory } from './applied-jobs/entities/category.entity';
+import { JobCategory } from './jobs/entities/category.entity';
 
 @Module({
   imports: [ScheduleModule.forRoot(),
 
- 
+
   TypeOrmModule.forRoot({
     host: 'ec2-3-21-254-99.us-east-2.compute.amazonaws.com',
     password: '1234',
     database: 'jobs',
-    entities: [User, Qualifications, Job, Resume, Language, Phone,Email,Website,Salary,Address,ResumeQualification,Certification,Skills,Experience,RelatedSkills,Projects,Publication,Location,Achievement],
+    entities: [User, Qualifications, Job, Resume, Language, Phone, Email, Website, Salary, Address, ResumeQualification, Certification, Skills, Experience, RelatedSkills, Projects, Publication, Location, Achievement, AppliedJob, AppliedJobCategory,JobCategory],
     synchronize: true,
     type: 'postgres',
     port: 5432,
@@ -49,14 +53,14 @@ import { Achievement } from './resume/entities/achievement.entity';
     // host: 'localhost',
     // password: '1234',
     // database: 'jobs',
-    // entities: [User, Qualifications, Job, Resume, Language, Phone,Email,Website,Salary,Address,ResumeQualification,Certification,Skills,Experience,RelatedSkills,Projects,Publication,Location,Achievement],
+    // entities: [User, Qualifications, Job, Resume, Language, Phone, Email, Website, Salary, Address, ResumeQualification, Certification, Skills, Experience, RelatedSkills, Projects, Publication, Location, Achievement, AppliedJob, AppliedJobCategory,JobCategory],
     // synchronize: true,
     // type: 'postgres',
     // port: 5433,
     // username: 'postgres',
 
   }),
-    AuthModule, UsersModule, QualificationModule, JobModule, TaskModule, ResumeModule, LanguagesModule],
+    AuthModule, UsersModule, QualificationModule, JobModule, TaskModule, ResumeModule, LanguagesModule, AppliedJobsModule],
   controllers: [AppController, UsersController, AuthController],
   providers: [AppService],
 

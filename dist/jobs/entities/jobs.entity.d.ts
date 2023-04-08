@@ -1,3 +1,4 @@
+import { JobCategory } from "./category.entity";
 export declare class Job {
     id: string;
     title: string;
@@ -17,4 +18,5 @@ export declare class Job {
     created_at: Date;
     updated_at: Date;
     category: string;
+    job_category: JobCategory;
 }

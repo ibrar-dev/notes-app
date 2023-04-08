@@ -18,7 +18,6 @@ const typeorm_1 = require("@nestjs/typeorm");
 const typeorm_2 = require("typeorm");
 const resume_entity_1 = require("./entities/resume.entity");
 const axios_1 = require("axios");
-var https = require('https');
 var fs = require('fs');
 let ResumeService = class ResumeService {
     constructor(resumeRepository) {

@@ -8,7 +8,6 @@ import { Repository } from 'typeorm';
 import { Resume } from './entities/resume.entity';
 import { Language } from 'src/languages/entities/language.entity';
 import axios from "axios";
-var https = require('https');
 var fs = require('fs');
 
 

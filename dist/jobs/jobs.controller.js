@@ -49,6 +49,51 @@ let JobController = class JobController {
             res.status(common_1.HttpStatus.BAD_REQUEST).json({ message: 'Something went wrong' });
         }
     }
+    async getJobCountByCategory(res) {
+        try {
+            let resp = await this.jobService.getJobsCountByCategory();
+            if (resp) {
+                res.status(common_1.HttpStatus.OK).json(resp);
+            }
+            else {
+                res.status(common_1.HttpStatus.NO_CONTENT).json({ message: 'Please check your Limits, No record Found' });
+            }
+        }
+        catch (error) {
+            console.log("here", error.message);
+            res.status(common_1.HttpStatus.BAD_REQUEST).json({ message: 'Something went wrong' });
+        }
+    }
+    async getLatestJobs(res) {
+        try {
+            let resp = await this.jobService.getLatestJobs();
+            if (resp) {
+                res.status(common_1.HttpStatus.OK).json(resp);
+            }
+            else {
+                res.status(common_1.HttpStatus.NO_CONTENT).json({ message: 'Please check your Limits, No record Found' });
+            }
+        }
+        catch (error) {
+            console.log("here", error.message);
+            res.status(common_1.HttpStatus.BAD_REQUEST).json({ message: 'Something went wrong' });
+        }
+    }
+    async getCompanies(res) {
+        try {
+            let resp = await this.jobService.getCompanies();
+            if (resp) {
+                res.status(common_1.HttpStatus.OK).json(resp);
+            }
+            else {
+                res.status(common_1.HttpStatus.NO_CONTENT).json({ message: 'No record Found' });
+            }
+        }
+        catch (error) {
+            console.log("here", error.message);
+            res.status(common_1.HttpStatus.BAD_REQUEST).json({ message: 'Something went wrong' });
+        }
+    }
     async count(res) {
         try {
             let resp = await this.jobService.count();
@@ -118,6 +163,27 @@ __decorate([
     __metadata("design:paramtypes", [Object]),
     __metadata("design:returntype", Promise)
 ], JobController.prototype, "getJobTitles", null);
+__decorate([
+    (0, common_1.Get)('job-count-by-categories'),
+    __param(0, (0, common_1.Res)()),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", [Object]),
+    __metadata("design:returntype", Promise)
+], JobController.prototype, "getJobCountByCategory", null);
+__decorate([
+    (0, common_1.Get)('latest-jobs'),
+    __param(0, (0, common_1.Res)()),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", [Object]),
+    __metadata("design:returntype", Promise)
+], JobController.prototype, "getLatestJobs", null);
+__decorate([
+    (0, common_1.Get)('companies'),
+    __param(0, (0, common_1.Res)()),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", [Object]),
+    __metadata("design:returntype", Promise)
+], JobController.prototype, "getCompanies", null);
 __decorate([
     (0, common_1.Get)('count'),
     __param(0, (0, common_1.Res)()),

@@ -187,3 +187,7 @@ export class Resume {
     @OneToMany(() => Achievement, (ph) => ph.res, { cascade: true })
     achievements: Achievement[]
 }
+
+
+
+  
