@@ -48,6 +48,7 @@ export class TaskService {
     // 'Data Scientist'
     // 'Blockchain'
     let urlsList = [
+      "https://api.apify.com/v2/actor-tasks/peerless_protractor~cryptotask/runs/last/dataset/items?token=apify_api_XhPKZZyP7nTPD1y4SWtdNQYF3QkXHv1jkqa6",
       "https://api.apify.com/v2/actor-tasks/peerless_protractor~mltask/runs/last/dataset/items?token=apify_api_XhPKZZyP7nTPD1y4SWtdNQYF3QkXHv1jkqa6",
       "https://api.apify.com/v2/actor-tasks/peerless_protractor~aitask/runs/last/dataset/items?token=apify_api_XhPKZZyP7nTPD1y4SWtdNQYF3QkXHv1jkqa6",
       "https://api.apify.com/v2/actor-tasks/peerless_protractor~datasciencetask/runs/last/dataset/items?token=apify_api_XhPKZZyP7nTPD1y4SWtdNQYF3QkXHv1jkqa6",
