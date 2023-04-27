@@ -29,7 +29,9 @@ export declare class JobService {
         result?: undefined;
     }>;
     getCategories(): Promise<any>;
-    getCompanies(): Promise<any>;
+    getCompanies(query: any): Promise<any>;
+    totalCompanies(): Promise<any>;
+    getTopCompanies(): Promise<any>;
     getLatestJobs(): Promise<any>;
     getJobsCountByCategory(): Promise<any>;
 }

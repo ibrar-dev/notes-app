@@ -79,9 +79,39 @@ let JobController = class JobController {
             res.status(common_1.HttpStatus.BAD_REQUEST).json({ message: 'Something went wrong' });
         }
     }
-    async getCompanies(res) {
+    async getCompanies(res, page, limit) {
         try {
-            let resp = await this.jobService.getCompanies();
+            let resp = await this.jobService.getCompanies({ page, limit });
+            if (resp) {
+                res.status(common_1.HttpStatus.OK).json(resp);
+            }
+            else {
+                res.status(common_1.HttpStatus.NO_CONTENT).json({ message: 'No record Found' });
+            }
+        }
+        catch (error) {
+            console.log("here", error.message);
+            res.status(common_1.HttpStatus.BAD_REQUEST).json({ message: 'Something went wrong' });
+        }
+    }
+    async totalCompanies(res) {
+        try {
+            let resp = await this.jobService.totalCompanies();
+            if (resp) {
+                res.status(common_1.HttpStatus.OK).json(resp);
+            }
+            else {
+                res.status(common_1.HttpStatus.NO_CONTENT).json({ message: 'No record Found' });
+            }
+        }
+        catch (error) {
+            console.log("here", error.message);
+            res.status(common_1.HttpStatus.BAD_REQUEST).json({ message: 'Something went wrong' });
+        }
+    }
+    async getTopCompanies(res) {
+        try {
+            let resp = await this.jobService.getTopCompanies();
             if (resp) {
                 res.status(common_1.HttpStatus.OK).json(resp);
             }
@@ -138,6 +168,7 @@ let JobController = class JobController {
     }
 };
 __decorate([
+    (0, swagger_1.ApiTags)('Job'),
     (0, swagger_1.ApiExtraModels)(response_job_dto_1.JobsResponse),
     (0, swagger_1.ApiResponse)({
         schema: {
@@ -157,6 +188,7 @@ __decorate([
     __metadata("design:returntype", Promise)
 ], JobController.prototype, "findAll", null);
 __decorate([
+    (0, swagger_1.ApiTags)('Job'),
     (0, common_1.Get)('job-categories'),
     __param(0, (0, common_1.Res)()),
     __metadata("design:type", Function),
@@ -164,6 +196,7 @@ __decorate([
     __metadata("design:returntype", Promise)
 ], JobController.prototype, "getJobTitles", null);
 __decorate([
+    (0, swagger_1.ApiTags)('Job'),
     (0, common_1.Get)('job-count-by-categories'),
     __param(0, (0, common_1.Res)()),
     __metadata("design:type", Function),
@@ -171,6 +204,7 @@ __decorate([
     __metadata("design:returntype", Promise)
 ], JobController.prototype, "getJobCountByCategory", null);
 __decorate([
+    (0, swagger_1.ApiTags)('Job'),
     (0, common_1.Get)('latest-jobs'),
     __param(0, (0, common_1.Res)()),
     __metadata("design:type", Function),
@@ -178,13 +212,33 @@ __decorate([
     __metadata("design:returntype", Promise)
 ], JobController.prototype, "getLatestJobs", null);
 __decorate([
+    (0, swagger_1.ApiTags)('Companies'),
     (0, common_1.Get)('companies'),
+    __param(0, (0, common_1.Res)()),
+    __param(1, (0, common_1.Query)('page', common_1.ParseIntPipe)),
+    __param(2, (0, common_1.Query)('limit', common_1.ParseIntPipe)),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", [Object, Number, Number]),
+    __metadata("design:returntype", Promise)
+], JobController.prototype, "getCompanies", null);
+__decorate([
+    (0, swagger_1.ApiTags)('Companies'),
+    (0, common_1.Get)('companies-count'),
     __param(0, (0, common_1.Res)()),
     __metadata("design:type", Function),
     __metadata("design:paramtypes", [Object]),
     __metadata("design:returntype", Promise)
-], JobController.prototype, "getCompanies", null);
+], JobController.prototype, "totalCompanies", null);
 __decorate([
+    (0, swagger_1.ApiTags)('Companies'),
+    (0, common_1.Get)('top-companies'),
+    __param(0, (0, common_1.Res)()),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", [Object]),
+    __metadata("design:returntype", Promise)
+], JobController.prototype, "getTopCompanies", null);
+__decorate([
+    (0, swagger_1.ApiTags)('Job'),
     (0, common_1.Get)('count'),
     __param(0, (0, common_1.Res)()),
     __metadata("design:type", Function),
@@ -192,6 +246,7 @@ __decorate([
     __metadata("design:returntype", Promise)
 ], JobController.prototype, "count", null);
 __decorate([
+    (0, swagger_1.ApiTags)('Job'),
     (0, common_1.Get)(':id'),
     __param(0, (0, common_1.Res)()),
     __param(1, (0, common_1.Param)('id')),
@@ -207,7 +262,6 @@ __decorate([
     __metadata("design:returntype", Promise)
 ], JobController.prototype, "deleteByCategory", null);
 JobController = __decorate([
-    (0, swagger_1.ApiTags)('Job'),
     (0, common_1.Controller)('job'),
     __metadata("design:paramtypes", [jobs_service_1.JobService])
 ], JobController);

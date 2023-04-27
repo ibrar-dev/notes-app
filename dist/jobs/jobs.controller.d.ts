@@ -7,7 +7,9 @@ export declare class JobController {
     getJobTitles(res: Response): Promise<any>;
     getJobCountByCategory(res: Response): Promise<any>;
     getLatestJobs(res: Response): Promise<any>;
-    getCompanies(res: Response): Promise<any>;
+    getCompanies(res: Response, page: number, limit: number): Promise<any>;
+    totalCompanies(res: Response): Promise<any>;
+    getTopCompanies(res: Response): Promise<any>;
     count(res: Response): Promise<any>;
     findOne(res: Response, id: string): Promise<void>;
     deleteByCategory(res: Response): Promise<{

@@ -5,11 +5,10 @@ import { JobsResponse } from './dto/response-job.dto';
 import { Response } from 'express';
 import { ApiExtraModels, ApiQuery, ApiResponse, ApiTags, getSchemaPath } from '@nestjs/swagger';
 
-@ApiTags('Job')
 @Controller('job')
 export class JobController {
   constructor(private readonly jobService: JobService) { }
-
+  @ApiTags('Job')
   @ApiExtraModels(JobsResponse)
   @ApiResponse({
     schema: {
@@ -38,6 +37,7 @@ export class JobController {
       res.status(HttpStatus.BAD_REQUEST).json({ message: 'Something went wrong' });
     }
   }
+  @ApiTags('Job')
   @Get('job-categories')
   async getJobTitles(@Res() res: Response
   ): Promise<any> {
@@ -52,6 +52,7 @@ export class JobController {
       res.status(HttpStatus.BAD_REQUEST).json({ message: 'Something went wrong' });
     }
   }
+  @ApiTags('Job')
   @Get('job-count-by-categories')
   async getJobCountByCategory(@Res() res: Response
   ): Promise<any> {
@@ -63,10 +64,11 @@ export class JobController {
         res.status(HttpStatus.NO_CONTENT).json({ message: 'Please check your Limits, No record Found' });
       }
     } catch (error) {
-      console.log("here",error.message)
+      console.log("here", error.message)
       res.status(HttpStatus.BAD_REQUEST).json({ message: 'Something went wrong' });
     }
   }
+  @ApiTags('Job')
   @Get('latest-jobs')
   async getLatestJobs(@Res() res: Response
   ): Promise<any> {
@@ -78,25 +80,65 @@ export class JobController {
         res.status(HttpStatus.NO_CONTENT).json({ message: 'Please check your Limits, No record Found' });
       }
     } catch (error) {
-      console.log("here",error.message)
+      console.log("here", error.message)
       res.status(HttpStatus.BAD_REQUEST).json({ message: 'Something went wrong' });
     }
   }
+  @ApiTags('Companies')
+
   @Get('companies')
-  async getCompanies(@Res() res: Response
+  async getCompanies(@Res() res: Response,
+    @Query('page', ParseIntPipe) page: number,
+    @Query('limit', ParseIntPipe) limit: number,
   ): Promise<any> {
     try {
-      let resp = await this.jobService.getCompanies();
+      let resp = await this.jobService.getCompanies({ page, limit });
       if (resp) {
         res.status(HttpStatus.OK).json(resp);
       } else {
         res.status(HttpStatus.NO_CONTENT).json({ message: 'No record Found' });
       }
     } catch (error) {
-      console.log("here",error.message)
+      console.log("here", error.message)
       res.status(HttpStatus.BAD_REQUEST).json({ message: 'Something went wrong' });
     }
   }
+  @ApiTags('Companies')
+
+  @Get('companies-count')
+  async totalCompanies(@Res() res: Response
+  ): Promise<any> {
+    try {
+      let resp = await this.jobService.totalCompanies();
+      if (resp) {
+        res.status(HttpStatus.OK).json(resp);
+      } else {
+        res.status(HttpStatus.NO_CONTENT).json({ message: 'No record Found' });
+      }
+    } catch (error) {
+      console.log("here", error.message)
+      res.status(HttpStatus.BAD_REQUEST).json({ message: 'Something went wrong' });
+    }
+  }
+  @ApiTags('Companies')
+
+  @Get('top-companies')
+  async getTopCompanies(@Res() res: Response
+  ): Promise<any> {
+    try {
+      let resp = await this.jobService.getTopCompanies();
+      if (resp) {
+        res.status(HttpStatus.OK).json(resp);
+      } else {
+        res.status(HttpStatus.NO_CONTENT).json({ message: 'No record Found' });
+      }
+    } catch (error) {
+      console.log("here", error.message)
+      res.status(HttpStatus.BAD_REQUEST).json({ message: 'Something went wrong' });
+    }
+  }
+  @ApiTags('Job')
+
   @Get('count')
   async count(@Res() res: Response,
   ): Promise<any> {
@@ -111,6 +153,8 @@ export class JobController {
       res.status(HttpStatus.BAD_REQUEST).json({ message: 'Something went wrong' });
     }
   }
+  @ApiTags('Job')
+
   @Get(':id')
   async findOne(@Res() res: Response, @Param('id') id: string) {
 
@@ -131,7 +175,7 @@ export class JobController {
     }
 
   }
-  
+
   // delete "Doctors"
   @Delete()
   async deleteByCategory(@Res() res: Response) {

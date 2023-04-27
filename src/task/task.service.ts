@@ -109,9 +109,11 @@ export class TaskService {
                     qualifications: [...qualify],
                     responsibilities: [...resp], category: category
                   }
-                  try {
-                    let sav = await this.jobService.createFromCronJob(obj);
-                  } catch (error) {
+                  if (job.companyName !== 'Upwork') {
+                    try {
+                      let sav = await this.jobService.createFromCronJob(obj);
+                    } catch (error) {
+                    }
                   }
                 }
 

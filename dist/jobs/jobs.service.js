@@ -119,14 +119,64 @@ let JobService = class JobService {
             return error;
         }
     }
-    async getCompanies() {
+    async getCompanies(query) {
+        try {
+            const take = query.limit || 10;
+            const page = query.page || 1;
+            const skip = (page - 1) * take;
+            const totalCountQueryBuilder = await this.jobsRepository.createQueryBuilder('job')
+                .select('COUNT(DISTINCT job.companyName)', 'count');
+            const { count: totalCount } = await totalCountQueryBuilder.getRawOne();
+            const queryBuilder = await this.jobsRepository.createQueryBuilder('job')
+                .select('job.companyName', 'company')
+                .addSelect('COALESCE(job.thumbnail, \'\')', 'thumbnail')
+                .addSelect('COUNT(job.id)', 'jobs')
+                .groupBy('job.companyName,thumbnail')
+                .orderBy('jobs', 'DESC')
+                .skip(skip)
+                .take(take);
+            const result = await queryBuilder.getRawMany();
+            const combinedJobs = result.reduce((acc, curr) => {
+                const existingCompany = acc.find(item => item.company === curr.company);
+                if (existingCompany) {
+                    existingCompany.jobs = Number(existingCompany.jobs) + Number(curr.jobs);
+                    if (curr.thumbnail) {
+                        existingCompany.thumbnail = curr.thumbnail;
+                    }
+                }
+                else {
+                    acc.push(curr);
+                }
+                return acc;
+            }, []);
+            return { page: page, limit: take, total: totalCount, result: combinedJobs };
+        }
+        catch (error) {
+            console.log("Error:", error);
+            return error;
+        }
+    }
+    async totalCompanies() {
+        try {
+            const totalCountQueryBuilder = await this.jobsRepository.createQueryBuilder('job')
+                .select('COUNT(DISTINCT job.companyName)', 'count');
+            const { count: totalCount } = await totalCountQueryBuilder.getRawOne();
+            return totalCount;
+        }
+        catch (error) {
+            console.log("Error:", error);
+            return error;
+        }
+    }
+    async getTopCompanies() {
         try {
             const queryBuilder = await this.jobsRepository.createQueryBuilder('job')
                 .select('job.companyName', 'company')
                 .addSelect('COALESCE(job.thumbnail, \'\')', 'thumbnail')
                 .addSelect('COUNT(job.id)', 'jobs')
                 .groupBy('job.companyName,thumbnail')
-                .orderBy('jobs', 'DESC');
+                .orderBy('jobs', 'DESC')
+                .take(20);
             const result = await queryBuilder.getRawMany();
             const combinedJobs = result.reduce((acc, curr) => {
                 const existingCompany = acc.find(item => item.company === curr.company);
@@ -144,7 +194,7 @@ let JobService = class JobService {
             return combinedJobs;
         }
         catch (error) {
-            console.log("here");
+            console.log("Error:", error);
             return error;
         }
     }
