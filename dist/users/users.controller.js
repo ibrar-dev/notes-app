@@ -52,6 +52,7 @@ __decorate([
 ], UsersController.prototype, "getProfile", null);
 __decorate([
     (0, swagger_1.ApiExtraModels)(create_user_dto_1.CreateUserDto),
+    (0, swagger_1.ApiOperation)({ summary: 'API to create User' }),
     (0, common_1.Post)(),
     __param(0, (0, common_1.Body)()),
     __metadata("design:type", Function),

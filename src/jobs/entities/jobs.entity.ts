@@ -2,7 +2,7 @@
 import { Qualifications } from 'src/qualification/entities/qualifications.entity';
 import { Column, Entity, JoinColumn, JoinTable, ManyToMany, ManyToOne, OneToMany, PrimaryGeneratedColumn } from 'typeorm';
 import { CreateDateColumn, UpdateDateColumn } from "typeorm";
-import {JobCategory} from "./category.entity"
+import { JobCategory } from "./category.entity"
 @Entity()
 export class Job {
     @PrimaryGeneratedColumn('uuid')
@@ -50,21 +50,24 @@ export class Job {
     @Column("text", { array: true })
     qualifications: string[];
 
-    @CreateDateColumn({ type: "timestamp", default: () => "CURRENT_TIMESTAMP(6)" })
-     created_at: Date;
+    @UpdateDateColumn({ type: "timestamptz", default: () => "CURRENT_TIMESTAMP" })
+    created_at: Date;
 
-    @UpdateDateColumn({ type: "timestamp", default: () => "CURRENT_TIMESTAMP(6)", onUpdate: "CURRENT_TIMESTAMP(6)" })
-     updated_at: Date;
+    @UpdateDateColumn({ type: "timestamptz", default: () => "CURRENT_TIMESTAMP", onUpdate: "CURRENT_TIMESTAMP" })
+    updated_at: Date;
     // @OneToMany(() => Qualifications, (post) => post.id,{cascade:true})
     // qualifications: Qualifications[]
 
     @Column({ nullable: true })
     category: string;
 
+    @Column({ nullable: true, type: "timestamptz" })
+    postedDate: Date;
+
     @ManyToOne(() => JobCategory, (apJob) => apJob.jobs)
     job_category: JobCategory;
 
-    }
+}
 
 
 

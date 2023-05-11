@@ -85,5 +85,9 @@ __decorate([
     (0, swagger_1.ApiProperty)({ type: 'string' }),
     __metadata("design:type", String)
 ], CreateJobDto.prototype, "category", void 0);
+__decorate([
+    (0, swagger_1.ApiProperty)({ type: 'DateTime' }),
+    __metadata("design:type", Object)
+], CreateJobDto.prototype, "postedDate", void 0);
 exports.CreateJobDto = CreateJobDto;
 //# sourceMappingURL=create-job.dto.js.map

@@ -128,6 +128,8 @@ export class UsersController {
   //     '$ref': getSchemaPath(Auth)
   //   }
   // })
+  @ApiOperation({ summary: 'API to create User' })
+
   @Post()
   async create(@Body() createUserDto: CreateUserDto): Promise<User> {
     try {

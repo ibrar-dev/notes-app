@@ -18,16 +18,18 @@ export class JobController {
 
   @ApiQuery({ name: 'category', required: false, type: String })
   @ApiQuery({ name: 'company', required: false, type: String })
+  @ApiQuery({ name: 'time', required: false, type: String })
   @Get()
   async findAll(@Res() res: Response,
     @Query('page', ParseIntPipe) page: number,
     @Query('limit', ParseIntPipe) limit: number,
     @Query('category') category?: string,
     @Query('company') company?: string,
+    @Query('time') time?: string,
 
   ): Promise<any> {
     try {
-      let resp = await this.jobService.findAll({ page, limit, category, company });
+      let resp = await this.jobService.findAll({ page, limit, category, company ,time});
       if (resp) {
         res.status(HttpStatus.OK).json(resp);
       } else {

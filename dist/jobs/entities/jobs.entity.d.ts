@@ -18,5 +18,6 @@ export declare class Job {
     created_at: Date;
     updated_at: Date;
     category: string;
+    postedDate: Date;
     job_category: JobCategory;
 }

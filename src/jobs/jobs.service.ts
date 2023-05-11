@@ -28,8 +28,10 @@ export class JobService {
     try {
       let newCat: any = await this.jobCategoryService.create({ title: createTourDto.category, order: 5 })
       console.log(newCat)
-      let newJob: any = this.jobsRepository.create({ ...createTourDto, job_category: newCat })
-      await this.jobsRepository.save(newJob);
+      if (newCat) {
+        let newJob: any = this.jobsRepository.create({ ...createTourDto, job_category: newCat })
+        await this.jobsRepository.save(newJob);
+      }
       return true;
     } catch (error) {
       return false;
@@ -44,13 +46,21 @@ export class JobService {
       const skip = (page - 1) * take;
       const category = query.category;
       const company = query.company;
+      const time = query.time;
       let filter = {
         take: take,
         skip: skip
       };
       let whereClause = {};
-      if (category) {
+      if (time) {
+        whereClause['postedDate'] = Raw(alias =>
+          time.includes('hour') ?
+            `${alias} BETWEEN CURRENT_TIMESTAMP - INTERVAL '${time}' AND CURRENT_TIMESTAMP`
+            : `${alias} BETWEEN CURRENT_DATE - INTERVAL '${time}' AND CURRENT_DATE + INTERVAL '1 day'`
+        );
+      }
 
+      if (category) {
         whereClause['category'] = Raw(alias => `${alias} ILIKE '%${category}%'`);
       }
       if (company) {
@@ -212,15 +222,16 @@ export class JobService {
   async getLatestJobs() {
     try {
       const result = await this.jobsRepository.query(`
-      SELECT *
-        FROM (
+      SELECT j.id, j.title, j."companyName", j.location, j.via, j.description, j.thumbnail, j."applyLink", j."postedAt", j."scheduleType", j."applyLinkTitle", j.salary, j."workFromHome", j.responsibilities, j.qualifications, j.category, j."jobCategoryId", j."postedDate", j.created_at, j.updated_at
+       FROM (
           SELECT *,
-                 ROW_NUMBER() OVER (PARTITION BY "jobCategoryId" ORDER BY created_at) AS order_number
+                 ROW_NUMBER() OVER (PARTITION BY "jobCategoryId" ORDER BY created_at DESC) AS order_number
           FROM public.job
         ) AS j
         JOIN public.job_category jc ON j."jobCategoryId" = jc.id
         WHERE j.order_number <= 20
       `);
+      
       return result;
 
     } catch (error) {

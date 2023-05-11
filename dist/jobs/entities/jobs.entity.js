@@ -76,17 +76,21 @@ __decorate([
     __metadata("design:type", Array)
 ], Job.prototype, "qualifications", void 0);
 __decorate([
-    (0, typeorm_2.CreateDateColumn)({ type: "timestamp", default: () => "CURRENT_TIMESTAMP(6)" }),
+    (0, typeorm_2.UpdateDateColumn)({ type: "timestamptz", default: () => "CURRENT_TIMESTAMP" }),
     __metadata("design:type", Date)
 ], Job.prototype, "created_at", void 0);
 __decorate([
-    (0, typeorm_2.UpdateDateColumn)({ type: "timestamp", default: () => "CURRENT_TIMESTAMP(6)", onUpdate: "CURRENT_TIMESTAMP(6)" }),
+    (0, typeorm_2.UpdateDateColumn)({ type: "timestamptz", default: () => "CURRENT_TIMESTAMP", onUpdate: "CURRENT_TIMESTAMP" }),
     __metadata("design:type", Date)
 ], Job.prototype, "updated_at", void 0);
 __decorate([
     (0, typeorm_1.Column)({ nullable: true }),
     __metadata("design:type", String)
 ], Job.prototype, "category", void 0);
+__decorate([
+    (0, typeorm_1.Column)({ nullable: true, type: "timestamptz" }),
+    __metadata("design:type", Date)
+], Job.prototype, "postedDate", void 0);
 __decorate([
     (0, typeorm_1.ManyToOne)(() => category_entity_1.JobCategory, (apJob) => apJob.jobs),
     __metadata("design:type", category_entity_1.JobCategory)

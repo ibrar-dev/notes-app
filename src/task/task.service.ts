@@ -1,37 +1,9 @@
-// import { Injectable } from '@nestjs/common';
-// import { CreateTaskDto } from './dto/create-task.dto';
-// import { UpdateTaskDto } from './dto/update-task.dto';
-
-// @Injectable()
-// export class TaskService {
-//   create(createTaskDto: CreateTaskDto) {
-//     return 'This action adds a new task';
-//   }
-
-//   findAll() {
-//     return `This action returns all task`;
-//   }
-
-//   findOne(id: number) {
-//     return `This action returns a #${id} task`;
-//   }
-
-//   update(id: number, updateTaskDto: UpdateTaskDto) {
-//     return `This action updates a #${id} task`;
-//   }
-
-//   remove(id: number) {
-//     return `This action removes a #${id} task`;
-//   }
-// }
-
-
-
 import { Inject, Injectable, Logger } from '@nestjs/common';
 import { Cron, Interval, Timeout } from '@nestjs/schedule';
 import { JobService } from "../jobs/jobs.service";
 import axios from "axios";
 import { CreateJobDto } from 'src/jobs/dto/create-job.dto';
+import * as moment from 'moment';
 
 @Injectable()
 export class TaskService {
@@ -40,7 +12,7 @@ export class TaskService {
   private readonly jobService: JobService;
 
   // @Cron('* * * * * *')
-  @Cron('0 15 * * * *')
+  @Cron('0 40 * * * *')
   async handleCron() {
     // "Machine Learning"
     //'artificial intelligence'
@@ -93,6 +65,12 @@ export class TaskService {
                   } catch (error) {
                   }
                   // if (category ==="artificial intelligence") {
+                  const today = moment();
+
+                  let day = job.metadata.postedAt ? job.metadata.postedAt : '0';
+                  let ddd = day.replaceAll('s', '').replaceAll('day ago', '').replaceAll('month ago', '').replaceAll('hour ago').replaceAll(' ', '')
+                  const futureDate = today.subtract(parseInt(ddd), day.includes('hour') ? 'hours' : day.includes('month') ? 'months' : 'days').toISOString();
+                  console.log("futureDate", futureDate)
                   let obj: CreateJobDto = {
                     title: job.title,
                     companyName: job.companyName,
@@ -107,7 +85,8 @@ export class TaskService {
                     workFromHome: job.metadata.workFromHome ? job.metadata.workFromHome : false,
                     salary: job.metadata.salary ? job.metadata.salary : '',
                     qualifications: [...qualify],
-                    responsibilities: [...resp], category: category
+                    responsibilities: [...resp], category: category,
+                    postedDate: futureDate
                   }
                   if (job.companyName !== 'Upwork') {
                     try {

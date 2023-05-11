@@ -21,9 +21,9 @@ let JobController = class JobController {
     constructor(jobService) {
         this.jobService = jobService;
     }
-    async findAll(res, page, limit, category, company) {
+    async findAll(res, page, limit, category, company, time) {
         try {
-            let resp = await this.jobService.findAll({ page, limit, category, company });
+            let resp = await this.jobService.findAll({ page, limit, category, company, time });
             if (resp) {
                 res.status(common_1.HttpStatus.OK).json(resp);
             }
@@ -177,14 +177,16 @@ __decorate([
     }),
     (0, swagger_1.ApiQuery)({ name: 'category', required: false, type: String }),
     (0, swagger_1.ApiQuery)({ name: 'company', required: false, type: String }),
+    (0, swagger_1.ApiQuery)({ name: 'time', required: false, type: String }),
     (0, common_1.Get)(),
     __param(0, (0, common_1.Res)()),
     __param(1, (0, common_1.Query)('page', common_1.ParseIntPipe)),
     __param(2, (0, common_1.Query)('limit', common_1.ParseIntPipe)),
     __param(3, (0, common_1.Query)('category')),
     __param(4, (0, common_1.Query)('company')),
+    __param(5, (0, common_1.Query)('time')),
     __metadata("design:type", Function),
-    __metadata("design:paramtypes", [Object, Number, Number, String, String]),
+    __metadata("design:paramtypes", [Object, Number, Number, String, String, String]),
     __metadata("design:returntype", Promise)
 ], JobController.prototype, "findAll", null);
 __decorate([

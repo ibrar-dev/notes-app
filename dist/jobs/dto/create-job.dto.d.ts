@@ -14,4 +14,5 @@ export declare class CreateJobDto {
     salary: string | any;
     applyLinkTitle: string | any;
     category: string;
+    postedDate: any;
 }

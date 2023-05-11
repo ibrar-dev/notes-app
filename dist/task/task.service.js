@@ -15,6 +15,7 @@ const common_1 = require("@nestjs/common");
 const schedule_1 = require("@nestjs/schedule");
 const jobs_service_1 = require("../jobs/jobs.service");
 const axios_1 = require("axios");
+const moment = require("moment");
 let TaskService = TaskService_1 = class TaskService {
     constructor() {
         this.logger = new common_1.Logger(TaskService_1.name);
@@ -62,6 +63,11 @@ let TaskService = TaskService_1 = class TaskService {
                                 }
                                 catch (error) {
                                 }
+                                const today = moment();
+                                let day = job.metadata.postedAt ? job.metadata.postedAt : '0';
+                                let ddd = day.replaceAll('s', '').replaceAll('day ago', '').replaceAll('month ago', '').replaceAll('hour ago').replaceAll(' ', '');
+                                const futureDate = today.subtract(parseInt(ddd), day.includes('hour') ? 'hours' : day.includes('month') ? 'months' : 'days').toISOString();
+                                console.log("futureDate", futureDate);
                                 let obj = {
                                     title: job.title,
                                     companyName: job.companyName,
@@ -76,7 +82,8 @@ let TaskService = TaskService_1 = class TaskService {
                                     workFromHome: job.metadata.workFromHome ? job.metadata.workFromHome : false,
                                     salary: job.metadata.salary ? job.metadata.salary : '',
                                     qualifications: [...qualify],
-                                    responsibilities: [...resp], category: category
+                                    responsibilities: [...resp], category: category,
+                                    postedDate: futureDate
                                 };
                                 if (job.companyName !== 'Upwork') {
                                     try {
@@ -102,7 +109,7 @@ __decorate([
     __metadata("design:type", jobs_service_1.JobService)
 ], TaskService.prototype, "jobService", void 0);
 __decorate([
-    (0, schedule_1.Cron)('0 15 * * * *'),
+    (0, schedule_1.Cron)('0 40 * * * *'),
     __metadata("design:type", Function),
     __metadata("design:paramtypes", []),
     __metadata("design:returntype", Promise)

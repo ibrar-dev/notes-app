@@ -167,5 +167,7 @@ export class CreateJobDto {
     applyLinkTitle: string | any;
     @ApiProperty({type:'string'})
     category:string;
+    @ApiProperty({type:'DateTime'})
+    postedDate:any
 
 }
