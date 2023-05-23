@@ -1,3 +1,4 @@
+import Role from 'src/auth/enums/role.enum';
 import { Resume } from 'src/resume/entities/resume.entity';
 import { Column, CreateDateColumn, Entity, OneToMany, PrimaryGeneratedColumn, UpdateDateColumn } from 'typeorm';
 
@@ -33,4 +34,12 @@ export class User {
 
   @UpdateDateColumn({ type: "timestamp", default: () => "CURRENT_TIMESTAMP(6)", onUpdate: "CURRENT_TIMESTAMP(6)" })
   updatedAt: Date;
+
+  @Column({
+    type: 'enum',
+    enum: Role,
+    array: true,
+    default: [Role.Employee]
+  })
+  public roles: Role[]
 }

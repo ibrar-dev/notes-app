@@ -37,6 +37,16 @@ __decorate([
     (0, swagger_1.ApiProperty)({ type: 'string', example: 'string' }),
     __metadata("design:type", String)
 ], CreateUserDto.prototype, "password", void 0);
+__decorate([
+    (0, swagger_1.ApiProperty)({
+        type: 'array',
+        items: {
+            type: 'string',
+            example: ["Employee", "Candidate"]
+        },
+    }),
+    __metadata("design:type", Object)
+], CreateUserDto.prototype, "roles", void 0);
 exports.CreateUserDto = CreateUserDto;
 class SampleDto {
 }

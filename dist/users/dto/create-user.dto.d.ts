@@ -5,6 +5,7 @@ export declare class CreateUserDto {
     profilePicture: string | null;
     status: "pending" | "active" | "blocked";
     password: string;
+    roles: any;
 }
 export declare class SampleDto {
     name: string;

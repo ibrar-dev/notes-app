@@ -1,3 +1,4 @@
+import Role from 'src/auth/enums/role.enum';
 export declare class User {
     id: string;
     fullName: string;
@@ -8,4 +9,5 @@ export declare class User {
     password: string;
     createdAt: Date;
     updatedAt: Date;
+    roles: Role[];
 }

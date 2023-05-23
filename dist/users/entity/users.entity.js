@@ -10,6 +10,7 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.User = void 0;
+const role_enum_1 = require("../../auth/enums/role.enum");
 const typeorm_1 = require("typeorm");
 let User = class User {
 };
@@ -53,6 +54,15 @@ __decorate([
     (0, typeorm_1.UpdateDateColumn)({ type: "timestamp", default: () => "CURRENT_TIMESTAMP(6)", onUpdate: "CURRENT_TIMESTAMP(6)" }),
     __metadata("design:type", Date)
 ], User.prototype, "updatedAt", void 0);
+__decorate([
+    (0, typeorm_1.Column)({
+        type: 'enum',
+        enum: role_enum_1.default,
+        array: true,
+        default: [role_enum_1.default.Employee]
+    }),
+    __metadata("design:type", Array)
+], User.prototype, "roles", void 0);
 User = __decorate([
     (0, typeorm_1.Entity)()
 ], User);

@@ -13,6 +13,15 @@ export class CreateUserDto {
   status: "pending" | "active" | "blocked";
   @ApiProperty({ type: 'string', example: 'string' })
   password: string;
+  
+  @ApiProperty({
+    type: 'array',
+    items: {
+        type: 'string',
+        example: [ "Employee", "Candidate"]
+    },
+})
+roles: any;
 }
 
 
