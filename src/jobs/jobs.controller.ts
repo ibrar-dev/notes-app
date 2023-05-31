@@ -19,6 +19,7 @@ export class JobController {
   @ApiQuery({ name: 'category', required: false, type: String })
   @ApiQuery({ name: 'company', required: false, type: String })
   @ApiQuery({ name: 'time', required: false, type: String })
+  @ApiQuery({ name: 'type', required: false, type: String })
   @Get()
   async findAll(@Res() res: Response,
     @Query('page', ParseIntPipe) page: number,
@@ -26,10 +27,11 @@ export class JobController {
     @Query('category') category?: string,
     @Query('company') company?: string,
     @Query('time') time?: string,
+    @Query('type') type?: string,
 
   ): Promise<any> {
     try {
-      let resp = await this.jobService.findAll({ page, limit, category, company ,time});
+      let resp = await this.jobService.findAll({ page, limit, category, company ,time,type});
       if (resp) {
         res.status(HttpStatus.OK).json(resp);
       } else {
@@ -45,6 +47,21 @@ export class JobController {
   ): Promise<any> {
     try {
       let resp = await this.jobService.getCategories();
+      if (resp) {
+        res.status(HttpStatus.OK).json(resp);
+      } else {
+        res.status(HttpStatus.NO_CONTENT).json({ message: 'Please check your Limits, No record Found' });
+      }
+    } catch (error) {
+      res.status(HttpStatus.BAD_REQUEST).json({ message: 'Something went wrong' });
+    }
+  }
+  @ApiTags('Job')
+  @Get('get-types')
+  async getTypes(@Res() res: Response
+  ): Promise<any> {
+    try {
+      let resp = await this.jobService.getTypes();
       if (resp) {
         res.status(HttpStatus.OK).json(resp);
       } else {

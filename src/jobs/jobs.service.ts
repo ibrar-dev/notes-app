@@ -47,6 +47,7 @@ export class JobService {
       const category = query.category;
       const company = query.company;
       const time = query.time;
+      const type = query.type;
       let filter = {
         take: take,
         skip: skip
@@ -63,6 +64,10 @@ export class JobService {
       if (category) {
         whereClause['category'] = Raw(alias => `${alias} ILIKE '%${category}%'`);
       }
+      if (type) {
+        whereClause['scheduleType'] = Raw(alias => `${alias} ILIKE '%${type}%'`);
+      }
+
       if (company) {
         whereClause['companyName'] = Raw(alias => `${alias} ILIKE '%${company}%'`);
       }
@@ -135,6 +140,20 @@ export class JobService {
     }
   }
 
+  async getTypes() {
+
+    try {
+      const queryBuilder = await this.jobsRepository.createQueryBuilder('job')
+        .select('DISTINCT job.scheduleType', 'scheduleType')
+
+      const result = await queryBuilder.getRawMany();
+
+      return { result: result };
+    } catch (error) {
+      console.log("Error:", error);
+      return error;
+    }
+  }
   async getCompanies(query) {
 
     try {
@@ -231,7 +250,7 @@ export class JobService {
         JOIN public.job_category jc ON j."jobCategoryId" = jc.id
         WHERE j.order_number <= 20
       `);
-      
+
       return result;
 
     } catch (error) {

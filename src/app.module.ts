@@ -44,6 +44,7 @@ import { JobCategory } from './jobs/entities/category.entity';
     host: 'ec2-3-21-254-99.us-east-2.compute.amazonaws.com',
     password: '1234',
     database: 'jobs',
+    // database: 'jobs',
     entities: [User, Qualifications, Job, Resume, Language, Phone, Email, Website, Salary, Address, ResumeQualification, Certification, Skills, Experience, RelatedSkills, Projects, Publication, Location, Achievement, AppliedJob, AppliedJobCategory,JobCategory],
     synchronize: true,
     type: 'postgres',

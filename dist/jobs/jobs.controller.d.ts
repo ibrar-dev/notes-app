@@ -3,8 +3,9 @@ import { Response } from 'express';
 export declare class JobController {
     private readonly jobService;
     constructor(jobService: JobService);
-    findAll(res: Response, page: number, limit: number, category?: string, company?: string, time?: string): Promise<any>;
+    findAll(res: Response, page: number, limit: number, category?: string, company?: string, time?: string, type?: string): Promise<any>;
     getJobTitles(res: Response): Promise<any>;
+    getTypes(res: Response): Promise<any>;
     getJobCountByCategory(res: Response): Promise<any>;
     getLatestJobs(res: Response): Promise<any>;
     getCompanies(res: Response, page: number, limit: number): Promise<any>;

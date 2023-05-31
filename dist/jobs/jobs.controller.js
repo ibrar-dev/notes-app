@@ -21,9 +21,9 @@ let JobController = class JobController {
     constructor(jobService) {
         this.jobService = jobService;
     }
-    async findAll(res, page, limit, category, company, time) {
+    async findAll(res, page, limit, category, company, time, type) {
         try {
-            let resp = await this.jobService.findAll({ page, limit, category, company, time });
+            let resp = await this.jobService.findAll({ page, limit, category, company, time, type });
             if (resp) {
                 res.status(common_1.HttpStatus.OK).json(resp);
             }
@@ -38,6 +38,20 @@ let JobController = class JobController {
     async getJobTitles(res) {
         try {
             let resp = await this.jobService.getCategories();
+            if (resp) {
+                res.status(common_1.HttpStatus.OK).json(resp);
+            }
+            else {
+                res.status(common_1.HttpStatus.NO_CONTENT).json({ message: 'Please check your Limits, No record Found' });
+            }
+        }
+        catch (error) {
+            res.status(common_1.HttpStatus.BAD_REQUEST).json({ message: 'Something went wrong' });
+        }
+    }
+    async getTypes(res) {
+        try {
+            let resp = await this.jobService.getTypes();
             if (resp) {
                 res.status(common_1.HttpStatus.OK).json(resp);
             }
@@ -178,6 +192,7 @@ __decorate([
     (0, swagger_1.ApiQuery)({ name: 'category', required: false, type: String }),
     (0, swagger_1.ApiQuery)({ name: 'company', required: false, type: String }),
     (0, swagger_1.ApiQuery)({ name: 'time', required: false, type: String }),
+    (0, swagger_1.ApiQuery)({ name: 'type', required: false, type: String }),
     (0, common_1.Get)(),
     __param(0, (0, common_1.Res)()),
     __param(1, (0, common_1.Query)('page', common_1.ParseIntPipe)),
@@ -185,8 +200,9 @@ __decorate([
     __param(3, (0, common_1.Query)('category')),
     __param(4, (0, common_1.Query)('company')),
     __param(5, (0, common_1.Query)('time')),
+    __param(6, (0, common_1.Query)('type')),
     __metadata("design:type", Function),
-    __metadata("design:paramtypes", [Object, Number, Number, String, String, String]),
+    __metadata("design:paramtypes", [Object, Number, Number, String, String, String, String]),
     __metadata("design:returntype", Promise)
 ], JobController.prototype, "findAll", null);
 __decorate([
@@ -197,6 +213,14 @@ __decorate([
     __metadata("design:paramtypes", [Object]),
     __metadata("design:returntype", Promise)
 ], JobController.prototype, "getJobTitles", null);
+__decorate([
+    (0, swagger_1.ApiTags)('Job'),
+    (0, common_1.Get)('get-types'),
+    __param(0, (0, common_1.Res)()),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", [Object]),
+    __metadata("design:returntype", Promise)
+], JobController.prototype, "getTypes", null);
 __decorate([
     (0, swagger_1.ApiTags)('Job'),
     (0, common_1.Get)('job-count-by-categories'),

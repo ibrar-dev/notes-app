@@ -54,6 +54,7 @@ let JobService = class JobService {
             const category = query.category;
             const company = query.company;
             const time = query.time;
+            const type = query.type;
             let filter = {
                 take: take,
                 skip: skip
@@ -66,6 +67,9 @@ let JobService = class JobService {
             }
             if (category) {
                 whereClause['category'] = (0, typeorm_2.Raw)(alias => `${alias} ILIKE '%${category}%'`);
+            }
+            if (type) {
+                whereClause['scheduleType'] = (0, typeorm_2.Raw)(alias => `${alias} ILIKE '%${type}%'`);
             }
             if (company) {
                 whereClause['companyName'] = (0, typeorm_2.Raw)(alias => `${alias} ILIKE '%${company}%'`);
@@ -124,6 +128,18 @@ let JobService = class JobService {
         }
         catch (error) {
             console.log("here");
+            return error;
+        }
+    }
+    async getTypes() {
+        try {
+            const queryBuilder = await this.jobsRepository.createQueryBuilder('job')
+                .select('DISTINCT job.scheduleType', 'scheduleType');
+            const result = await queryBuilder.getRawMany();
+            return { result: result };
+        }
+        catch (error) {
+            console.log("Error:", error);
             return error;
         }
     }
