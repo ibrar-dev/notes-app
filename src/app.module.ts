@@ -14,7 +14,6 @@ import { NotesModule } from './notes/notes.module';
 dotenv.config();
 
 const ENV = process.env;
-console.log(ENV)
 @Module({
   imports: [
     ScheduleModule.forRoot(),

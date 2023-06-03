@@ -2,6 +2,7 @@ import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { Note } from './entity/notes.entity';
+import { NoteCreateDto, NoteUpdateDto } from './dto/noteCreate.dto';
 
 
 @Injectable()
@@ -11,18 +12,17 @@ export class NotesService {
     private readonly notesRepository: Repository<Note>,
   ) { }
 
-  async create(body: any) {
+  async create(body: NoteCreateDto) {
     try {
      return await this.notesRepository.save(body)
     } catch (error) {
-      console.log(error)
       return error;
     }
 
   }
 
   
-  async update(updateNotesDto: any, userId, id): Promise<Note> {
+  async update(updateNotesDto: NoteUpdateDto, userId, id): Promise<Note> {
     try {
       await this.notesRepository
     .createQueryBuilder()
@@ -30,7 +30,7 @@ export class NotesService {
     .set(updateNotesDto)
     .where({id, userId})
     .execute();
-    let updatedNotes = await this.notesRepository.findOneBy({ id })
+    const updatedNotes = await this.notesRepository.findOneBy({ id })
       return updatedNotes;
     } catch (error) {
       return error;

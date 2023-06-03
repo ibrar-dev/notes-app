@@ -3,6 +3,7 @@ import { NestExpressApplication } from '@nestjs/platform-express';
 import { join } from 'path';
 import { AppModule } from './app.module';
 import { SwaggerModule, DocumentBuilder } from '@nestjs/swagger';
+import { ValidationPipe } from '@nestjs/common';
 
 async function bootstrap() {
 
@@ -11,6 +12,8 @@ async function bootstrap() {
     allowedHeaders:"*",
     origin: "*"
 });
+app.useGlobalPipes(new ValidationPipe());
+
   await app.listen(3002);
 }
 bootstrap();

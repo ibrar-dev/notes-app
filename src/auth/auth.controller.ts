@@ -3,6 +3,7 @@ import { AuthService } from './auth.service';
 import { UsersService } from 'src/users/users.service';
 import { JwtService } from '@nestjs/jwt';
 import { SharedService } from 'src/shared/shared.service';
+import { CreateUserDto } from 'src/users/dto/create-user.dto';
 
 @Controller('auth')
 export class AuthController {
@@ -14,7 +15,7 @@ export class AuthController {
     ) { }
   
   @Post('signup')
-  async signUp(@Body() body: any) {
+  async signUp(@Body() body: CreateUserDto) {
     // check start with
     const { email, password } = body;
     // email exist

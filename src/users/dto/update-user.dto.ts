@@ -1,5 +1,9 @@
-export class UpdateUserDto {
-  id:string;
-  profilePicture: string|null;
+import { IsOptional } from 'class-validator';
 
+export class UpdateUserDto {
+  @IsOptional()
+  firstName: string;
+
+  @IsOptional()
+  lastName: string;
 }
