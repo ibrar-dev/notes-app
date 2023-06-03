@@ -15,37 +15,34 @@ export class UsersService {
 
   async create(createUserDto: any) {
     try {
-      console.log(createUserDto)
      return await this.usersRepository.save(createUserDto)
     } catch (error) {
-      console.log(error)
       return error;
     }
 
   }
 
   async findUserWithEmail(email: string) {
-    console.log(email)
     return this.usersRepository.findOne( {where: {
       email
     }});
   }
 
   
-  async update(updateUserDto: UpdateUserDto): Promise<User> {
+  async update(body, userId): Promise<User> {
     try {
-      let newUser = await this.usersRepository.update(updateUserDto.id, updateUserDto)
-      let updatedUser = await this.usersRepository.findOneBy({ id: updateUserDto.id })
-      console.log(newUser)
+      await this.usersRepository
+    .createQueryBuilder()
+    .update(User)
+    .set(body)
+    .where({id: userId})
+    .execute();
+      let updatedUser = await this.usersRepository.findOneBy({ id: userId})
       return updatedUser;
     } catch (error) {
       return error;
     }
 
-  }
-
-  async findAll(): Promise<User[]> {
-    return this.usersRepository.find();
   }
 
   async findOne(id: string): Promise<User> {
@@ -57,7 +54,6 @@ export class UsersService {
       .select('*')
       .where('email = :email', { email: email })
       .getRawOne();
-      console.log(v,password)
     
       const isMatch = await bcrypt.compare(password, v.password);
   
@@ -74,9 +70,5 @@ export class UsersService {
     // return this.usersRepository.findOneBy({ username: username, password: password });
   }
 
-
-  async remove(id: string): Promise<void> {
-    await this.usersRepository.delete(id);
-  }
   
 }

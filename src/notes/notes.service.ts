@@ -11,22 +11,15 @@ export class NotesService {
     private readonly notesRepository: Repository<Note>,
   ) { }
 
-  async   create(createUserDto: any) {
+  async create(body: any) {
     try {
-     return await this.notesRepository.save(createUserDto)
+     return await this.notesRepository.save(body)
     } catch (error) {
       console.log(error)
       return error;
     }
 
   }
-
-  // async findUserWithEmail(email: string) {
-  //   console.log(email)
-  //   return this.notesRepository.findOne( {where: {
-  //     email
-  //   }});
-  // }
 
   
   async update(updateNotesDto: any, userId, id): Promise<Note> {
@@ -37,18 +30,24 @@ export class NotesService {
     .set(updateNotesDto)
     .where({id, userId})
     .execute();
-    let updatedUser = await this.notesRepository.findOneBy({ id })
-
-
-      console.log(updatedUser)
-      return updatedUser;
+    let updatedNotes = await this.notesRepository.findOneBy({ id })
+      return updatedNotes;
     } catch (error) {
       return error;
     }
 
   }
 
-  async findAll(userId): Promise<Note[]> {
+  async findAllofUser(userId, filterObject): Promise<Note[]> {
+    return this.notesRepository.find({
+      where: {
+        ...filterObject,
+        userId
+      }
+    });
+  }
+
+  async filter(userId): Promise<Note[]> {
     return this.notesRepository.find({
       where: {
         userId
@@ -64,8 +63,6 @@ export class NotesService {
       }
     });
   }
-
-
 
   async remove(id: string, userId): Promise<void> {
     await this.notesRepository.delete({id, userId});

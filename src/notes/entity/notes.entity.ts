@@ -25,7 +25,6 @@ export class Note {
 
   @UpdateDateColumn({ type: "timestamp", default: () => "CURRENT_TIMESTAMP(6)", onUpdate: "CURRENT_TIMESTAMP(6)" })
   updatedAt: Date;
-  public roles: Role[]
   
   @Column()
   userId: string;

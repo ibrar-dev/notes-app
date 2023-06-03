@@ -13,14 +13,12 @@ export class AuthService {
   async validateUser(email: string, pass: string): Promise<any> {
 
     const user = await this.usersService.verifyUser(email,pass);
-    console.log(user)
     if(user) return user;
     return null;
   }
 
   async login(user: any) {
     const payload = {id:user.id,email:user.email };
-    console.log("login",payload)
     return {
       access_token: this.jwtService.sign(payload),
       user

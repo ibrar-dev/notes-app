@@ -1,7 +1,5 @@
-import { Controller, Get, Request, Post, UseGuards, Body, Headers, UnauthorizedException, NotFoundException } from '@nestjs/common';
+import { Controller, Post, Body, UnauthorizedException, NotFoundException } from '@nestjs/common';
 import { AuthService } from './auth.service';
-import { Auth, Authorization } from './dto/user-login.dto';
-import { JwtAuthGuard } from './guards/jwt-auth.guard';
 import { UsersService } from 'src/users/users.service';
 import { JwtService } from '@nestjs/jwt';
 import { SharedService } from 'src/shared/shared.service';
@@ -20,7 +18,6 @@ export class AuthController {
     // check start with
     const { email, password } = body;
     // email exist
-    console.log(body)
     const checkUserExist = await this.userService.findUserWithEmail(email);
     if (checkUserExist) {
       throw new NotFoundException('User already exist.');
@@ -42,7 +39,6 @@ export class AuthController {
     if (!user) {
       throw new UnauthorizedException('Email address or password is not correct.');
     }
-    console.log(user.id )
     const payload = { id: user.id, email: body.email };
     const token = this.jwtService.sign(payload);
 

@@ -100,16 +100,29 @@ import { CreateUserDto, SampleDto } from './dto/create-user.dto';
 
 import {
   Controller, HttpException,
-  HttpStatus, Get, Request, Post, UseGuards, Body, Headers
+  HttpStatus, Get, Request, Post, UseGuards, Body, Headers, Patch
 } from '@nestjs/common';
 import { Auth, Authorization } from '../auth/dto/user-login.dto';
 import { JwtAuthGuard } from '../auth/guards/jwt-auth.guard';
 import { UsersService } from './users.service';
 import { User } from './entity/users.entity';
+import { UserId } from 'src/shared/user-id.decorator';
 
 
 @Controller('user')
 export class UsersController {
   constructor(private readonly usersService: UsersService) { }
 
+  @UseGuards(JwtAuthGuard)
+  @Get()
+  find(@UserId('userId') userId: string): Promise<any> {
+    return this.usersService.findOne(userId);
+  }
+
+  @UseGuards(JwtAuthGuard)
+  @Patch()
+  update(@Body() body: any, @UserId('userId') userId: string) {
+    const {firstName, lastName} = body;
+    return this.usersService.update({firstName, lastName},userId );
+  }
 }
