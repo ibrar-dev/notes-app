@@ -7,21 +7,18 @@ export class CreateUserDto {
   username: string;
   @ApiProperty({ type: 'string', example: 'string' })
   email: string;
+ 
   @ApiProperty({ type: 'string', example: 'string' })
-  profilePicture: string|null;
-  @ApiProperty({ type: 'string', example: 'string' })
-  status: "pending" | "active" | "blocked";
+  status: string;
+  
   @ApiProperty({ type: 'string', example: 'string' })
   password: string;
   
   @ApiProperty({
-    type: 'array',
-    items: {
-        type: 'string',
-        example: [ "Employee", "Candidate"]
-    },
+    type: 'string',
+   
 })
-roles: any;
+role: string;
 }
 
 

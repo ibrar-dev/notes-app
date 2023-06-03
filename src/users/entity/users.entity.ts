@@ -1,5 +1,5 @@
 import Role from 'src/auth/enums/role.enum';
-import { Resume } from 'src/resume/entities/resume.entity';
+import { Note } from 'src/notes/entity/notes.entity';
 import { Column, CreateDateColumn, Entity, OneToMany, PrimaryGeneratedColumn, UpdateDateColumn } from 'typeorm';
 
 @Entity()
@@ -8,21 +8,19 @@ export class User {
   id: string;
 
   @Column()
-  fullName: string;
+  firstName: string;
 
-  @Column({unique: true})
-  username: string;
+  @Column()
+  lastName: string;
 
   @Column({unique: true})
   email: string;
 
-  @Column({nullable:true})
-  profilePicture: string |null;
 
   @Column({
     type: "enum",
     enum: ["pending", "active", "blocked"],
-    default: 'pending',
+    default: 'active',
   })
   status: "pending"| "active"| "blocked";
 
@@ -39,7 +37,14 @@ export class User {
     type: 'enum',
     enum: Role,
     array: true,
-    default: [Role.Employee]
+    default: [Role.User]
   })
   public roles: Role[]
+
+
+ 
+  
+  @OneToMany(() => Note, notes => notes.user, { onDelete: 'CASCADE' })
+  notes: Note[];
 }
+

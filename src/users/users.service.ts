@@ -13,22 +13,25 @@ export class UsersService {
     private readonly usersRepository: Repository<User>,
   ) { }
 
-  async create(createUserDto: CreateUserDto): Promise<User> {
+  async create(createUserDto: any) {
     try {
-      const saltOrRounds = 10;
-      const password = createUserDto.password;
-      const hash = await bcrypt.hash(password, saltOrRounds);
-      createUserDto.password=hash;
-      let newUser = this.usersRepository.create(createUserDto)
-      
-      return this.usersRepository.save(newUser);
+      console.log(createUserDto)
+     return await this.usersRepository.save(createUserDto)
     } catch (error) {
+      console.log(error)
       return error;
     }
 
   }
 
+  async findUserWithEmail(email: string) {
+    console.log(email)
+    return this.usersRepository.findOne( {where: {
+      email
+    }});
+  }
 
+  
   async update(updateUserDto: UpdateUserDto): Promise<User> {
     try {
       let newUser = await this.usersRepository.update(updateUserDto.id, updateUserDto)
@@ -48,12 +51,11 @@ export class UsersService {
   async findOne(id: string): Promise<User> {
     return this.usersRepository.findOneBy({ id: id });
   }
-  async verifyUser(username: string, password: string): Promise<User> {
+  async verifyUser(email: string, password: string): Promise<User> {
     try {
       let v=await this.usersRepository.createQueryBuilder()
       .select('*')
-      .where('username = :username', { username: username })
-      .orWhere('email = :email', { email: username })
+      .where('email = :email', { email: email })
       .getRawOne();
       console.log(v,password)
     
@@ -71,6 +73,7 @@ export class UsersService {
   
     // return this.usersRepository.findOneBy({ username: username, password: password });
   }
+
 
   async remove(id: string): Promise<void> {
     await this.usersRepository.delete(id);

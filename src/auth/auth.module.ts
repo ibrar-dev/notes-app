@@ -4,15 +4,18 @@ import { UsersModule } from '../users/users.module';
 import { PassportModule } from '@nestjs/passport';
 import { LocalStrategy } from './local.strategy';
 import { JwtModule } from '@nestjs/jwt';
-import { jwtConstants } from './constants';
-import { JwtStrategy } from './jwt.strategy';
+import { JwtStrategy } from './strategies/jwt.strategy';
 import { AuthController } from './auth.controller';
+import { SharedModule } from 'src/shared/shared.module';
 
 @Module({
   imports: [UsersModule, PassportModule,JwtModule.register({
-    secret:jwtConstants.secret,
+    secret:"hard!to-guess_secret",
     signOptions:{expiresIn:'24 days'}
-  })],
+  }),
+  SharedModule
+],
+
   providers: [AuthService, LocalStrategy,JwtStrategy],
   exports:[AuthService],
   controllers:[AuthController]
